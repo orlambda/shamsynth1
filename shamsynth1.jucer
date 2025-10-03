@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
     <GROUP id="{CABB3CB8-7DF3-A8CC-10BE-ACA7E822C919}" name="Source">
       <FILE id="KFhz27" name="PluginProcessor.cpp" compile="1" resource="0"
