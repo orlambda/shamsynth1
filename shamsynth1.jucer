@@ -4,6 +4,10 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
+    <GROUP id="{DC2273DF-1811-2AA2-0182-BA4EED2E150B}" name="Voice">
+      <FILE id="BXAGWQ" name="Voice.cpp" compile="1" resource="0" file="Source/Voice/Voice.cpp"/>
+      <FILE id="aMoZUm" name="Voice.h" compile="0" resource="0" file="Source/Voice/Voice.h"/>
+    </GROUP>
     <GROUP id="{CABB3CB8-7DF3-A8CC-10BE-ACA7E822C919}" name="Source">
       <FILE id="KFhz27" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
