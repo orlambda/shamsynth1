@@ -30,7 +30,7 @@ void Shamsynth1AudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (juce::FontOptions (15.0f));
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    g.drawFittedText ("shamsynth1 by orlambda", getLocalBounds(), juce::Justification::centredTop, 1);
 }
 
 void Shamsynth1AudioProcessorEditor::resized()
