@@ -40,9 +40,15 @@ Start as a monosynth
 
 # Square wave oscillator
 
+# ADSR 
+
 # Blend sine/triangle/square waves
 - Research
 - Dial
 
 # Control grid
 Arrange dials using a grid object or function
+
+# Possible features
+- Graphical envelope representation/control
+- output level meter
