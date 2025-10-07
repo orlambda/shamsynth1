@@ -9,6 +9,18 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+
+/*
+ Members created by me
+ */
+ 
+
+
+/*
+ End of members created by me
+*/
+
+
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -141,7 +153,10 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // This is here to avoid people getting screaming feedback
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+//    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+//        buffer.clear (i, 0, buffer.getNumSamples());
+    // I am doing the above but for all channels - I need to check if this is correct
+    for (auto i = 0; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
     // This is the place where you'd normally do the guts of your plugin's
@@ -150,13 +165,63 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    
+    // Oscillators, etc.
+        // For a complex synth, this will include all modulation, etc.
+    
+    // Temporary Voice instantiation until I have Voice ptrs/whatever somehow
+    
+    Voice v;
+    voices.push_back(v);
+//    Voice v1;
+//    voices.push_back(v1);
+//    Voice v2;
+//    voices.push_back(v2);
+    
+    for (auto& voice : voices)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+         voice.processBlock(buffer, totalNumOutputChannels);
+    }
+    voices.pop_back();
+//    voices.pop_back();
+//    voices.pop_back();
+    
+//    juce::Random random;
+//    
+//    float totalNumSamples = buffer.getNumSamples();
+//    
+//    // Each oscillator/generator
+//    // Starting with a white noise generator
+//
+//    for (auto sample = 0; sample < totalNumSamples; ++sample)
+//    {
+//        float sampleValue = random.nextFloat();
+//        for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
+//        {
+//            buffer.setSample(channel, sample, sampleValue * 0.25 - 0.125);
+//        }
+//        auto* channelData = buffer.getWritePointer (channel);
 
         // ..do something to the data...
     }
-}
+    
+    // Effects
+    // for (auto& effect : effects)
+        // {effect.processBlock(buffer};
+    
+    
+    // Final volume
+    
+    
+    // Original loop - we are not doing it like this
+    //    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    //    {
+    //        auto* channelData = buffer.getWritePointer (channel);
+    //
+    //        // ..do something to the data...
+    //    }
+//}
+
 
 //==============================================================================
 bool Shamsynth1AudioProcessor::hasEditor() const

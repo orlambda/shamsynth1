@@ -57,5 +57,7 @@ public:
 
 private:
     //==============================================================================
+    std::vector<Voice> voices;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };
