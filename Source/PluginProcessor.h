@@ -8,9 +8,11 @@
 
 #pragma once
 
+#include "Voice/Voice.h"
+
 #include <JuceHeader.h>
 
-#include "Voice/Voice.h"
+#include <memory>
 
 //==============================================================================
 /**
@@ -57,7 +59,7 @@ public:
 
 private:
     //==============================================================================
-    std::vector<Voice> voices;
+    std::vector<std::unique_ptr<Voice>> voices;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };

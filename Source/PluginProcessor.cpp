@@ -9,18 +9,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-
-/*
- Members created by me
- */
- 
-
-
-/*
- End of members created by me
-*/
-
-
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -107,12 +95,19 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    int num_of_voices = 2;
+    for (int i = 0; i < num_of_voices; ++i)
+    {
+        voices.push_back(std::make_unique<Voice>());
+    }
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    //  TODO: Is this necessary (I don't think so)
+    voices.clear();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -168,59 +163,19 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     
     // Oscillators, etc.
         // For a complex synth, this will include all modulation, etc.
-    
-    // Temporary Voice instantiation until I have Voice ptrs/whatever somehow
-    
-    Voice v;
-    voices.push_back(v);
-//    Voice v1;
-//    voices.push_back(v1);
-//    Voice v2;
-//    voices.push_back(v2);
-    
+
     for (auto& voice : voices)
     {
-         voice.processBlock(buffer, totalNumOutputChannels);
+         voice->processBlock(buffer, totalNumOutputChannels);
     }
-    voices.pop_back();
-//    voices.pop_back();
-//    voices.pop_back();
-    
-//    juce::Random random;
-//    
-//    float totalNumSamples = buffer.getNumSamples();
-//    
-//    // Each oscillator/generator
-//    // Starting with a white noise generator
-//
-//    for (auto sample = 0; sample < totalNumSamples; ++sample)
-//    {
-//        float sampleValue = random.nextFloat();
-//        for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
-//        {
-//            buffer.setSample(channel, sample, sampleValue * 0.25 - 0.125);
-//        }
-//        auto* channelData = buffer.getWritePointer (channel);
 
-        // ..do something to the data...
-    }
-    
     // Effects
     // for (auto& effect : effects)
         // {effect.processBlock(buffer};
     
-    
     // Final volume
     
-    
-    // Original loop - we are not doing it like this
-    //    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    //    {
-    //        auto* channelData = buffer.getWritePointer (channel);
-    //
-    //        // ..do something to the data...
-    //    }
-//}
+}
 
 
 //==============================================================================
