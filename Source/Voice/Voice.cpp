@@ -21,17 +21,12 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
 
     for (auto sample = 0; sample < totalNumSamples; ++sample)
     {
-        float sampleValue = random.nextFloat();
+        float sampleValue = random.nextFloat() * 0.1 - 0.05;
         for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
         {
-            auto currentValue = buffer.getSample(channel, sample);
-            buffer.setSample(channel, sample, currentValue + sampleValue * 0.1 - 0.05);
+            buffer.addSample(channel, sample, sampleValue);
         }
-//        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
     }
-    
 }
 
 void Voice::sayHi()
