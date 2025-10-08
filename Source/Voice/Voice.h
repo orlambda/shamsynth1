@@ -29,11 +29,25 @@
 class Voice
 {
 public:
+    // Check state
+    bool isActive() {return active;}
+    bool getFundamental(){return fundamental;}
+    
+    // Change state
+    bool trigger(float p_fundamental);
+    bool silence();
+    
+    
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
     // For debugging
     void sayHi();
 private:
+    // State
+    bool active;
+    float fundamental;
+    
+    // White Noise Generator
     juce::Random random;
 };
