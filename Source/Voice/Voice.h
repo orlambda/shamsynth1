@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "../Noise/NoiseGenerator.h"
+
 #include <JuceHeader.h>
 
 #include <vector>
@@ -37,7 +39,6 @@ public:
     bool trigger(float p_fundamental);
     bool silence();
     
-    
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
@@ -49,5 +50,5 @@ private:
     float fundamental;
     
     // White Noise Generator
-    juce::Random random;
+    NoiseGenerator whiteNoise;
 };
