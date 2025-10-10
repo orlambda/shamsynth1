@@ -4,6 +4,12 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
+    <GROUP id="{FFFAEA43-69A9-D9CA-9CFF-9DF4810EF48F}" name="Oscillators">
+      <FILE id="wOVWt6" name="WaveOscillator.cpp" compile="1" resource="0"
+            file="Source/Oscillators/WaveOscillator.cpp"/>
+      <FILE id="qdcaY9" name="WaveOscillator.h" compile="0" resource="0"
+            file="Source/Oscillators/WaveOscillator.h"/>
+    </GROUP>
     <GROUP id="{6FD9ACFB-EE8C-3969-80B2-D0D40523F01C}" name="Noise">
       <FILE id="xTXyiX" name="NoiseGenerator.cpp" compile="1" resource="0"
             file="Source/Noise/NoiseGenerator.cpp"/>
