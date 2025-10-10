@@ -14,14 +14,15 @@
 //==============================================================================
 /**
 */
-class Shamsynth1AudioProcessorEditor  : public juce::AudioProcessorEditor
+class Shamsynth1AudioProcessorEditor :  public juce::AudioProcessorEditor,
+                                        private juce::Slider::Listener
 {
 public:
-    Shamsynth1AudioProcessorEditor (Shamsynth1AudioProcessor&);
+    Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor&);
     ~Shamsynth1AudioProcessorEditor() override;
 
     //==============================================================================
-    void paint (juce::Graphics&) override;
+    void paint(juce::Graphics&) override;
     void resized() override;
 
 private:
@@ -29,5 +30,9 @@ private:
     // access the processor object that created it.
     Shamsynth1AudioProcessor& audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessorEditor)
+    // Controls
+    void sliderValueChanged (juce::Slider* slider) override;
+    juce::Slider OutputVolume;
+    
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Shamsynth1AudioProcessorEditor)
 };
