@@ -24,7 +24,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     OutputVolume.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     OutputVolume.setPopupDisplayEnabled(true, false, this);
     OutputVolume.setTextValueSuffix(" Output Volume");
-    OutputVolume.setValue(0.5);
+    OutputVolume.setValue(audioProcessor.OutputVolume);
     // this function adds the slider to the editor
     addAndMakeVisible(&OutputVolume);
     
