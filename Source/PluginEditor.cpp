@@ -43,7 +43,10 @@ void Shamsynth1AudioProcessorEditor::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::white);
     g.setFont(juce::FontOptions (15.0f));
-    g.drawFittedText("shamsynth1 by orlambda", 0, 0, getWidth(), 30, juce::Justification::centred, 1);
+    // Temporary versioning to ensure correct build is running
+    std::string versionNumber = "0.0.01";
+    std::string displayText = "shamsynth1 by orlambda - version " + versionNumber;
+    g.drawFittedText(displayText, 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
 void Shamsynth1AudioProcessorEditor::resized()
