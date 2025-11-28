@@ -100,8 +100,7 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     {
         voices.push_back(std::make_unique<Voice>());
     }
-    // NOTE: This does not match initial value from UI. This is a test.
-    OutputVolume = 1;
+    OutputVolume = 0.1;
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
