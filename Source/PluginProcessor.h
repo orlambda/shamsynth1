@@ -59,6 +59,7 @@ public:
     
     // State
     float OutputVolume;
+    juce::MidiKeyboardState keyboardState;
 
 private:
     //==============================================================================
