@@ -42,7 +42,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
 
 Shamsynth1AudioProcessorEditor::~Shamsynth1AudioProcessorEditor()
 {
-}
+}q
 
 //==============================================================================
 void Shamsynth1AudioProcessorEditor::paint(juce::Graphics& g)
