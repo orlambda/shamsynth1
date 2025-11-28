@@ -5,6 +5,11 @@ polysynth - each Voice will need its own Oscillators
     Voice and Osc both have .nextSample() - inherit from common class?
 std::vector<Voice> Voices
 
+# Task list
+output a constant sine wave
+control sine wave frequency with midi input from keyboard component
+control sine wave frequency with external midi
+
 # Volume control
 Start with 0.0 - 1.0
 Research typical ranges
