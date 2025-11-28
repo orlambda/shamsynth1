@@ -45,7 +45,9 @@ void Shamsynth1AudioProcessorEditor::paint(juce::Graphics& g)
     g.setFont(juce::FontOptions (15.0f));
     // Temporary versioning to ensure correct build is running
     std::string versionNumber = "0.0.01";
-    std::string displayText = "shamsynth1 by orlambda - version " + versionNumber;
+    // Increment before compiling to ensure build always matches code
+    std::string compileNumber = "00";
+    std::string displayText = "shamsynth1 by orlambda - version " + versionNumber + ", build no " + compileNumber;
     g.drawFittedText(displayText, 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
