@@ -20,8 +20,3 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
     // Starting with a white noise generator
     whiteNoise.processBlock(buffer, totalNumOutputChannels);
 }
-
-void Voice::sayHi()
-{
-    std::cout << "Hi!" << std::endl;
-}

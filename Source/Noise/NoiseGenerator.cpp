@@ -16,7 +16,6 @@ void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
     
     // Each oscillator/generator
     // Starting with a white noise generator
-    
 
     for (auto sample = 0; sample < totalNumSamples; ++sample)
     {

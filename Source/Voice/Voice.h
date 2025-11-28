@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../Noise/NoiseGenerator.h"
+#include "../Oscillators/WaveOscillator.h"
 
 #include <JuceHeader.h>
 
@@ -42,13 +43,18 @@ public:
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    // For debugging
-    void sayHi();
+    
+    // Temporary
+    float sampleRate;
+    
 private:
     // State
-    bool active;
-    float fundamental;
+    bool active = false;
+    float fundamental = 0.0;
     
     // White Noise Generator
     NoiseGenerator whiteNoise;
+    
+    // osc1
+    WaveOscillator sine;
 };

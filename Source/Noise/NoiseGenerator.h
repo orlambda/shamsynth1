@@ -20,6 +20,8 @@ class NoiseGenerator
 public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
     
+    // Temporary
+    float sampleRate = 0.0;
 private:
     juce::Random random;
 };

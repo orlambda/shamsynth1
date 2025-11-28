@@ -16,9 +16,29 @@
 class WaveOscillator
 {
 public:
+    void startNote(float f);
+    void endNote();
+    // Abruptly ends all sound
+    void silence();
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    void setFundamental(float f) {fundamental = f;}
+    void setFundamental(float f);
+    // Is this necessary or can it
+        // a) stay in the constructor if it won't change within Oscillator's lifetime (check this), or
+        // b) be passed in through startNote()
+    void setSampleRate(float sr);
+    void updateAngleDelta();
+    
+    // Temporary
+    float sampleRate = 0.0;
 private:
-    float fundamental;
-    float sampleRate;
+    // TODO: initialise in constructor
+    float currentAngle = 0;
+    float angleDelta = 0;
+    
+    float frequency = 0;
+    
+    float overallLevel = 1.0;
+    float currentLevel = 1.0;
+    
+    bool isActive = false;
 };
