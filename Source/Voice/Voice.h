@@ -32,13 +32,15 @@
 class Voice
 {
 public:
+    Voice();
+    
     // Check state
     bool isActive() {return active;}
     bool getFundamental(){return fundamental;}
     
     // Change state
-    bool trigger(float p_fundamental);
-    bool silence();
+    void trigger(float p_fundamental);
+    void silence();
     
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.
@@ -56,5 +58,5 @@ private:
     NoiseGenerator whiteNoise;
     
     // osc1
-    WaveOscillator sine;
+    WaveOscillator waveOsc;
 };

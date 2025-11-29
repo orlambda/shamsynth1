@@ -95,12 +95,18 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    int num_of_voices = 2;
+    int num_of_voices = 1;
     for (int i = 0; i < num_of_voices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
     }
-    OutputVolume = 0.1;
+    OutputVolume = 0.0;
+    
+    for (auto& voice : voices) {
+        voice->sampleRate = sampleRate;
+        // Temporary to output sound without MIDI input
+        voice->trigger(440);
+    }
 }
 
 void Shamsynth1AudioProcessor::releaseResources()

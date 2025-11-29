@@ -21,7 +21,8 @@ public:
     // Abruptly ends all sound
     void silence();
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    void setFundamental(float f);
+    void trigger(float f);
+    void setFrequency(float f);
     // Is this necessary or can it
         // a) stay in the constructor if it won't change within Oscillator's lifetime (check this), or
         // b) be passed in through startNote()

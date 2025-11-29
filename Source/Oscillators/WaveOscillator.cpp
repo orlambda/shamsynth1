@@ -19,12 +19,13 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
+            float sampleValue = std::sin(currentAngle) * currentLevel * overallLevel;
             for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
             {
-                float value = std::sinf(currentAngle) * currentLevel * overallLevel;
-                currentAngle = fmod(currentAngle + angleDelta, 2.0 * juce::MathConstants<double>::pi);
-                buffer.addSample(channel, sample, value);
+                buffer.addSample(channel, sample, sampleValue);
             }
+            currentAngle += angleDelta;
+//            currentAngle = fmod(currentAngle + angleDelta, 2.0 * juce::MathConstants<double>::pi);
         }
     }
 }
@@ -42,7 +43,7 @@ void WaveOscillator::endNote()
 
 void WaveOscillator::startNote(float f)
 {
-    setFundamental(f);
+    setFrequency(f);
     isActive = true;
     // TODO: initialise envelope position
 }
@@ -52,7 +53,7 @@ void WaveOscillator::updateAngleDelta()
     angleDelta = (frequency / sampleRate) * 2.0 * juce::MathConstants<double>::pi;
 }
 
-void WaveOscillator::setFundamental(float f)
+void WaveOscillator::setFrequency(float f)
 {
     frequency = f;
     updateAngleDelta();
