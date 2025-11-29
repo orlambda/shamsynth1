@@ -28,6 +28,7 @@
       <FILE id="SisauG" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="aCpzyS" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="xCRtYE" name="Versioning.h" compile="0" resource="0" file="Source/Versioning.h"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

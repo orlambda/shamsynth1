@@ -6,8 +6,10 @@
   ==============================================================================
 */
 
+#include "Versioning.h"
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+
 
 //==============================================================================
 Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor& p)
@@ -52,11 +54,7 @@ void Shamsynth1AudioProcessorEditor::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::white);
     g.setFont(juce::FontOptions (15.0f));
-    // Temporary versioning to ensure correct build is running
-    std::string versionNumber = "0.0.04";
-    // Increment before compiling to ensure build always matches code
-    std::string compileNumber = "00";
-    std::string displayText = "shamsynth1 by orlambda - version " + versionNumber + ", build no " + compileNumber;
+    std::string displayText = "shamsynth1 by orlambda - version " + Versioning::currentVersion;
     g.drawFittedText(displayText, 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
