@@ -24,8 +24,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             {
                 buffer.addSample(channel, sample, sampleValue);
             }
-            currentAngle += angleDelta;
-//            currentAngle = fmod(currentAngle + angleDelta, 2.0 * juce::MathConstants<double>::pi);
+            currentAngle = fmod(currentAngle + angleDelta, 2.0 * juce::MathConstants<double>::pi);
         }
     }
 }
