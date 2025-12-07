@@ -20,7 +20,7 @@ namespace Versioning {
     // Increment on every commit
     constexpr static int patch = 7;
     // Increment before compilation regardless of added features to ensure correct build is running
-    constexpr static int build = 0;
+    constexpr static int build = 1;
 
     static std::string currentVersion = to_string(major) + "." + to_string(minor) + "." + to_string(patch) + "+" + to_string(build);
 

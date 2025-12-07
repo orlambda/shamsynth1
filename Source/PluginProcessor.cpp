@@ -93,20 +93,22 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    // Pre-playback initialisation
+    OutputVolume = 0.0;
+    
+    // TODO: Add voices, test performance per voice, process MIDI
     int num_of_voices = 1;
     for (int i = 0; i < num_of_voices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
+        voices.back()->sampleRate = sampleRate;
     }
-    OutputVolume = 0.0;
     
+    // Temporary to output sound without MIDI input
     for (auto& voice : voices) {
-        voice->sampleRate = sampleRate;
-        // Temporary to output sound without MIDI input
         voice->trigger(440);
     }
+
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
