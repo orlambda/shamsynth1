@@ -35,9 +35,20 @@ synth processes MIDI by calling SineWaveVoice.renderNextBlock(), SineWaveVoice.s
 
 both external MIDI and MIDI from keyboardComponent both get processed into the incomingMIDI buffer
 
+all a noteOne MIDI Message does is reset the current angle and adjust the angleDelta
+    (is resetting the current angle actually necessary? this starts the wave with a 0.0 sample which is good if the voice was silent)
+
+so when does the angleDelta next get checked?
+
+at the start of SineWaveVoice.renderNextBlock()
+called by Synthesiser::renderVoices
+
 TODO:
 
 read:
 Synthesiser::renderNextBlock, handle midi event etc
 add breakpoint at startNote() and check call stack
 
+see how MIDI events are handled
+compare with 
+processBlock() in [https://juce.com/tutorials/tutorial_code_basic_plugin/]
