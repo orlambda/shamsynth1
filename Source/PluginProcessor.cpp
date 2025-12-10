@@ -103,12 +103,6 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
         voices.push_back(std::make_unique<Voice>());
         voices.back()->sampleRate = sampleRate;
     }
-    
-    // Temporary to output sound without MIDI input
-    for (auto& voice : voices) {
-        voice->trigger(440);
-    }
-
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
@@ -163,7 +157,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 //        buffer.clear (i, 0, buffer.getNumSamples());
     // I am doing the above but for all channels - I need to check if this is correct
     for (auto i = 0; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
+        buffer.clear(i, 0, totalNumSamples);
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -171,6 +165,22 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    
+    // MIDI
+     
+    // Keyboard component (in plugin window)
+    // pull buffers of MIDI data from MidiKeyboardState object
+    juce::MidiBuffer incomingKeyboardMidi;
+    keyboardState.processNextMidiBuffer(incomingKeyboardMidi, 0, totalNumSamples, true);
+
+    // External MIDI
+    
+    processMidi(incomingKeyboardMidi);
+    
+    
+    // incomingMidi in tutorial is processed in synth.renderNextBlock(*bufferToFill.buffer, incomingMidi, bufferToFill.startSample, bufferToFill.numSamples);
+    // Synthesiser class handles MIDI: Should I use this class?
+    // Or should I make my own class that inhrits from Synthesiser, then I can use its functionality and add my own members such as Voices?
     
     // Oscillators, etc.
         // For a complex synth, this will include all modulation, etc.
@@ -190,7 +200,6 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
-            // TODO: sin function
             buffer.setSample(channel, sample, buffer.getSample(channel, sample) * OutputVolume);
         }
     }
@@ -227,4 +236,22 @@ void Shamsynth1AudioProcessor::setStateInformation (const void* data, int sizeIn
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new Shamsynth1AudioProcessor();
+}
+
+
+// This checks for noteOn messages and
+// This only affects the first Voice, doesn't check that voices isn't empty, etc.
+void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer midiBuffer)
+{
+
+    for (const auto metadata : midiBuffer)
+    {
+        auto message = metadata.getMessage();
+        if (message.isNoteOn())
+        {
+            auto noteNumber = message.getNoteNumber();
+            auto frequency = juce::MidiMessage::getMidiNoteInHertz(noteNumber);
+            voices[0]->trigger(frequency);
+        }
+    }
 }

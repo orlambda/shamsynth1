@@ -60,6 +60,9 @@ public:
     // State
     float OutputVolume;
     juce::MidiKeyboardState keyboardState;
+    
+    // Input
+    void processMidi(juce::MidiBuffer);
 
 private:
     //==============================================================================
