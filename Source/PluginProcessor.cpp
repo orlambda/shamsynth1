@@ -167,24 +167,19 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // interleaved by keeping the same state.
     
     // MIDI
-     
-    // Keyboard component (in plugin window)
-    // pull buffers of MIDI data from MidiKeyboardState object
-    juce::MidiBuffer incomingKeyboardMidi;
-    keyboardState.processNextMidiBuffer(incomingKeyboardMidi, 0, totalNumSamples, true);
-
-    // External MIDI
     
-    processMidi(incomingKeyboardMidi);
+    // Avoid changing midiMessages
+    juce::MidiBuffer midiBuffer = midiMessages;
+    // Keyboard component in plugin window
+    keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
     
+    processMidi(midiBuffer);
     
     // incomingMidi in tutorial is processed in synth.renderNextBlock(*bufferToFill.buffer, incomingMidi, bufferToFill.startSample, bufferToFill.numSamples);
     // Synthesiser class handles MIDI: Should I use this class?
     // Or should I make my own class that inhrits from Synthesiser, then I can use its functionality and add my own members such as Voices?
     
-    // Oscillators, etc.
-        // For a complex synth, this will include all modulation, etc.
-
+    // Synthesis
     for (auto& voice : voices)
     {
          voice->processBlock(buffer, totalNumOutputChannels);
@@ -194,7 +189,6 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // for (auto& effect : effects)
         // {effect.processBlock(buffer};
     
-    // TODO: buffer.applyToEverySample(lambda)
     // Final volume
     for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
     {
@@ -239,9 +233,9 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 }
 
 
-// This checks for noteOn messages and
-// This only affects the first Voice, doesn't check that voices isn't empty, etc.
-void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer midiBuffer)
+// Check for noteOn and noteOff messages
+// Currently only affects the first Voice, doesn't check that voices isn't empty, etc.
+void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer& midiBuffer)
 {
 
     for (const auto metadata : midiBuffer)

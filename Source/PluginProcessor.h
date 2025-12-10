@@ -62,13 +62,13 @@ public:
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth
     int currentMidiNote = 0;
-    
-    // Input
-    void processMidi(juce::MidiBuffer);
 
 private:
     //==============================================================================
     std::vector<std::unique_ptr<Voice>> voices;
     
+    // Input
+    void processMidi(juce::MidiBuffer& midiBuffer);
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };
