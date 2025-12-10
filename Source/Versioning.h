@@ -18,7 +18,7 @@ namespace Versioning {
     constexpr static int major = 0;
     constexpr static int minor = 0;
     // Increment on every commit
-    constexpr static int patch = 8;
+    constexpr static int patch = 9;
     // Increment before compilation regardless of added features to ensure correct build is running
     constexpr static int build = 0;
 

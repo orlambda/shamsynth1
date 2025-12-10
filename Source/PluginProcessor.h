@@ -60,6 +60,8 @@ public:
     // State
     float OutputVolume;
     juce::MidiKeyboardState keyboardState;
+    // temp for processing noteUp in monosynth
+    int currentMidiNote = 0;
     
     // Input
     void processMidi(juce::MidiBuffer);

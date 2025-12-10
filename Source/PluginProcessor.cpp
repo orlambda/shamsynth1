@@ -251,7 +251,12 @@ void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer midiBuffer)
         {
             auto noteNumber = message.getNoteNumber();
             auto frequency = juce::MidiMessage::getMidiNoteInHertz(noteNumber);
+            currentMidiNote = noteNumber;
             voices[0]->trigger(frequency);
+        }
+        else if (message.isNoteOff() && (message.getNoteNumber() == currentMidiNote))
+        {
+            voices[0]->silence();
         }
     }
 }
