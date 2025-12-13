@@ -47,7 +47,7 @@ Looking back, this list was excessive for a minimal product. However, I still th
 
 I don't yet have a time frame for adding complex features like modularity, or more advanced DSP. Rather than aiming to make a full modular synthesiser, I may be able to start with something relatively simple, such as having one LFO which can control the frequency of another LFO, which in turn can modify a `WaveOscillator`'s frequency. If I want to make these routable, I can avoid the complexity of a typical modular UI by using dropdown menus, rather than plugging wires into sockets or similar.
 
-I haven't yet checked if the volume variable is automatable in a DAW just because it's a public variable or because it has a UI slider. I am guessing not - this will be something to research and to add.
+Volume output is not automatable in a DAW - this will be something to add.
 
 ### Problems encountered and what I've learnt
 
