@@ -1,30 +1,46 @@
 # shamsynth1
-A simple synthesizer JUCE plugin
+A synthesiser plugin made with C++ and JUCE.
 
-## Minimum spec
-The minimal list of features - more will continue to be added
+To build this plugin, use JUCE, which you can get [here](https://juce.com/get-juce/).
 
-- MIDI pitch input
-- 10 voices, each with:
-    - White noise generator with controls for:
-        - Volume ADSR envelope
-            - 4 dials, 0 - 1
-        - Volume envelope overall time 0.1 - 10s
-        - Volume
-    - 2 wave generators with controls for:
-        - Wave type
-            - Sine
-            - Square
-            - Triangle
-        - Relative pitch -24 - +24
-        - Volume ADSR envelope
-            - 4 dials, 0 - 1
-        - Volume envelope overall time 0.1 - 10s
-        - Pitch ADSR envelope
-            - 4 dials, 0 - 1
-        - Pitch envelope depth -24 - +24
-        - Pitch envelope
-        - Volume
-- Overall Volume control
+I am using macOS 15 and haven't tested the plugin on other platforms.
 
-All volume controls have the same scale, e.g. -inf - 10dB
+## Current features
+- Voice
+- Sine wave oscillator
+- Noise generator
+- MIDI control:
+    - Pitch
+    - Note on
+    - Note off
+- Output volume slider
+
+## Future features
+- Enable DAW automation
+- Polyphony
+- Multiple wave oscillators (2?) with controls:
+    - Wave type
+        - Sine
+        - Square
+        - Triangle
+    - Wave blend?
+    - Relative pitch -24 - +24
+    - Volume ADSR envelope
+        - 4 dials, 0 - 1
+    - Volume envelope overall time 0.1 - 10s
+    - Pitch ADSR envelope
+        - 4 dials, 0 - 1
+    - Pitch envelope depth -24 - +24
+    - Pitch envelope
+    - Volume
+- White noise generator controls:
+    - Volume ADSR envelope
+        - 4 dials, 0 - 1
+    - Volume envelope overall time 0.1 - 10s
+    - Volume
+- LFO with controls:
+    - Frequency
+    - Depth
+    - Phase offset?
+    - Routing (what it affects)
+- Measure volume in dB
