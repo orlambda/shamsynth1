@@ -37,7 +37,7 @@ private:
 
     // Controls
     void sliderValueChanged (juce::Slider* slider) override;
-    juce::Slider OutputVolume;
+    juce::Slider OutputVolumeSlider;
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;

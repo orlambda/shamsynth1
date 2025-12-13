@@ -5,55 +5,13 @@ polysynth - each Voice will need its own Oscillators
     Voice and Osc both have .nextSample() - inherit from common class?
 std::vector<Voice> Voices
 
-# Task list
-output a constant sine wave
-control sine wave frequency with midi input from keyboard component
-control sine wave frequency with external midi
+## Task list
+- Parameters - allow recording automation from sliders using SliderAttachment or ParameterAttachment
 
-# Volume control
-Start with 0.0 - 1.0
-Research typical ranges
-- Dial
-- Volume public variable
-- sample variable = 0.0
-- (add voices)
-- add to audio output
+## Notes
 
-# White noise generator
-Mono
-- Create class
-- .nextSample() (abstract Oscillator class?)
-- add to audio output
-- level dial
-
-# Sine wave oscillator
-Mono
-- Create class
-- .nextSample()
-- add to audio output
-- level dial
-
-# MIDI input
-Start as a monosynth
-- vector of notesHeld (frequencies, eventually velocity)
-- note on event = add to vector
-- note off event = remove from vector
-- for every sample / call of processBlock (research which),
-    - if notesHeld
-        - pitch is last pitch added
-    - else sample is 0
-
-# Square wave oscillator
-
-# ADSR 
-
-# Blend sine/triangle/square waves
-- Research
-- Dial
-
-# Control grid
-Arrange dials using a grid object or function
-
-# Possible features
-- Graphical envelope representation/control
-- output level meter
+### MIDI input
+Polyphony - ways to approach:
+- map of midi key values and Voices?
+- set of midi key values down?
+- loop through Voices to see if midi key is down?

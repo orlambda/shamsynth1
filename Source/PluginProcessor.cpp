@@ -22,6 +22,11 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
                        )
 #endif
 {
+    // named to avoid confusion with current float variable
+    addParameter (outputVolume = new juce::AudioParameterFloat (juce::ParameterID("outputVolume",  1),
+                                                                         "Output Volume",
+                                                                         juce::NormalisableRange<float> (0.0f, 1.0f),
+                                                                         0.0f)); // default value
 }
 
 Shamsynth1AudioProcessor::~Shamsynth1AudioProcessor()
@@ -94,7 +99,6 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Pre-playback initialisation
-    OutputVolume = 0.0;
     
     // TODO: Add voices, test performance per voice, process MIDI
     int num_of_voices = 1;
@@ -194,7 +198,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
-            buffer.setSample(channel, sample, buffer.getSample(channel, sample) * OutputVolume);
+            buffer.setSample(channel, sample, buffer.getSample(channel, sample) * *outputVolume);
         }
     }
 }

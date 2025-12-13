@@ -26,20 +26,21 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     
     // TODO: refactor
     // these define the parameters of our slider object
-    OutputVolume.setSliderStyle(juce::Slider::LinearBarVertical);
-    OutputVolume.setRange(0.0, 1, 0.01);
-    OutputVolume.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    OutputVolume.setPopupDisplayEnabled(true, false, this);
-    OutputVolume.setTextValueSuffix(" Output Volume");
-    OutputVolume.setValue(audioProcessor.OutputVolume);
-    // this function adds the slider to the editor
-    addAndMakeVisible(&OutputVolume);
+    OutputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    // Magic numbers!
+    OutputVolumeSlider.setRange(0.0, 1, 0.01);
+    OutputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    OutputVolumeSlider.setPopupDisplayEnabled(true, false, this);
+    OutputVolumeSlider.setTextValueSuffix(" Output Volume");
+    OutputVolumeSlider.setValue(audioProcessor.getOutputVolume());
+    addAndMakeVisible(&OutputVolumeSlider);
+    OutputVolumeSlider.addListener(this);
+    
     
     // MIDI
     addAndMakeVisible(keyboardComponent);
     
     
-    OutputVolume.addListener(this);
 }
 
 Shamsynth1AudioProcessorEditor::~Shamsynth1AudioProcessorEditor()
@@ -63,7 +64,7 @@ void Shamsynth1AudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    OutputVolume.setBounds(40, 40, 20, 150);
+    OutputVolumeSlider.setBounds(40, 40, 20, 150);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }
@@ -71,9 +72,9 @@ void Shamsynth1AudioProcessorEditor::resized()
 void Shamsynth1AudioProcessorEditor::sliderValueChanged(juce::Slider * slider)
 {
     // myMap[slider] = slider->getValue();
-    if (slider == &OutputVolume)
+    if (slider == &OutputVolumeSlider)
     {
-        audioProcessor.OutputVolume = slider->getValue();
+        audioProcessor.setOutputVolume(slider->getValue());
     }
 }
 
