@@ -1,7 +1,11 @@
 # NOTES
 
 ## Task list
-- Add bitcrush effect with slider
+- Add sliders:
+    - Sine volume
+    - Noise volume
+- Improve bitcrusher slider, skew factor etc
+- Add LFO 
 
 ## Notes
 
