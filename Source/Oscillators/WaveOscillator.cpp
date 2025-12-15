@@ -19,7 +19,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
-            float sampleValue = std::sin(currentAngle) * currentLevel * overallLevel;
+            float sampleValue = std::sin(currentAngle) * currentLevel;
             for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
             {
                 buffer.addSample(channel, sample, sampleValue);

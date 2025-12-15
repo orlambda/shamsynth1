@@ -32,19 +32,27 @@ private:
     Shamsynth1AudioProcessor& audioProcessor;
     
     // Window
-    int windowWidth = 1000;
-    int windowHeight = 700;
+    int windowWidth = 800;
+    int windowHeight = 600;
 
     // Controls
     juce::AudioProcessorValueTreeState& valueTreeState;
     
-    juce::Label outputVolumeLabel;
-    juce::Slider outputVolumeSlider;
-    std::unique_ptr<SliderAttachment> outputVolumeAttachment;
+    juce::Label osc1LevelLabel;
+    juce::Slider osc1LevelSlider;
+    std::unique_ptr<SliderAttachment> osc1LevelAttachment;
+   
+    juce::Label noiseLevelLabel;
+    juce::Slider noiseLevelSlider;
+    std::unique_ptr<SliderAttachment> noiseLevelAttachment;
     
     juce::Label bitcrusherBitDepthLabel;
     juce::Slider bitcrusherBitDepthSlider;
     std::unique_ptr<SliderAttachment> bitcrusherBitDepthAttachment;
+    
+    juce::Label outputVolumeLabel;
+    juce::Slider outputVolumeSlider;
+    std::unique_ptr<SliderAttachment> outputVolumeAttachment;
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;

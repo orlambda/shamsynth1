@@ -14,7 +14,7 @@
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor (BusesProperties()
+    : AudioProcessor(BusesProperties()
      #if ! JucePlugin_IsMidiEffect
       #if ! JucePlugin_IsSynth
        .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
@@ -24,18 +24,17 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
        ),
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
                {
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume",  1), "Output Volume",                                                                 juce::NormalisableRange<float> (0.0f, 1.0f),0.5f),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth",  1), "Bit Depth",
-                                                    1.0f, 32.0f,32.0f)
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Level", 1), "Osc 1 Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f)
     })
 #endif
 {
-//    parameters.createAndAddParameter(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth",  1),
-//                                         "Bit Depth",
-//                                         juce::NormalisableRange<float> (1.0f, 32.0f),
-//                                                                                 32.0f));
-    outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
+    osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
+    noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
     bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
+    outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
 }
 
 Shamsynth1AudioProcessor::~Shamsynth1AudioProcessor()
@@ -179,6 +178,12 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
     
+    // Parameter buffers
+    float currentOsc1Level = *osc1LevelParameter;
+    float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
+    float currentNoiseLevel = *noiseLevelParameter;
+    float currentOutputVolume = *outputVolumeParameter;
+    
     // MIDI
     // Avoid changing midiMessages
     juce::MidiBuffer midiBuffer = midiMessages;
@@ -189,15 +194,16 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Synthesis
     for (auto& voice : voices)
     {
-        voice->updateBitcrusherBitDepth(*bitcrusherBitDepthParameter);
-         voice->processBlock(buffer, totalNumOutputChannels);
+        voice->updateOsc1Level(currentOsc1Level);
+        voice->updateNoiseLevel(currentNoiseLevel);
+        voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
+        voice->processBlock(buffer, totalNumOutputChannels);
     }
 
     // Effects
     // for (auto& effect : effects)
-        // {effect.processBlock(buffer};    
-    
-    float currentOutputVolume = *outputVolumeParameter;
+        // {effect->processBlock(buffer);}
+
     // Final volume
     for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
     {

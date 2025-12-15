@@ -49,8 +49,9 @@ public:
     
     // Temporary
     float sampleRate;
-    
-    void updateBitcrusherBitDepth(float depth);
+    void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
+    void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
+    void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
     
 private:
     // State

@@ -60,8 +60,10 @@ public:
     
     // State
     juce::AudioProcessorValueTreeState parameters;
-    std::atomic<float>* outputVolumeParameter = nullptr;
+    std::atomic<float>* osc1LevelParameter = nullptr;
+    std::atomic<float>* noiseLevelParameter = nullptr;
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
+    std::atomic<float>* outputVolumeParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth

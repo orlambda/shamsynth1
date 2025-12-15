@@ -24,8 +24,8 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
         
         // Each oscillator/generator
         // Starting with a white noise generator
-        whiteNoise.processBlock(buffer, totalNumOutputChannels);
         waveOsc.processBlock(buffer, totalNumOutputChannels);
+        whiteNoise.processBlock(buffer, totalNumOutputChannels);
         bitcrusher.processBlock(buffer, totalNumOutputChannels);
     }
 }
@@ -38,9 +38,4 @@ void Voice::trigger(float p_fundamental) {
 
 void Voice::silence() {
     active = false;
-}
-
-void Voice::updateBitcrusherBitDepth(float depth)
-{
-    bitcrusher.bitDepth = depth;
 }

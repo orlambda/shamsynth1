@@ -22,20 +22,33 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     // For grabbing keyboard focus
     startTimer(400);
     
-    outputVolumeLabel.setText("Output Volume", juce::dontSendNotification);
-    addAndMakeVisible(outputVolumeLabel);
-    outputVolumeAttachment.reset(new SliderAttachment (valueTreeState, "outputVolume", outputVolumeSlider));
-    
     // TODO: refactor as this will get huge with more sliders
-    // Magic numbers!
-    outputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
-    outputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    outputVolumeSlider.setPopupDisplayEnabled(true, false, this);
-    outputVolumeSlider.setTextValueSuffix(" Output Volume");
-    addAndMakeVisible(&outputVolumeSlider);
+    // Magic numbers
+    
+    // is this necessary?
+    osc1LevelLabel.setText("Osc 1 Level", juce::dontSendNotification);
+    addAndMakeVisible(osc1LevelLabel);
+    osc1LevelAttachment.reset(new SliderAttachment (valueTreeState, "osc1Level", osc1LevelSlider));
+    osc1LevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1LevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1LevelSlider.setPopupDisplayEnabled(true, false, this);
+    // is this necessary?
+    osc1LevelSlider.setTextValueSuffix(" Osc 1 Level");
+    addAndMakeVisible(&osc1LevelSlider);
+    
+    noiseLevelLabel.setText("Noise Level", juce::dontSendNotification);
+    addAndMakeVisible(noiseLevelLabel);
+    noiseLevelAttachment.reset(new SliderAttachment (valueTreeState, "noiseLevel", noiseLevelSlider));
+    noiseLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    noiseLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    noiseLevelSlider.setPopupDisplayEnabled(true, false, this);
+    noiseLevelSlider.setTextValueSuffix(" Noise Level");
+    addAndMakeVisible(&noiseLevelSlider);
+    
     
     bitcrusherBitDepthLabel.setText("Bit Depth", juce::dontSendNotification);
     addAndMakeVisible(bitcrusherBitDepthLabel);
+    
     bitcrusherBitDepthAttachment.reset(new SliderAttachment (valueTreeState, "bitcrusherBitDepth", bitcrusherBitDepthSlider));
     
     bitcrusherBitDepthSlider.setSliderStyle(juce::Slider::LinearBarVertical);
@@ -43,6 +56,17 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     bitcrusherBitDepthSlider.setPopupDisplayEnabled(true, false, this);
     bitcrusherBitDepthSlider.setTextValueSuffix(" Bit Depth");
     addAndMakeVisible(&bitcrusherBitDepthSlider);
+    
+    outputVolumeLabel.setText("Output Volume", juce::dontSendNotification);
+    addAndMakeVisible(outputVolumeLabel);
+    
+    outputVolumeAttachment.reset(new SliderAttachment (valueTreeState, "outputVolume", outputVolumeSlider));
+    
+    outputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    outputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    outputVolumeSlider.setPopupDisplayEnabled(true, false, this);
+    outputVolumeSlider.setTextValueSuffix(" Output Volume");
+    addAndMakeVisible(&outputVolumeSlider);
     
     // MIDI
     addAndMakeVisible(keyboardComponent);
@@ -70,10 +94,14 @@ void Shamsynth1AudioProcessorEditor::resized()
     // subcomponents in your editor..
     
     // Magic numbers!
-    outputVolumeSlider.setBounds(40, 40, 20, 150);
-    outputVolumeLabel.setBounds(20, 180, 200, 50);
-    bitcrusherBitDepthSlider.setBounds(140, 40, 20, 150);
-    bitcrusherBitDepthLabel.setBounds(120, 180, 200, 50);
+    osc1LevelSlider.setBounds(40, 40, 20, 150);
+    osc1LevelLabel.setBounds(20, 180, 200, 50);
+    noiseLevelSlider.setBounds(140, 40, 20, 150);
+    noiseLevelLabel.setBounds(120, 180, 200, 50);
+    bitcrusherBitDepthSlider.setBounds(240, 40, 20, 150);
+    bitcrusherBitDepthLabel.setBounds(220, 180, 200, 50);
+    outputVolumeSlider.setBounds(340, 40, 20, 150);
+    outputVolumeLabel.setBounds(320, 180, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

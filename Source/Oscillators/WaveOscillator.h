@@ -28,6 +28,7 @@ public:
         // b) be passed in through startNote()
     void setSampleRate(float sr);
     void updateAngleDelta();
+    void updateLevel(float level) {currentLevel = level;}
     
     // Temporary
     float sampleRate = 0.0;
@@ -38,7 +39,6 @@ private:
     
     float frequency = 0;
     
-    float overallLevel = 1.0;
     float currentLevel = 1.0;
     
     bool isActive = false;

@@ -22,7 +22,9 @@ public:
     
     // Temporary
     float sampleRate = 0.0;
+    float currentLevel = 0.0;
 private:
     juce::Random random;
+
 };
 
