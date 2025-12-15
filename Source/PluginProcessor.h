@@ -58,14 +58,8 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
     
     // State
-    
-    // TODO: store parameters as smart pointers in an AudioProcessorValueTreeState
-    // This will help with serialisation
-    juce::AudioParameterFloat* outputVolume;
-    // float getOutputVolume() {return outputVolumeAP->get();}
-    float getOutputVolume() {return *outputVolume;}
-    void setOutputVolume(float n) {*outputVolume=n;}
-    
+    juce::AudioProcessorValueTreeState parameters;
+    std::atomic<float>* outputVolumeParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth

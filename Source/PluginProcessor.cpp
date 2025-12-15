@@ -9,24 +9,28 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#include <memory>
+
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+    : AudioProcessor (BusesProperties()
+     #if ! JucePlugin_IsMidiEffect
+      #if ! JucePlugin_IsSynth
+       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+      #endif
+       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+     #endif
+       ),
+    parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
+               std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume",  1),
+                                                    "Output Volume",
+                                                    juce::NormalisableRange<float> (0.0f, 1.0f),
+                                                    0.0f)
+    )
 #endif
 {
-    // named to avoid confusion with current float variable
-    addParameter (outputVolume = new juce::AudioParameterFloat (juce::ParameterID("outputVolume",  1),
-                                                                         "Output Volume",
-                                                                         juce::NormalisableRange<float> (0.0f, 1.0f),
-                                                                         0.0f)); // default value
+    outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
 }
 
 Shamsynth1AudioProcessor::~Shamsynth1AudioProcessor()
@@ -171,17 +175,11 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // interleaved by keeping the same state.
     
     // MIDI
-    
     // Avoid changing midiMessages
     juce::MidiBuffer midiBuffer = midiMessages;
     // Keyboard component in plugin window
     keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
-    
     processMidi(midiBuffer);
-    
-    // incomingMidi in tutorial is processed in synth.renderNextBlock(*bufferToFill.buffer, incomingMidi, bufferToFill.startSample, bufferToFill.numSamples);
-    // Synthesiser class handles MIDI: Should I use this class?
-    // Or should I make my own class that inhrits from Synthesiser, then I can use its functionality and add my own members such as Voices?
     
     // Synthesis
     for (auto& voice : voices)
@@ -193,16 +191,16 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // for (auto& effect : effects)
         // {effect.processBlock(buffer};
     
+    float currentOutputVolume = *outputVolumeParameter;
     // Final volume
     for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
-            buffer.setSample(channel, sample, buffer.getSample(channel, sample) * *outputVolume);
+            buffer.setSample(channel, sample, buffer.getSample(channel, sample) * currentOutputVolume);
         }
     }
 }
-
 
 //==============================================================================
 bool Shamsynth1AudioProcessor::hasEditor() const
@@ -236,7 +234,6 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
     return new Shamsynth1AudioProcessor();
 }
 
-
 // Check for noteOn and noteOff messages
 // Currently only affects the first Voice, doesn't check that voices isn't empty, etc.
 void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer& midiBuffer)
@@ -252,6 +249,7 @@ void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer& midiBuffer)
             currentMidiNote = noteNumber;
             voices[0]->trigger(frequency);
         }
+        // TODO: check if note is down, if so send current voice. overload Voices class [] operator that finds voice based on currentMidiNote? or Voices.hasNote()?
         else if (message.isNoteOff() && (message.getNoteNumber() == currentMidiNote))
         {
             voices[0]->silence();

@@ -13,34 +13,30 @@
 
 //==============================================================================
 Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor& p)
-    : AudioProcessorEditor(&p),audioProcessor (p), keyboardComponent(audioProcessor.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
+    : AudioProcessorEditor(&p),audioProcessor (p), valueTreeState(p.parameters), keyboardComponent(audioProcessor.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    
     setSize(windowWidth, windowHeight);
     
     // For grabbing keyboard focus
     startTimer(400);
     
+    outputVolumeLabel.setText("Output Volume", juce::dontSendNotification);
+    addAndMakeVisible(outputVolumeLabel);
+    outputVolumeAttachment.reset(new SliderAttachment (valueTreeState, "outputVolume", outputVolumeSlider));
     
     // TODO: refactor
-    // these define the parameters of our slider object
-    OutputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    outputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     // Magic numbers!
-    OutputVolumeSlider.setRange(0.0, 1, 0.01);
-    OutputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    OutputVolumeSlider.setPopupDisplayEnabled(true, false, this);
-    OutputVolumeSlider.setTextValueSuffix(" Output Volume");
-    OutputVolumeSlider.setValue(audioProcessor.getOutputVolume());
-    addAndMakeVisible(&OutputVolumeSlider);
-    OutputVolumeSlider.addListener(this);
-    
+    outputVolumeSlider.setRange(0.0, 1, 0.01);
+    outputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    outputVolumeSlider.setPopupDisplayEnabled(true, false, this);
+    outputVolumeSlider.setTextValueSuffix(" Output Volume");
+    addAndMakeVisible(&outputVolumeSlider);
     
     // MIDI
     addAndMakeVisible(keyboardComponent);
-    
-    
 }
 
 Shamsynth1AudioProcessorEditor::~Shamsynth1AudioProcessorEditor()
@@ -64,18 +60,10 @@ void Shamsynth1AudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
-    OutputVolumeSlider.setBounds(40, 40, 20, 150);
+    outputVolumeSlider.setBounds(40, 40, 20, 150);
+    outputVolumeLabel.setBounds(20, 180, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
-}
-
-void Shamsynth1AudioProcessorEditor::sliderValueChanged(juce::Slider * slider)
-{
-    // myMap[slider] = slider->getValue();
-    if (slider == &OutputVolumeSlider)
-    {
-        audioProcessor.setOutputVolume(slider->getValue());
-    }
 }
 
 void Shamsynth1AudioProcessorEditor::timerCallback()

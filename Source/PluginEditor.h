@@ -11,14 +11,16 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 
+
 //==============================================================================
 /**
 */
 class Shamsynth1AudioProcessorEditor :  public juce::AudioProcessorEditor,
-                                        private juce::Slider::Listener,
                                         private juce::Timer
 {
 public:
+    typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+    
     Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor&);
     ~Shamsynth1AudioProcessorEditor() override;
 
@@ -27,8 +29,6 @@ public:
     void resized() override;
 
 private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
     Shamsynth1AudioProcessor& audioProcessor;
     
     // Window
@@ -36,14 +36,15 @@ private:
     int windowHeight = 700;
 
     // Controls
-    void sliderValueChanged (juce::Slider* slider) override;
-    juce::Slider OutputVolumeSlider;
+    juce::AudioProcessorValueTreeState& valueTreeState;
+    juce::Label outputVolumeLabel;
+    juce::Slider outputVolumeSlider;
+    std::unique_ptr<SliderAttachment> outputVolumeAttachment;
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;
     
     void timerCallback() override;
-    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Shamsynth1AudioProcessorEditor)
 };
