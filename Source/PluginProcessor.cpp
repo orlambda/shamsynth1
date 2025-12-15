@@ -23,14 +23,19 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
      #endif
        ),
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
-               std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume",  1),
-                                                    "Output Volume",
-                                                    juce::NormalisableRange<float> (0.0f, 1.0f),
-                                                    0.0f)
-    )
+               {
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume",  1), "Output Volume",                                                                 juce::NormalisableRange<float> (0.0f, 1.0f),0.5f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth",  1), "Bit Depth",
+                                                    1.0f, 32.0f,32.0f)
+    })
 #endif
 {
+//    parameters.createAndAddParameter(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth",  1),
+//                                         "Bit Depth",
+//                                         juce::NormalisableRange<float> (1.0f, 32.0f),
+//                                                                                 32.0f));
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
+    bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
 }
 
 Shamsynth1AudioProcessor::~Shamsynth1AudioProcessor()
@@ -184,12 +189,13 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Synthesis
     for (auto& voice : voices)
     {
+        voice->updateBitcrusherBitDepth(*bitcrusherBitDepthParameter);
          voice->processBlock(buffer, totalNumOutputChannels);
     }
 
     // Effects
     // for (auto& effect : effects)
-        // {effect.processBlock(buffer};
+        // {effect.processBlock(buffer};    
     
     float currentOutputVolume = *outputVolumeParameter;
     // Final volume

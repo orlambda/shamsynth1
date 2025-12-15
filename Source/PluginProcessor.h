@@ -9,6 +9,7 @@
 #pragma once
 
 #include "Voice/Voice.h"
+#include "Effects/Bitcrusher.h"
 
 #include <JuceHeader.h>
 
@@ -60,6 +61,7 @@ public:
     // State
     juce::AudioProcessorValueTreeState parameters;
     std::atomic<float>* outputVolumeParameter = nullptr;
+    std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth
@@ -71,6 +73,8 @@ private:
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);
+    
+    // Effects
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };

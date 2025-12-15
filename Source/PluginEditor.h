@@ -37,9 +37,14 @@ private:
 
     // Controls
     juce::AudioProcessorValueTreeState& valueTreeState;
+    
     juce::Label outputVolumeLabel;
     juce::Slider outputVolumeSlider;
     std::unique_ptr<SliderAttachment> outputVolumeAttachment;
+    
+    juce::Label bitcrusherBitDepthLabel;
+    juce::Slider bitcrusherBitDepthSlider;
+    std::unique_ptr<SliderAttachment> bitcrusherBitDepthAttachment;
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;

@@ -12,6 +12,7 @@
 
 #include "../Noise/NoiseGenerator.h"
 #include "../Oscillators/WaveOscillator.h"
+#include "../Effects/Bitcrusher.h"
 
 #include <JuceHeader.h>
 
@@ -49,6 +50,8 @@ public:
     // Temporary
     float sampleRate;
     
+    void updateBitcrusherBitDepth(float depth);
+    
 private:
     // State
     bool active = false;
@@ -59,4 +62,7 @@ private:
     
     // osc1
     WaveOscillator waveOsc;
+    
+    // effects
+    Bitcrusher bitcrusher;
 };

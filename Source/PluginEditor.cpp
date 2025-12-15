@@ -26,14 +26,23 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     addAndMakeVisible(outputVolumeLabel);
     outputVolumeAttachment.reset(new SliderAttachment (valueTreeState, "outputVolume", outputVolumeSlider));
     
-    // TODO: refactor
-    outputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    // TODO: refactor as this will get huge with more sliders
     // Magic numbers!
-    outputVolumeSlider.setRange(0.0, 1, 0.01);
+    outputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     outputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     outputVolumeSlider.setPopupDisplayEnabled(true, false, this);
     outputVolumeSlider.setTextValueSuffix(" Output Volume");
     addAndMakeVisible(&outputVolumeSlider);
+    
+    bitcrusherBitDepthLabel.setText("Bit Depth", juce::dontSendNotification);
+    addAndMakeVisible(bitcrusherBitDepthLabel);
+    bitcrusherBitDepthAttachment.reset(new SliderAttachment (valueTreeState, "bitcrusherBitDepth", bitcrusherBitDepthSlider));
+    
+    bitcrusherBitDepthSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    bitcrusherBitDepthSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    bitcrusherBitDepthSlider.setPopupDisplayEnabled(true, false, this);
+    bitcrusherBitDepthSlider.setTextValueSuffix(" Bit Depth");
+    addAndMakeVisible(&bitcrusherBitDepthSlider);
     
     // MIDI
     addAndMakeVisible(keyboardComponent);
@@ -60,8 +69,11 @@ void Shamsynth1AudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     
+    // Magic numbers!
     outputVolumeSlider.setBounds(40, 40, 20, 150);
     outputVolumeLabel.setBounds(20, 180, 200, 50);
+    bitcrusherBitDepthSlider.setBounds(140, 40, 20, 150);
+    bitcrusherBitDepthLabel.setBounds(120, 180, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }
