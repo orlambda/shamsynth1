@@ -4,9 +4,31 @@ Notes about the process of making this plugin, including challenges I've faced, 
 
 Entries are in reverse chronological order.
 
+## 2025-12-16
+
+v1.0.4+12 - Modulation
+
+In addition to the wave oscillator which outputs a sine wave as audio, I have added an LFO that modulates overall output volume. This was a way to get some modulation into the synth pretty quickly with a view to working towards something more complex. I now want to make LFOs routable to a selection of parameters, such as wave oscillator frequency, bitcrush bit depth, and the parameters of other LFOs and control signals. The LFO needs controls other than frequency, such as characteristics of the waveform, and intensity (of its effect on each parameter it controls, and possibly its own overall intensity).
+
+### Implementation
+To avoid creating, resizing, and passing around buffers (e.g. arrays of floats) or references to buffers, I implemented this LFO by calculating its current angle at the start of every block, and giving it a function that calculates the angle based on a given sample position and returns the value based on that angle. If I continue with this approach I will use [] operator overloading for readability, however I expect I will switch to using buffers.
+
+The current approach was quick and easy (e.g. I didn't have to think about what type to use for a buffer or which class owns that buffer) but using buffers is probably better. If the LFO controls multiple parameters, the function will be called multiple times for the same sample (unless I do all the processing one sample at a time - which is not the plan). This means time is wasted repeating the same calculations - likely more time than would be spent passing and resizing buffers. I also haven't checked if it is possible for overflow to occur when calculating an angle with a large sample position - I don't expect sample blocks will ever be large enough for this to be an issue but I do need to check. One advantage of the current function is that if the LFO is not used, it does not spend time on calculations (other than calculating the next angle). It should be possible not to waste time on calculation in buffers that aren't currently used (other than progressing the angle), but this optimisation might take more development time than with the current approach, where it is inherent. Resizing buffers shouldn't happen too often - I would only be resizing if the buffer size needs to be increased, not every time a block is a different size to the last. Of course performance is the priority in an audio plugin.
+
+Every class that processes a block and has parameters controllable by a signal could be passed a vector of buffers as an argument in `processBlock()`. A control signal buffer class could contain an enum to indicate whether its signal should multiply or be added to the parameter it controls (or a reference to a function for processing the parameter).
+
+### Future problems
+Some complexity I can foresee is what happens when LFOs (and other control signals) control each other. Is one processed before the other? Does this affect how they can be processed - will it need to be done in smaller blocks than the size of the audio block, and will there need to be multiple buffers for each signal, one unaffected by other control signals and one after processing? Is there a risk of infinite looping if two control signals are routed into each other, directly or indirectly?
+
+Rather than try to answer all of these questions at once, it makes sense to work iteratively, by improving how signals work as described above, by adding customisability to what a signal can control, by adding more control signals one at a time, and by limiting routability for now to prevent infinite loops. Doing this should give me something to work with and help me understand the above problems better. Doing this is also a very manageable task and won't hinder progress.
+
+Thinking about detecting infinite loops took me back to the Tideman exercise I did in a CS50 course, where a graph tracks unidirectional relationships between candidates, and a recursive function checks whether a new relationship would cause a loop before adding it. This algorithm and way of representing relationships with data could be useful here. The outcome of detecing a loop might not be to prevent the relationship from being added, but to end processing there.
+
+I am getting ahead of myself with this, but it is good to know that a modular synthesiser might be an achievable project within a reasonable timeframe, and that the work I have done on the project so far has made that a more reachable goal.
+
 ## 2025-12-12
 
-v.1.0.0+1
+v1.0.0+1
 
 The synthesiser is currently very simple but useable - it has a single voice that outputs a combination of white noise and a pure sine wave, with note on/off and pitch control from midi input. It also has an overall volume output slider.
 
