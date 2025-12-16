@@ -25,15 +25,14 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     // TODO: refactor as this will get huge with more sliders
     // Magic numbers
     
-    // is this necessary?
     osc1LevelLabel.setText("Osc 1 Level", juce::dontSendNotification);
     addAndMakeVisible(osc1LevelLabel);
     osc1LevelAttachment.reset(new SliderAttachment (valueTreeState, "osc1Level", osc1LevelSlider));
     osc1LevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     osc1LevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1LevelSlider.setPopupDisplayEnabled(true, false, this);
-    // is this necessary?
-    osc1LevelSlider.setTextValueSuffix(" Osc 1 Level");
+
+    osc1LevelSlider.setTextValueSuffix("");
     addAndMakeVisible(&osc1LevelSlider);
     
     noiseLevelLabel.setText("Noise Level", juce::dontSendNotification);
@@ -42,9 +41,8 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     noiseLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     noiseLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     noiseLevelSlider.setPopupDisplayEnabled(true, false, this);
-    noiseLevelSlider.setTextValueSuffix(" Noise Level");
+    noiseLevelSlider.setTextValueSuffix("");
     addAndMakeVisible(&noiseLevelSlider);
-    
     
     bitcrusherBitDepthLabel.setText("Bit Depth", juce::dontSendNotification);
     addAndMakeVisible(bitcrusherBitDepthLabel);
@@ -54,7 +52,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     bitcrusherBitDepthSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     bitcrusherBitDepthSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     bitcrusherBitDepthSlider.setPopupDisplayEnabled(true, false, this);
-    bitcrusherBitDepthSlider.setTextValueSuffix(" Bit Depth");
+    bitcrusherBitDepthSlider.setTextValueSuffix("");
     addAndMakeVisible(&bitcrusherBitDepthSlider);
     
     lfo1FrequencyLabel.setText("LFO 1 Frequency", juce::dontSendNotification);
@@ -65,7 +63,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1FrequencySlider.setSliderStyle(juce::Slider::LinearBarVertical);
     lfo1FrequencySlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo1FrequencySlider.setPopupDisplayEnabled(true, false, this);
-    lfo1FrequencySlider.setTextValueSuffix(" LFO 1 Frequency");
+    lfo1FrequencySlider.setTextValueSuffix(" Hz");
     addAndMakeVisible(&lfo1FrequencySlider);
     
     outputVolumeLabel.setText("Output Volume", juce::dontSendNotification);
@@ -76,7 +74,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     outputVolumeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     outputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     outputVolumeSlider.setPopupDisplayEnabled(true, false, this);
-    outputVolumeSlider.setTextValueSuffix(" Output Volume");
+    outputVolumeSlider.setTextValueSuffix("");
     addAndMakeVisible(&outputVolumeSlider);
     
     // MIDI
