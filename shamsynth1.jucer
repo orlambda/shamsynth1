@@ -16,6 +16,8 @@
               file="Source/Noise/NoiseGenerator.h"/>
       </GROUP>
       <GROUP id="{FFFAEA43-69A9-D9CA-9CFF-9DF4810EF48F}" name="Oscillators">
+        <FILE id="xjrJTy" name="LowFreqOsc.cpp" compile="1" resource="0" file="Source/Oscillators/LowFreqOsc.cpp"/>
+        <FILE id="Mzswq5" name="LowFreqOsc.h" compile="0" resource="0" file="Source/Oscillators/LowFreqOsc.h"/>
         <FILE id="wOVWt6" name="WaveOscillator.cpp" compile="1" resource="0"
               file="Source/Oscillators/WaveOscillator.cpp"/>
         <FILE id="qdcaY9" name="WaveOscillator.h" compile="0" resource="0"

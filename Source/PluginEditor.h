@@ -50,6 +50,10 @@ private:
     juce::Slider bitcrusherBitDepthSlider;
     std::unique_ptr<SliderAttachment> bitcrusherBitDepthAttachment;
     
+    juce::Label lfo1FrequencyLabel;
+    juce::Slider lfo1FrequencySlider;
+    std::unique_ptr<SliderAttachment> lfo1FrequencyAttachment;
+    
     juce::Label outputVolumeLabel;
     juce::Slider outputVolumeSlider;
     std::unique_ptr<SliderAttachment> outputVolumeAttachment;

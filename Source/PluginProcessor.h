@@ -10,6 +10,7 @@
 
 #include "Voice/Voice.h"
 #include "Effects/Bitcrusher.h"
+#include "Oscillators/LowFreqOsc.h"
 
 #include <JuceHeader.h>
 
@@ -64,10 +65,13 @@ public:
     std::atomic<float>* noiseLevelParameter = nullptr;
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
     std::atomic<float>* outputVolumeParameter = nullptr;
+    std::atomic<float>* lfo1FrequencyParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth
     int currentMidiNote = 0;
+    
+    LowFreqOsc lfo1;
 
 private:
     //==============================================================================
