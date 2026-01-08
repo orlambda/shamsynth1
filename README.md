@@ -1,9 +1,9 @@
 # shamsynth1
 A synthesiser plugin made with C++ and JUCE.
 
-To build this plugin, use JUCE, which you can get [here](https://juce.com/get-juce/).
+To build this plugin, use [JUCE](https://juce.com/get-juce/). Clone the repo, open the .jucer file, save and open in your IDE, and build.
 
-I am using macOS 15 and haven't tested the plugin on other platforms.
+I am using macOS 15 and haven't tested the plugin on other platforms. I test both AU and VST3 builds. I hope to build to CLAP when JUCE 9 is released.
 
 ## Current features
 - Voice
@@ -13,6 +13,9 @@ I am using macOS 15 and haven't tested the plugin on other platforms.
     - Pitch
     - Note on
     - Note off
+- LFO, currently acts as tremolo effect:
+    - Frequency slider
+    - Routed to output volume
 - Output volume slider
 
 ## Future features
@@ -38,9 +41,11 @@ I am using macOS 15 and haven't tested the plugin on other platforms.
         - 4 dials, 0 - 1
     - Volume envelope overall time 0.1 - 10s
     - Volume
-- LFO with controls:
+- LFO controls:
     - Frequency
     - Depth
+    - Wave shape
     - Phase offset?
-    - Routing (what it affects)
+- Modulation matrix (or similar)
+    - Routing from LFOs and other sources
 - Measure volume in dB
