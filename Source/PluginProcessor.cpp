@@ -214,13 +214,15 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     lfo1.setFrequency(currentLfo1Frequency);
     lfo1.setDepth(currentLfo1Depth);
     // Final volume
+    // Scale down volume to account for increase from LFO and prevent clipping
+    float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
     for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
-            // lfo value range is -1 to 1, adjusted to 0 to 2 means volume will increase, this seems to be causing clipping
-            float modifiedOutputVolume = currentOutputVolume * (lfo1.getValue(sample) + 1);
-            buffer.setSample(channel, sample, buffer.getSample(channel, sample) * modifiedOutputVolume);
+            float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
+            float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
+            buffer.setSample(channel, sample, finalValue);
         }
     }
     lfo1.progressOsc(totalNumSamples);
