@@ -25,12 +25,13 @@ public:
     float getValue(int position);
     void setFrequency(float f);
     void setSampleRate(float sr);
+    void setDepth(float d);
     void updateAngleDelta();
 private:
     float sampleRate = 0.0;
     float currentAngle = 0;
     float angleDelta = 0;
     float frequency = 0;
+    float depth = 0;
     bool isActive = false;
-    
 };

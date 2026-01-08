@@ -66,6 +66,7 @@ public:
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
     std::atomic<float>* outputVolumeParameter = nullptr;
     std::atomic<float>* lfo1FrequencyParameter = nullptr;
+    std::atomic<float>* lfo1DepthParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth

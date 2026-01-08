@@ -66,6 +66,17 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1FrequencySlider.setTextValueSuffix(" Hz");
     addAndMakeVisible(&lfo1FrequencySlider);
     
+    lfo1DepthLabel.setText("LFO 1 Depth", juce::dontSendNotification);
+    addAndMakeVisible(lfo1DepthLabel);
+    
+    lfo1DepthAttachment.reset(new SliderAttachment (valueTreeState, "lfo1Depth", lfo1DepthSlider));
+    
+    lfo1DepthSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    lfo1DepthSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    lfo1DepthSlider.setPopupDisplayEnabled(true, false, this);
+    lfo1DepthSlider.setTextValueSuffix("");
+    addAndMakeVisible(&lfo1DepthSlider);
+    
     outputVolumeLabel.setText("Output Volume", juce::dontSendNotification);
     addAndMakeVisible(outputVolumeLabel);
     
@@ -111,8 +122,10 @@ void Shamsynth1AudioProcessorEditor::resized()
     bitcrusherBitDepthLabel.setBounds(220, 180, 200, 50);
     lfo1FrequencySlider.setBounds(340, 40, 20, 150);
     lfo1FrequencyLabel.setBounds(320, 180, 200, 50);
-    outputVolumeSlider.setBounds(440, 40, 20, 150);
-    outputVolumeLabel.setBounds(420, 180, 200, 50);
+    lfo1DepthSlider.setBounds(440, 40, 20, 150);
+    lfo1DepthLabel.setBounds(420, 180, 200, 50);
+    outputVolumeSlider.setBounds(540, 40, 20, 150);
+    outputVolumeLabel.setBounds(520, 180, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

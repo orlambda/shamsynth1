@@ -54,6 +54,10 @@ private:
     juce::Slider lfo1FrequencySlider;
     std::unique_ptr<SliderAttachment> lfo1FrequencyAttachment;
     
+    juce::Label lfo1DepthLabel;
+    juce::Slider lfo1DepthSlider;
+    std::unique_ptr<SliderAttachment> lfo1DepthAttachment;
+    
     juce::Label outputVolumeLabel;
     juce::Slider outputVolumeSlider;
     std::unique_ptr<SliderAttachment> outputVolumeAttachment;

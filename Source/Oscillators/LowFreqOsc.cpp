@@ -53,6 +53,12 @@ void LowFreqOsc::setFrequency(float f)
     updateAngleDelta();
 }
 
+// Expect value between 0 and 1, no range checking
+void LowFreqOsc::setDepth(float d)
+{
+    depth = d;
+}
+
 void LowFreqOsc::setSampleRate(float sr)
 {
     sampleRate = sr;
@@ -62,6 +68,6 @@ void LowFreqOsc::setSampleRate(float sr)
 float LowFreqOsc::getValue(int position)
 {
     if (!isActive) {return 0.0;}
-    return std::sin(currentAngle + position * angleDelta);
+    return std::sin(currentAngle + position * angleDelta) * depth;
 }
 

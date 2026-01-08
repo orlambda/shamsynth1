@@ -28,6 +28,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Frequency", 1), "LFO 1 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.5f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Depth", 1), "LFO 1 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f)
     })
 #endif
@@ -36,6 +37,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
     bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
     lfo1FrequencyParameter = parameters.getRawParameterValue("lfo1Frequency");
+    lfo1DepthParameter = parameters.getRawParameterValue("lfo1Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
 }
 
@@ -187,6 +189,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
     float currentNoiseLevel = *noiseLevelParameter;
     float currentLfo1Frequency = *lfo1FrequencyParameter;
+    float currentLfo1Depth = *lfo1DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
     
     // MIDI
@@ -209,11 +212,13 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // for (auto& effect : effects)
         // {effect->processBlock(buffer);}
     lfo1.setFrequency(currentLfo1Frequency);
+    lfo1.setDepth(currentLfo1Depth);
     // Final volume
     for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         for (auto sample = 0; sample < totalNumSamples; ++sample)
         {
+            // lfo value range is -1 to 1, adjusted to 0 to 2 means volume will increase, this seems to be causing clipping
             float modifiedOutputVolume = currentOutputVolume * (lfo1.getValue(sample) + 1);
             buffer.setSample(channel, sample, buffer.getSample(channel, sample) * modifiedOutputVolume);
         }
