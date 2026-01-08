@@ -33,5 +33,7 @@ editor cpp: resized():
     MyParamSlider.setBounds(40, 40, 20, 150);
     MyParamLabel.setBounds(20, 180, 200, 50);
 
-processBlock():
-    buffer variable
+processor cpp: processBlock():
+    add parameter buffer and read from atomic
+
+use the parameter for something..
