@@ -23,6 +23,10 @@ void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
         float sampleValue = (random.nextFloat() * 0.1 - 0.05) * currentLevel;
         for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
         {
+            for (auto modifier: levelModifiers)
+            {
+                sampleValue = sampleValue * (modifier->getValue(sample) + 1);
+            }
             buffer.addSample(channel, sample, sampleValue);
         }
     }

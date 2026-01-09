@@ -32,8 +32,8 @@ private:
     Shamsynth1AudioProcessor& audioProcessor;
     
     // Window
-    int windowWidth = 800;
-    int windowHeight = 600;
+    int windowWidth = 1000;
+    int windowHeight = 500;
 
     // Controls
     juce::AudioProcessorValueTreeState& valueTreeState;
@@ -57,6 +57,15 @@ private:
     juce::Label lfo1DepthLabel;
     juce::Slider lfo1DepthSlider;
     std::unique_ptr<SliderAttachment> lfo1DepthAttachment;
+    
+    juce::Label lfo2FrequencyLabel;
+    juce::Slider lfo2FrequencySlider;
+    std::unique_ptr<SliderAttachment> lfo2FrequencyAttachment;
+    
+    juce::Label lfo2DepthLabel;
+    juce::Slider lfo2DepthSlider;
+    std::unique_ptr<SliderAttachment> lfo2DepthAttachment;
+    
     
     juce::Label outputVolumeLabel;
     juce::Slider outputVolumeSlider;

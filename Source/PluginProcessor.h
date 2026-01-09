@@ -64,19 +64,22 @@ public:
     std::atomic<float>* osc1LevelParameter = nullptr;
     std::atomic<float>* noiseLevelParameter = nullptr;
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
-    std::atomic<float>* outputVolumeParameter = nullptr;
     std::atomic<float>* lfo1FrequencyParameter = nullptr;
     std::atomic<float>* lfo1DepthParameter = nullptr;
+    std::atomic<float>* lfo2FrequencyParameter = nullptr;
+    std::atomic<float>* lfo2DepthParameter = nullptr;
+    std::atomic<float>* outputVolumeParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
     // temp for processing noteUp in monosynth
     int currentMidiNote = 0;
     
     LowFreqOsc lfo1;
+    std::shared_ptr<LowFreqOsc> lfo2 = std::make_shared<LowFreqOsc>();
 
 private:
     //==============================================================================
-    std::vector<std::unique_ptr<Voice>> voices;
+    std::vector<std::shared_ptr<Voice>> voices;
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);

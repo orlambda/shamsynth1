@@ -16,10 +16,14 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - Pitch
     - Note on
     - Note off
-- LFO, currently acts as tremolo effect
+- LFO 1, currently acts as tremolo effect
     - Frequency parameter
     - Depth parameter
     - Routed to output volume
+- LFO 2
+    - Frequency parameter
+    - Depth parameter
+    - Routed to noise generator volume
 - Output volume parameter
 
 ## Future features

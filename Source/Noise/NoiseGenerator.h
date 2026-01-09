@@ -11,6 +11,8 @@ NoiseGenerator.h
 
 #pragma once
 
+#include "../Oscillators/LowFreqOsc.h"
+
 #include <JuceHeader.h>
 
 #include <vector>
@@ -23,6 +25,8 @@ public:
     // Temporary
     float sampleRate = 0.0;
     float currentLevel = 0.0;
+    // Consider making private, using add/remove lfo functions, etc.
+    std::vector<std::shared_ptr<LowFreqOsc>> levelModifiers;
 private:
     juce::Random random;
 

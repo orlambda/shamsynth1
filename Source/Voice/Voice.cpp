@@ -15,7 +15,6 @@
 Voice::Voice(){
 }
 
-
 void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
     if (isActive())
@@ -38,4 +37,9 @@ void Voice::trigger(float p_fundamental) {
 
 void Voice::silence() {
     active = false;
+}
+
+void Voice::addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier)
+{
+    whiteNoise.levelModifiers.push_back(modifier);
 }

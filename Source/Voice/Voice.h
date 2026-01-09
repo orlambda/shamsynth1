@@ -12,6 +12,7 @@
 
 #include "../Noise/NoiseGenerator.h"
 #include "../Oscillators/WaveOscillator.h"
+#include "../Oscillators/LowFreqOsc.h"
 #include "../Effects/Bitcrusher.h"
 
 #include <JuceHeader.h>
@@ -52,6 +53,10 @@ public:
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
+    
+    // However a modulation matrix will probably change implementation, wait till then before refactoring
+    // Rename modifiers: modulation, lfos, signals..
+    void addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier);
     
 private:
     // State

@@ -29,6 +29,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Frequency", 1), "LFO 1 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.5f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Depth", 1), "LFO 1 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Frequency", 1), "LFO 2 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Depth", 1), "LFO 2 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f)
     })
 #endif
@@ -38,6 +40,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
     lfo1FrequencyParameter = parameters.getRawParameterValue("lfo1Frequency");
     lfo1DepthParameter = parameters.getRawParameterValue("lfo1Depth");
+    lfo2FrequencyParameter = parameters.getRawParameterValue("lfo2Frequency");
+    lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
 }
 
@@ -118,9 +122,14 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     {
         voices.push_back(std::make_unique<Voice>());
         voices.back()->sampleRate = sampleRate;
+        voices.back()->addNoiseLevelModifier(lfo2);
     }
+    // Refactor repetitive code
     lfo1.setSampleRate(sampleRate);
     lfo1.startOsc(*lfo1FrequencyParameter);
+    lfo2->setSampleRate(sampleRate);
+    lfo2->startOsc(*lfo2FrequencyParameter);
+    
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
@@ -190,6 +199,8 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentNoiseLevel = *noiseLevelParameter;
     float currentLfo1Frequency = *lfo1FrequencyParameter;
     float currentLfo1Depth = *lfo1DepthParameter;
+    float currentLfo2Frequency = *lfo2FrequencyParameter;
+    float currentLfo2Depth = *lfo2DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
     
     // MIDI
@@ -198,6 +209,12 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Keyboard component in plugin window
     keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
     processMidi(midiBuffer);
+    
+    // LFOs etc
+    lfo1.setFrequency(currentLfo1Frequency);
+    lfo1.setDepth(currentLfo1Depth);
+    lfo2->setFrequency(currentLfo2Frequency);
+    lfo2->setDepth(currentLfo2Depth);
     
     // Synthesis
     for (auto& voice : voices)
@@ -211,8 +228,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Effects
     // for (auto& effect : effects)
         // {effect->processBlock(buffer);}
-    lfo1.setFrequency(currentLfo1Frequency);
-    lfo1.setDepth(currentLfo1Depth);
+
     // Final volume
     // Scale down volume to account for increase from LFO and prevent clipping
     float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
@@ -225,7 +241,9 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
             buffer.setSample(channel, sample, finalValue);
         }
     }
+    // Move to start of function when lfo has a buffer of values?
     lfo1.progressOsc(totalNumSamples);
+    lfo2->progressOsc(totalNumSamples);
 }
 
 //==============================================================================
