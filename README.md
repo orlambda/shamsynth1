@@ -8,6 +8,7 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
 ## Current features
 - Sine wave oscillator
     - Volume parameter
+    - Tune parameter
 - Noise generator
     - Volume parameter
 - Bitcrusher
