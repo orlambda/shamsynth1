@@ -6,17 +6,21 @@ To build this plugin, use [JUCE](https://juce.com/get-juce/). Clone the repo, op
 I am using macOS 15 and haven't tested the plugin on other platforms. I test both AU and VST3 builds. I hope to build to CLAP when JUCE 9 is released.
 
 ## Current features
-- Voice
 - Sine wave oscillator
+    - Volume parameter
 - Noise generator
-- MIDI control:
+    - Volume parameter
+- Bitcrusher
+    - Bit depth parameter
+- MIDI control
     - Pitch
     - Note on
     - Note off
-- LFO, currently acts as tremolo effect:
-    - Frequency slider
+- LFO, currently acts as tremolo effect
+    - Frequency parameter
+    - Depth parameter
     - Routed to output volume
-- Output volume slider
+- Output volume parameter
 
 ## Future features
 - Enable DAW automation
