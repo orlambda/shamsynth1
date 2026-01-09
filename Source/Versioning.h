@@ -19,9 +19,9 @@ namespace Versioning {
     // Increment on every major new feature
     constexpr static int minor = 0;
     // Increment on every commit that adds a feature or fixes a bug
-    constexpr static int patch = 8;
+    constexpr static int patch = 9;
     // Increment before compilation regardless of added features to ensure correct build is running
-    constexpr static int build = 0;
+    constexpr static int build = 1;
 
     const static std::string currentVersion = to_string(major) + "." + to_string(minor) + "." + to_string(patch) + "+" + to_string(build);
 };

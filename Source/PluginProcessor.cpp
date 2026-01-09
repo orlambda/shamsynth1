@@ -25,6 +25,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
                {
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Level", 1), "Osc 1 Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Tune", 1), "Osc 1 Tune", -24.0f, 24.0f, 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Frequency", 1), "LFO 1 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.0f),
@@ -36,6 +37,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #endif
 {
     osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
+    osc1TuneParameter = parameters.getRawParameterValue("osc1Tune");
     noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
     bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
     lfo1FrequencyParameter = parameters.getRawParameterValue("lfo1Frequency");
@@ -195,6 +197,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     
     // Parameter buffers
     float currentOsc1Level = *osc1LevelParameter;
+    float currentOsc1Tune = *osc1TuneParameter;
     float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
     float currentNoiseLevel = *noiseLevelParameter;
     float currentLfo1Frequency = *lfo1FrequencyParameter;
@@ -220,6 +223,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto& voice : voices)
     {
         voice->updateOsc1Level(currentOsc1Level);
+        voice->updateOsc1Tune(currentOsc1Tune);
         voice->updateNoiseLevel(currentNoiseLevel);
         voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
         voice->processBlock(buffer, totalNumOutputChannels);

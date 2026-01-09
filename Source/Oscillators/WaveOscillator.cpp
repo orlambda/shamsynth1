@@ -9,6 +9,7 @@
 */
 
 #include "WaveOscillator.h"
+#include "../Helpers/audio_maths.h"
 
 #include <math.h>
 
@@ -49,7 +50,9 @@ void WaveOscillator::startNote(float f)
 
 void WaveOscillator::updateAngleDelta()
 {
-    angleDelta = (frequency / sampleRate) * 2.0 * juce::MathConstants<double>::pi;
+    // Tune is currently in semitones (probably change this to cents)
+    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, currentTune * 100);
+    angleDelta = (adjustedFrequency / sampleRate) * 2.0 * juce::MathConstants<double>::pi;
 }
 
 void WaveOscillator::setFrequency(float f)

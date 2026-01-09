@@ -51,6 +51,7 @@ public:
     // Temporary
     float sampleRate;
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
+    void updateOsc1Tune(float tune) {waveOsc.updateTune(tune);}
     void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
     

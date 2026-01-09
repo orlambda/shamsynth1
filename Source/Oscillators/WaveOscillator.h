@@ -29,17 +29,20 @@ public:
     void setSampleRate(float sr);
     void updateAngleDelta();
     void updateLevel(float level) {currentLevel = level;}
+    void updateTune(float tune) {currentTune = tune; updateAngleDelta();}
+    
     
     // Temporary
     float sampleRate = 0.0;
 private:
     // TODO: initialise in constructor
-    float currentAngle = 0;
-    float angleDelta = 0;
+    float currentAngle = 0.0;
+    float angleDelta = 0.0;
     
-    float frequency = 0;
+    float frequency = 0.0;
     
     float currentLevel = 1.0;
+    float currentTune = 0.0;
     
     bool isActive = false;
 };

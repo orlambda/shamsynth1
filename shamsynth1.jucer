@@ -9,6 +9,10 @@
         <FILE id="LTSqgh" name="Bitcrusher.cpp" compile="1" resource="0" file="Source/Effects/Bitcrusher.cpp"/>
         <FILE id="pAmQhS" name="Bitcrusher.h" compile="0" resource="0" file="Source/Effects/Bitcrusher.h"/>
       </GROUP>
+      <GROUP id="{EECC66FC-ADF1-99E6-C228-9585404174F8}" name="Helpers">
+        <FILE id="cpk8Fu" name="audio_maths.cpp" compile="1" resource="0" file="Source/Helpers/audio_maths.cpp"/>
+        <FILE id="vEchpc" name="audio_maths.h" compile="0" resource="0" file="Source/Helpers/audio_maths.h"/>
+      </GROUP>
       <GROUP id="{6FD9ACFB-EE8C-3969-80B2-D0D40523F01C}" name="Noise">
         <FILE id="xTXyiX" name="NoiseGenerator.cpp" compile="1" resource="0"
               file="Source/Noise/NoiseGenerator.cpp"/>
