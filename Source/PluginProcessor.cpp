@@ -27,7 +27,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Level", 1), "Osc 1 Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Frequency", 1), "LFO 1 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.5f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Frequency", 1), "LFO 1 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Depth", 1), "LFO 1 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Frequency", 1), "LFO 2 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Depth", 1), "LFO 2 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
