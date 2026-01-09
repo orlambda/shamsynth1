@@ -10,7 +10,7 @@ processor h: private:
 processor cpp: constructor parameters initialiser:
     std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("MyParamID", 1), "MyParam", 0.0f, 1.0f, 1.0f)
 processor cpp: constructor:
-    MyParam = MyParameters.getRawParameterValue("MyParamID");
+    MyParam = parameters.getRawParameterValue("MyParamID");
 
 editor h: private:
     juce::Label MyParamLabel;
