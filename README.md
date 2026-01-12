@@ -21,10 +21,10 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - Frequency parameter
     - Depth parameter
     - Routed to output volume
-- LFO 2
+- LFO 2, currently acts as vibrato and noise tremolo
     - Frequency parameter
     - Depth parameter
-    - Routed to noise generator volume
+    - Routed to noise generator volume and wave osc tune
 - Output volume parameter
 
 ## Future features
