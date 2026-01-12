@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "../Oscillators/LowFreqOsc.h"
+
 #include <JuceHeader.h>
 
 
@@ -31,6 +33,7 @@ public:
     void updateLevel(float level) {currentLevel = level;}
     void updateTune(float tune) {currentTune = tune; updateAngleDelta();}
     
+    std::vector<std::shared_ptr<LowFreqOsc>> tuneModifiers;
     
     // Temporary
     float sampleRate = 0.0;
@@ -43,6 +46,8 @@ private:
     
     float currentLevel = 1.0;
     float currentTune = 0.0;
+    float currentTuneAdjustment = 0.0;
+
     
     bool isActive = false;
 };

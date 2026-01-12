@@ -26,20 +26,33 @@ void LowFreqOsc::stopOsc()
     isActive = false;
 }
 
-void LowFreqOsc::progressOsc(int samples)
+void LowFreqOsc::calculateNextBlock(int samples)
 {
-    // Is there a danger of overflow?
-    currentAngle = fmod(currentAngle + (angleDelta * samples), 2.0 * juce::MathConstants<double>::pi);
-    // How do plugins handle an LFO given a rate of 0 not being stuck at 0 output?
-    if (frequency == 0)
+    // This will only be true if we are sent more samples in a block than expected
+    // We avoid allocating space in usual cases
+    while (samples > values.size())
     {
-        resetAngle();
+        values.push_back(0.0);
+    }
+    for (int i = 0; i < samples; ++i)
+    {
+        float value = 0.0;
+        if (isActive) {
+            value = std::sin(currentAngle + angleDelta) * depth;
+        }
+        values[i] = value;
+        currentAngle = fmod(currentAngle + angleDelta, 2 * juce::MathConstants<double>::pi);
     }
 }
 
 void LowFreqOsc::resetAngle()
 {
-    currentAngle = 0;
+    currentAngle = 0.0;
+}
+
+void LowFreqOsc::progressAngle()
+{
+    currentAngle = fmod(currentAngle + angleDelta, 2 * juce::MathConstants<double>::pi);
 }
 
 void LowFreqOsc::updateAngleDelta()
@@ -67,7 +80,6 @@ void LowFreqOsc::setSampleRate(float sr)
 
 float LowFreqOsc::getValue(int position)
 {
-    if (!isActive) {return 0.0;}
-    return std::sin(currentAngle + position * angleDelta) * depth;
+    return values[position];
 }
 

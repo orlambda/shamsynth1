@@ -125,12 +125,15 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
         voices.push_back(std::make_unique<Voice>());
         voices.back()->sampleRate = sampleRate;
         voices.back()->addNoiseLevelModifier(lfo2);
+        voices.back()->addOscTuneModifier(lfo2);
     }
     // Refactor repetitive code
     lfo1.setSampleRate(sampleRate);
     lfo1.startOsc(*lfo1FrequencyParameter);
+    lfo1.reserveSpace(samplesPerBlock);
     lfo2->setSampleRate(sampleRate);
     lfo2->startOsc(*lfo2FrequencyParameter);
+    lfo2->reserveSpace(samplesPerBlock);
     
 }
 
@@ -175,18 +178,18 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     auto totalNumSamples = buffer.getNumSamples();
-
+    
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
     // This is here to avoid people getting screaming feedback
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
-//    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-//        buffer.clear (i, 0, buffer.getNumSamples());
+    //    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    //        {buffer.clear (i, 0, buffer.getNumSamples());}
     // I am doing the above but for all channels - I need to check if this is correct
     for (auto i = 0; i < totalNumOutputChannels; ++i)
-        buffer.clear(i, 0, totalNumSamples);
+        {buffer.clear(i, 0, totalNumSamples);}
 
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -216,8 +219,10 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // LFOs etc
     lfo1.setFrequency(currentLfo1Frequency);
     lfo1.setDepth(currentLfo1Depth);
+    lfo1.calculateNextBlock(totalNumSamples);
     lfo2->setFrequency(currentLfo2Frequency);
     lfo2->setDepth(currentLfo2Depth);
+    lfo2->calculateNextBlock(totalNumSamples);
     
     // Synthesis
     for (auto& voice : voices)
@@ -236,18 +241,15 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Final volume
     // Scale down volume to account for increase from LFO and prevent clipping
     float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
-    for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
+    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
-        for (auto sample = 0; sample < totalNumSamples; ++sample)
+        for (int sample = 0; sample < totalNumSamples; ++sample)
         {
             float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
             float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
             buffer.setSample(channel, sample, finalValue);
         }
     }
-    // Move to start of function when lfo has a buffer of values?
-    lfo1.progressOsc(totalNumSamples);
-    lfo2->progressOsc(totalNumSamples);
 }
 
 //==============================================================================

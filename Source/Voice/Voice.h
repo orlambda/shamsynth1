@@ -58,6 +58,7 @@ public:
     // However a modulation matrix will probably change implementation, wait till then before refactoring
     // Rename modifiers: modulation, lfos, signals..
     void addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier);
+    void addOscTuneModifier(std::shared_ptr<LowFreqOsc> modifier);
     
 private:
     // State
