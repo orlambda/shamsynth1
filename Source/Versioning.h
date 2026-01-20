@@ -12,16 +12,14 @@
 
 #include <string>
 
+#include <JuceHeader.h>
+
 using std::to_string;
 
 namespace Versioning {
-    constexpr static int major = 1;
-    // Increment on every major new feature
-    constexpr static int minor = 0;
-    // Increment on every commit that adds a feature or fixes a bug
-    constexpr static int patch = 10;
     // Increment before compilation regardless of added features to ensure correct build is running
-    constexpr static int build = 6;
+    constexpr static int build = 5;
 
-    const static std::string currentVersion = to_string(major) + "." + to_string(minor) + "." + to_string(patch) + "+" + to_string(build);
+    juce::String version(ProjectInfo::versionString);
+    const static juce::String currentVersion = version + "+" + to_string(build);
 };

@@ -122,7 +122,7 @@ void Shamsynth1AudioProcessorEditor::paint(juce::Graphics& g)
 
     g.setColour(juce::Colours::white);
     g.setFont(juce::FontOptions (15.0f));
-    std::string displayText = "shamsynth1 by orlambda - version " + Versioning::currentVersion;
+    juce::String displayText = juce::String(ProjectInfo::projectName) + " by " + juce::String(ProjectInfo::companyName) + " - v" + Versioning::currentVersion;
     g.drawFittedText(displayText, 0, 0, getWidth(), 30, juce::Justification::centred, 1);
 }
 
