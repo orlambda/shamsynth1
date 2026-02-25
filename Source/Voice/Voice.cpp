@@ -29,10 +29,12 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
     }
 }
 
-void Voice::trigger(float p_fundamental) {
+void Voice::trigger(int p_midiNoteNumber) {
     active = true;
+    midiNoteNumber = p_midiNoteNumber;
+    // TODO: check, waveOsc should already know its sampleRate?
     waveOsc.sampleRate = sampleRate;
-    waveOsc.startNote(p_fundamental);
+    waveOsc.startNote(getFundamental());
 }
 
 void Voice::silence() {

@@ -72,8 +72,6 @@ public:
     std::atomic<float>* outputVolumeParameter = nullptr;
     
     juce::MidiKeyboardState keyboardState;
-    // temp for processing noteUp in monosynth
-    int currentMidiNote = 0;
     
     LowFreqOsc lfo1;
     std::shared_ptr<LowFreqOsc> lfo2 = std::make_shared<LowFreqOsc>();
@@ -81,14 +79,20 @@ public:
 private:
     //==============================================================================
     std::vector<std::shared_ptr<Voice>> voices;
+    int numberOfVoices = 4;
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);
+    void triggerVoice(int p_midiNote);
+    void silenceVoice(int p_midiNote);
+    std::optional<int> voiceWithNoteDown(int p_midiNote);
+    std::optional<int> availableVoice();
     
     // Effects
     
     // Volume
     float outputVolumeScale = 0.5;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };

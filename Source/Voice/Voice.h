@@ -38,10 +38,11 @@ public:
     
     // Check state
     bool isActive() {return active;}
-    bool getFundamental(){return fundamental;}
+    int getMidiNoteNumber(){return midiNoteNumber;}
+    float getFundamental(){return juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);}
     
     // Change state
-    void trigger(float p_fundamental);
+    void trigger(int p_midiNoteNumber);
     void silence();
     
     // Check input/output channels, are they combined, etc.
@@ -49,6 +50,7 @@ public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
     
     // Temporary
+    // TODO: make static - sampleRate the same for every Voice
     float sampleRate;
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateOsc1Tune(float tune) {waveOsc.updateTune(tune);}
@@ -63,7 +65,9 @@ public:
 private:
     // State
     bool active = false;
-    float fundamental = 0.0;
+    // TODO: how to initialise?
+    int midiNoteNumber = 0;
+    // float fundamental = 0.0;
     
     // White Noise Generator
     NoiseGenerator whiteNoise;

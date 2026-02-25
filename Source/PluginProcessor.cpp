@@ -45,6 +45,13 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo2FrequencyParameter = parameters.getRawParameterValue("lfo2Frequency");
     lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
+    
+    for (int i = 0; i < numberOfVoices; ++i)
+    {
+        voices.push_back(std::make_unique<Voice>());
+        voices.back()->addNoiseLevelModifier(lfo2);
+        voices.back()->addOscTuneModifier(lfo2);
+    }
 }
 
 Shamsynth1AudioProcessor::~Shamsynth1AudioProcessor()
@@ -117,15 +124,9 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Pre-playback initialisation
-    
-    // TODO: Add voices, test performance per voice, process MIDI
-    int num_of_voices = 1;
-    for (int i = 0; i < num_of_voices; ++i)
+    for (auto voice : voices)
     {
-        voices.push_back(std::make_unique<Voice>());
-        voices.back()->sampleRate = sampleRate;
-        voices.back()->addNoiseLevelModifier(lfo2);
-        voices.back()->addOscTuneModifier(lfo2);
+        voice->sampleRate = sampleRate;
     }
     // Refactor repetitive code
     lfo1.setSampleRate(sampleRate);
@@ -134,7 +135,6 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     lfo2->setSampleRate(sampleRate);
     lfo2->startOsc(*lfo2FrequencyParameter);
     lfo2->reserveSpace(samplesPerBlock);
-    
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
@@ -288,21 +288,77 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 // Currently only affects the first Voice, doesn't check that voices isn't empty, etc.
 void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer& midiBuffer)
 {
-
     for (const auto metadata : midiBuffer)
     {
         auto message = metadata.getMessage();
         if (message.isNoteOn())
         {
-            auto noteNumber = message.getNoteNumber();
-            auto frequency = juce::MidiMessage::getMidiNoteInHertz(noteNumber);
-            currentMidiNote = noteNumber;
-            voices[0]->trigger(frequency);
+            int midiNoteNumber = message.getNoteNumber();
+            triggerVoice(midiNoteNumber);
         }
-        // TODO: check if note is down, if so send current voice. overload Voices class [] operator that finds voice based on currentMidiNote? or Voices.hasNote()?
-        else if (message.isNoteOff() && (message.getNoteNumber() == currentMidiNote))
+        else if (message.isNoteOff())
         {
-            voices[0]->silence();
+            int midiNoteNumber = message.getNoteNumber();
+            silenceVoice(midiNoteNumber);
         }
     }
+}
+
+void Shamsynth1AudioProcessor::triggerVoice(int p_midiNoteNumber)
+{
+    // If this note is not already down
+    if (!voiceWithNoteDown(p_midiNoteNumber))
+    {
+        // Find available Voice and trigger
+        std::optional<int> voiceToUse = availableVoice();
+        if (voiceToUse)
+        {
+            // Trigger it
+            int index = voiceToUse.value();
+            voices[index]->trigger(p_midiNoteNumber);
+        }
+    }
+}
+
+void Shamsynth1AudioProcessor::silenceVoice(int p_midiNoteNumber)
+{
+    std::optional<int> voiceToSilence = voiceWithNoteDown(p_midiNoteNumber);
+    if (voiceToSilence)
+    {
+        int index = voiceToSilence.value();
+        voices[index]->silence();
+    }
+}
+
+std::optional<int> Shamsynth1AudioProcessor::voiceWithNoteDown(int p_midiNoteNumber)
+{
+    for (int i = 0; i < voices.size(); ++i)
+    {
+//        if (voices[i]->isActive() && voices[i]->getMidiNoteNumber() == p_midiNoteNumber)
+//        {
+//            return i;
+//        }
+        if (voices[i]->isActive())
+        {
+            if (voices[i]->getMidiNoteNumber() == p_midiNoteNumber)
+            {
+                return i;
+            }
+        }
+        
+    }
+    return {};
+}
+
+std::optional<int> Shamsynth1AudioProcessor::availableVoice()
+{
+    for (int i = 0; i < voices.size(); ++i)
+    {
+        if (!voices[i]->isActive())
+        {
+            return i;
+        }
+    }
+    return {};
+    
 }
