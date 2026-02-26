@@ -1,4 +1,4 @@
-# shamsynth1
+# shamsynth1 v1.0.12
 A synthesiser plugin made with C++ and JUCE.
 
 To build this plugin, use [JUCE](https://juce.com/get-juce/). Clone the repo, open the .jucer file, save and open in your IDE, and build.
@@ -11,6 +11,7 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - Tune parameter
 - Noise generator
     - Volume parameter
+- Polyphony
 - Bitcrusher
     - Bit depth parameter
 - MIDI control
@@ -29,7 +30,6 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
 
 ## Future features
 - Enable DAW automation
-- Polyphony
 - Multiple wave oscillators (2?) with controls:
     - Wave type
         - Sine
