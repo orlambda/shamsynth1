@@ -3,7 +3,7 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.12" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.13" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
@@ -25,6 +25,8 @@
       <GROUP id="{FFFAEA43-69A9-D9CA-9CFF-9DF4810EF48F}" name="Oscillators">
         <FILE id="xjrJTy" name="LowFreqOsc.cpp" compile="1" resource="0" file="Source/Oscillators/LowFreqOsc.cpp"/>
         <FILE id="Mzswq5" name="LowFreqOsc.h" compile="0" resource="0" file="Source/Oscillators/LowFreqOsc.h"/>
+        <FILE id="GGu2cK" name="Waveforms.cpp" compile="1" resource="0" file="Source/Oscillators/Waveforms.cpp"/>
+        <FILE id="K8NEwm" name="Waveforms.h" compile="0" resource="0" file="Source/Oscillators/Waveforms.h"/>
         <FILE id="wOVWt6" name="WaveOscillator.cpp" compile="1" resource="0"
               file="Source/Oscillators/WaveOscillator.cpp"/>
         <FILE id="qdcaY9" name="WaveOscillator.h" compile="0" resource="0"

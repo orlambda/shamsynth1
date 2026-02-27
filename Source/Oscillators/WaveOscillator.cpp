@@ -9,9 +9,10 @@
 */
 
 #include "WaveOscillator.h"
+#include "Waveforms.h"
 #include "../Helpers/audio_maths.h"
 
-#include <math.h>
+#include <cmath>
 
 void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
@@ -31,7 +32,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             }
             updateAngleDelta();
             // Update angle delta here instead of in frequency/tune setters?
-            float sampleValue = std::sin(currentAngle) * currentLevel;
+            float sampleValue = Waveforms::sin(currentAngle) * currentLevel;
             for (int channel = 0; channel < totalNumOutputChannels; ++channel)
             {
                 buffer.addSample(channel, sample, sampleValue);
