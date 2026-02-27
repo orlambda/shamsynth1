@@ -62,6 +62,9 @@ public:
     // State
     juce::AudioProcessorValueTreeState parameters;
     std::atomic<float>* osc1LevelParameter = nullptr;
+    std::atomic<float>* osc1SineLevelParameter = nullptr;
+    std::atomic<float>* osc1SquareLevelParameter = nullptr;
+    std::atomic<float>* osc1TriangleLevelParameter = nullptr;
     std::atomic<float>* osc1TuneParameter = nullptr;
     std::atomic<float>* noiseLevelParameter = nullptr;
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;

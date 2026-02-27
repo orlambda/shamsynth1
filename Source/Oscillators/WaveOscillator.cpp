@@ -32,7 +32,10 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             }
             updateAngleDelta();
             // Update angle delta here instead of in frequency/tune setters?
-            float sampleValue = Waveforms::sin(currentAngle) * currentLevel;
+            float sineSampleValue = Waveforms::sin(currentAngle) * currentSineLevel;
+            float triangleSampleValue = Waveforms::triangle(currentAngle) * currentTriangleLevel;
+            float squareSampleValue = Waveforms::square(currentAngle) * currentSquareLevel;
+            float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue) * currentLevel;
             for (int channel = 0; channel < totalNumOutputChannels; ++channel)
             {
                 buffer.addSample(channel, sample, sampleValue);

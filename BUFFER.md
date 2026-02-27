@@ -1,30 +1,31 @@
+find + replace both names 
 
 processor h: private:
-    std::atomic<float>* osc1Tune = nullptr;
+    std::atomic<float>* osc1SquareLevelParameter = nullptr;
 
 processor cpp: constructor parameters initialiser:
-    std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1TuneID", 1), "Osc 1 Tune", 0.0f, 1.0f, 1.0f)
+    std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1SquareLevel", 1), "Osc 1 Square Level", 0.0f, 1.0f, 1.0f)
 processor cpp: constructor:
-    osc1Tune = parameters.getRawParameterValue("osc1TuneID");
+    osc1SquareLevelParameter = parameters.getRawParameterValue("osc1SquareLevel");
 
 editor h: private:
-    juce::Label osc1TuneLabel;
-    juce::Slider osc1TuneSlider;
-    std::unique_ptr<SliderAttachment> osc1TuneAttachment;
+    juce::Label osc1SquareLevelLabel;
+    juce::Slider osc1SquareLevelSlider;
+    std::unique_ptr<SliderAttachment> osc1SquareLevelAttachment;
 
 editor cpp: constructor:
-    osc1TuneLabel.setText("Osc 1 Tune", juce::dontSendNotification);
-    addAndMakeVisible(osc1TuneLabel);
-    osc1TuneAttachment.reset(new SliderAttachment (valueTreeState, "osc1TuneID", osc1TuneSlider));
-    osc1TuneSlider.setSliderStyle(juce::Slider::LinearBarVertical);
-    osc1TuneSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    osc1TuneSlider.setPopupDisplayEnabled(true, false, this);
-    osc1TuneSlider.setTextValueSuffix(" semitones");
-    addAndMakeVisible(&osc1TuneSlider);
+    osc1SquareLevelLabel.setText("Osc 1 Square Level", juce::dontSendNotification);
+    addAndMakeVisible(osc1SquareLevelLabel);
+    osc1SquareLevelAttachment.reset(new SliderAttachment (valueTreeState, "osc1SquareLevel", osc1SquareLevelSlider));
+    osc1SquareLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1SquareLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1SquareLevelSlider.setPopupDisplayEnabled(true, false, this);
+    osc1SquareLevelSlider.setTextValueSuffix(" semitones");
+    addAndMakeVisible(&osc1SquareLevelSlider);
 
 editor cpp: resized():
-    osc1TuneSlider.setBounds(40, 40, 20, 150);
-    osc1TuneLabel.setBounds(20, 180, 200, 50);
+    osc1SquareLevelSlider.setBounds(40, 40, 20, 150);
+    osc1SquareLevelLabel.setBounds(20, 180, 200, 50);
 
 processor cpp: processBlock():
     add parameter buffer and read from atomic

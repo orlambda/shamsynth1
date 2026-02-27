@@ -32,7 +32,7 @@ private:
     Shamsynth1AudioProcessor& audioProcessor;
     
     // Window
-    int windowWidth = 700;
+    int windowWidth = 750;
     int windowHeight = 570;
 
     // Controls
@@ -41,6 +41,18 @@ private:
     juce::Label osc1LevelLabel;
     juce::Slider osc1LevelSlider;
     std::unique_ptr<SliderAttachment> osc1LevelAttachment;
+    
+    juce::Label osc1SineLevelLabel;
+    juce::Slider osc1SineLevelSlider;
+    std::unique_ptr<SliderAttachment> osc1SineLevelAttachment;
+    
+    juce::Label osc1TriangleLevelLabel;
+    juce::Slider osc1TriangleLevelSlider;
+    std::unique_ptr<SliderAttachment> osc1TriangleLevelAttachment;
+    
+    juce::Label osc1SquareLevelLabel;
+    juce::Slider osc1SquareLevelSlider;
+    std::unique_ptr<SliderAttachment> osc1SquareLevelAttachment;
     
     juce::Label osc1TuneLabel;
     juce::Slider osc1TuneSlider;

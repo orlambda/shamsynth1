@@ -34,7 +34,34 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1LevelSlider.setTextValueSuffix("");
     addAndMakeVisible(&osc1LevelSlider);
     
-    osc1TuneLabel.setText("Osc 1 Tune", juce::dontSendNotification);
+    osc1SineLevelLabel.setText("Sine Level", juce::dontSendNotification);
+    addAndMakeVisible(osc1SineLevelLabel);
+    osc1SineLevelAttachment.reset(new SliderAttachment (valueTreeState, "osc1SineLevel", osc1SineLevelSlider));
+    osc1SineLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1SineLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1SineLevelSlider.setPopupDisplayEnabled(true, false, this);
+    osc1SineLevelSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1SineLevelSlider);
+    
+    osc1TriangleLevelLabel.setText("Triangle Level", juce::dontSendNotification);
+    addAndMakeVisible(osc1TriangleLevelLabel);
+    osc1TriangleLevelAttachment.reset(new SliderAttachment (valueTreeState, "osc1TriangleLevel", osc1TriangleLevelSlider));
+    osc1TriangleLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1TriangleLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1TriangleLevelSlider.setPopupDisplayEnabled(true, false, this);
+    osc1TriangleLevelSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1TriangleLevelSlider);
+    
+    osc1SquareLevelLabel.setText("Square Level", juce::dontSendNotification);
+    addAndMakeVisible(osc1SquareLevelLabel);
+    osc1SquareLevelAttachment.reset(new SliderAttachment (valueTreeState, "osc1SquareLevel", osc1SquareLevelSlider));
+    osc1SquareLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1SquareLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1SquareLevelSlider.setPopupDisplayEnabled(true, false, this);
+    osc1SquareLevelSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1SquareLevelSlider);
+    
+    osc1TuneLabel.setText("Tune", juce::dontSendNotification);
     addAndMakeVisible(osc1TuneLabel);
     osc1TuneAttachment.reset(new SliderAttachment (valueTreeState, "osc1Tune", osc1TuneSlider));
     osc1TuneSlider.setSliderStyle(juce::Slider::LinearBarVertical);
@@ -134,12 +161,18 @@ void Shamsynth1AudioProcessorEditor::resized()
     // Magic numbers!
     osc1LevelSlider.setBounds(40, 40, 20, 150);
     osc1LevelLabel.setBounds(20, 180, 200, 50);
-    osc1TuneSlider.setBounds(140, 40, 20, 150);
-    osc1TuneLabel.setBounds(120, 180, 200, 50);
-    noiseLevelSlider.setBounds(240, 40, 20, 150);
-    noiseLevelLabel.setBounds(220, 180, 200, 50);
-    bitcrusherBitDepthSlider.setBounds(340, 40, 20, 150);
-    bitcrusherBitDepthLabel.setBounds(320, 180, 200, 50);
+    osc1SineLevelSlider.setBounds(140, 40, 20, 150);
+    osc1SineLevelLabel.setBounds(120, 180, 200, 50);
+    osc1TriangleLevelSlider.setBounds(240, 40, 20, 150);
+    osc1TriangleLevelLabel.setBounds(220, 180, 200, 50);
+    osc1SquareLevelSlider.setBounds(340, 40, 20, 150);
+    osc1SquareLevelLabel.setBounds(320, 180, 200, 50);
+    osc1TuneSlider.setBounds(440, 40, 20, 150);
+    osc1TuneLabel.setBounds(420, 180, 200, 50);
+    noiseLevelSlider.setBounds(540, 40, 20, 150);
+    noiseLevelLabel.setBounds(520, 180, 200, 50);
+    bitcrusherBitDepthSlider.setBounds(640, 40, 20, 150);
+    bitcrusherBitDepthLabel.setBounds(620, 180, 200, 50);
     lfo1FrequencySlider.setBounds(40, 240, 20, 150);
     lfo1FrequencyLabel.setBounds(20, 380, 200, 50);
     lfo1DepthSlider.setBounds(140, 240, 20, 150);
@@ -148,8 +181,8 @@ void Shamsynth1AudioProcessorEditor::resized()
     lfo2FrequencyLabel.setBounds(220, 380, 200, 50);
     lfo2DepthSlider.setBounds(340, 240, 20, 150);
     lfo2DepthLabel.setBounds(320, 380, 200, 50);
-    outputVolumeSlider.setBounds(540, 40, 20, 150);
-    outputVolumeLabel.setBounds(520, 180, 200, 50);
+    outputVolumeSlider.setBounds(640, 240, 20, 150);
+    outputVolumeLabel.setBounds(620, 380, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

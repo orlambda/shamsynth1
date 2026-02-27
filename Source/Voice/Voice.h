@@ -53,6 +53,9 @@ public:
     // TODO: make static - sampleRate the same for every Voice
     float sampleRate;
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
+    void updateOsc1SineLevel(float level) {waveOsc.updateSineLevel(level);}
+    void updateOsc1TriangleLevel(float level) {waveOsc.updateTriangleLevel(level);}
+    void updateOsc1SquareLevel(float level) {waveOsc.updateSquareLevel(level);}
     void updateOsc1Tune(float tune) {waveOsc.updateTune(tune);}
     void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}

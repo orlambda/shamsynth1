@@ -25,6 +25,9 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
                {
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Level", 1), "Osc 1 Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1SineLevel", 1), "Osc 1 Sine Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1TriangleLevel", 1), "Osc 1 Triangle Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1SquareLevel", 1), "Osc 1 Square Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Tune", 1), "Osc 1 Tune", -24.0f, 24.0f, 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
@@ -37,6 +40,9 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #endif
 {
     osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
+    osc1SineLevelParameter = parameters.getRawParameterValue("osc1SineLevel");
+    osc1TriangleLevelParameter = parameters.getRawParameterValue("osc1TriangleLevel");
+    osc1SquareLevelParameter = parameters.getRawParameterValue("osc1SquareLevel");
     osc1TuneParameter = parameters.getRawParameterValue("osc1Tune");
     noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
     bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
@@ -200,6 +206,9 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     
     // Parameter buffers
     float currentOsc1Level = *osc1LevelParameter;
+    float currentOsc1SineLevel = *osc1SineLevelParameter;
+    float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
+    float currentOsc1SquareLevel = *osc1SquareLevelParameter;
     float currentOsc1Tune = *osc1TuneParameter;
     float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
     float currentNoiseLevel = *noiseLevelParameter;
@@ -228,6 +237,9 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto& voice : voices)
     {
         voice->updateOsc1Level(currentOsc1Level);
+        voice->updateOsc1SineLevel(currentOsc1SineLevel);
+        voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
+        voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
         voice->updateOsc1Tune(currentOsc1Tune);
         voice->updateNoiseLevel(currentNoiseLevel);
         voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
