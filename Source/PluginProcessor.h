@@ -10,6 +10,7 @@
 
 #include "Voice/Voice.h"
 #include "Effects/Bitcrusher.h"
+#include "Envelope/Envelope.h"
 #include "Oscillators/LowFreqOsc.h"
 
 #include <JuceHeader.h>

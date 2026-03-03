@@ -10,6 +10,9 @@
 
 #pragma once
 
+#include "../ModifierBlock/ModifierBlock.h"
+#include "../Oscillators/Waveforms.h"
+
 #include <vector>
 
 // This is similar to WaveOscillator but I am avoiding multiple inheritance
@@ -25,14 +28,14 @@ public:
     void calculateNextBlock(int samples);
     void resetAngle();
     void progressAngle();
-    float getValue(int position);
     void setFrequency(float f);
-    
     void setSampleRate(float sr);
     void setDepth(float d);
     void updateAngleDelta();
-    std::vector<float> values;
-    void reserveSpace(float sample_count) {values = std::vector<float>(sample_count);}
+    void reserveSpace(int sampleCount) {values.reserveSpace(sampleCount);}
+    ModifierBlock values;
+    float setValue(int position, float value);
+    float getValue(int position);
 private:
     float sampleRate = 0.0;
     float currentAngle = 0.0;

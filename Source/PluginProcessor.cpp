@@ -132,7 +132,8 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     // Pre-playback initialisation
     for (auto voice : voices)
     {
-        voice->sampleRate = sampleRate;
+        voice->setSampleRate(sampleRate);
+        voice->reserveSpace(samplesPerBlock);
     }
     // Refactor repetitive code
     lfo1.setSampleRate(sampleRate);

@@ -14,6 +14,7 @@
 #include "../Oscillators/WaveOscillator.h"
 #include "../Oscillators/LowFreqOsc.h"
 #include "../Effects/Bitcrusher.h"
+#include "../Envelope/Envelope.h"
 
 #include <JuceHeader.h>
 
@@ -35,9 +36,9 @@ class Voice
 {
 public:
     Voice();
-    
+    Envelope envelope;
     // Check state
-    bool isActive() {return active;}
+    bool isActive() {return envelope.isActive();}
     int getMidiNoteNumber(){return midiNoteNumber;}
     float getFundamental(){return juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);}
     
@@ -51,7 +52,8 @@ public:
     
     // Temporary
     // TODO: make static - sampleRate the same for every Voice
-    float sampleRate;
+    void setSampleRate(float rate);
+    void reserveSpace(int samplesPerBlock);
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateOsc1SineLevel(float level) {waveOsc.updateSineLevel(level);}
     void updateOsc1TriangleLevel(float level) {waveOsc.updateTriangleLevel(level);}
@@ -67,7 +69,7 @@ public:
     
 private:
     // State
-    bool active = false;
+    float sampleRate;
     // TODO: how to initialise?
     int midiNoteNumber = 0;
     // float fundamental = 0.0;

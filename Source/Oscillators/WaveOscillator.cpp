@@ -14,7 +14,7 @@
 
 #include <cmath>
 
-void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
+void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope)
 {
     float totalNumSamples = buffer.getNumSamples();
     if (isActive)
@@ -35,7 +35,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             float sineSampleValue = Waveforms::sin(currentAngle) * currentSineLevel;
             float triangleSampleValue = Waveforms::triangle(currentAngle) * currentTriangleLevel;
             float squareSampleValue = Waveforms::square(currentAngle) * currentSquareLevel;
-            float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue) * currentLevel;
+            float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue) * currentLevel * envelope.values.getValue(sample);
             for (int channel = 0; channel < totalNumOutputChannels; ++channel)
             {
                 buffer.addSample(channel, sample, sampleValue);

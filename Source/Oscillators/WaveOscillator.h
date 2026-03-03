@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../Oscillators/LowFreqOsc.h"
+#include "../Envelope/Envelope.h"
 
 #include <JuceHeader.h>
 
@@ -22,7 +23,7 @@ public:
     void endNote();
     // Abruptly ends all sound
     void silence();
-    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
+    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope);
     void trigger(float f);
     void setFrequency(float f);
     // Is this necessary or can it

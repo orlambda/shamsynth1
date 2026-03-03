@@ -30,17 +30,14 @@ void LowFreqOsc::calculateNextBlock(int samples)
 {
     // This will only be true if we are sent more samples in a block than expected
     // We avoid allocating space in usual cases
-    while (samples > values.size())
-    {
-        values.push_back(0.0);
-    }
+    values.reserveSpace(samples);
     for (int i = 0; i < samples; ++i)
     {
         float value = 0.0;
         if (isActive) {
-            value = std::sin(currentAngle + angleDelta) * depth;
+            value = Waveforms::sin(currentAngle + angleDelta) * depth;
         }
-        values[i] = value;
+        values.setValue(i, value);
         currentAngle = fmod(currentAngle + angleDelta, 2 * juce::MathConstants<double>::pi);
     }
 }
@@ -78,8 +75,16 @@ void LowFreqOsc::setSampleRate(float sr)
     updateAngleDelta();
 }
 
+float LowFreqOsc::setValue(int position, float value)
+{
+    if (position < values.size())
+    {
+        values.setValue(position, value);
+    }
+}
+
 float LowFreqOsc::getValue(int position)
 {
-    return values[position];
+    return values.getValue(position);
 }
 

@@ -12,33 +12,44 @@
 
 #include <iostream>
 
-Voice::Voice(){
-}
+Voice::Voice() {}
 
 void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
     if (isActive())
     {
-        // float totalNumSamples = buffer.getNumSamples();
-        
+        float totalNumSamples = buffer.getNumSamples();
+        envelope.calculateNextBlock(totalNumSamples);
         // Each oscillator/generator
         // Starting with a white noise generator
-        waveOsc.processBlock(buffer, totalNumOutputChannels);
+        waveOsc.processBlock(buffer, totalNumOutputChannels, envelope);
         whiteNoise.processBlock(buffer, totalNumOutputChannels);
         bitcrusher.processBlock(buffer, totalNumOutputChannels);
     }
 }
 
+void Voice::setSampleRate(float rate)
+{
+    sampleRate = rate;
+    waveOsc.sampleRate = sampleRate;
+    envelope.setSampleRate(rate);
+}
+
+void Voice::reserveSpace(int samplesPerBlock)
+{
+    envelope.reserveSpace(samplesPerBlock);
+}
+
 void Voice::trigger(int p_midiNoteNumber) {
-    active = true;
+    envelope.trigger();
     midiNoteNumber = p_midiNoteNumber;
     // TODO: check, waveOsc should already know its sampleRate?
-    waveOsc.sampleRate = sampleRate;
     waveOsc.startNote(getFundamental());
 }
 
 void Voice::silence() {
-    active = false;
+//    envelope.immediatelySilence();
+    envelope.release();
 }
 
 void Voice::addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier)
