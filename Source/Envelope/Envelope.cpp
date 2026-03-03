@@ -19,22 +19,45 @@ void Envelope::calculateNextBlock(int samples)
         switch (static_cast<State>(currentState))
         {
             case State::attack:
-                values.setValue(i, position);
-                break;
+                {
+                    float value = position;
+                    lastValueForRelease = value;
+                    values.setValue(i, value);
+                    break;
+                }
             case State::decay:
-                values.setValue(i, 1.0-(position*(1-sustainLevel)));
-                break;
+                {
+                    float value = 1.0-(position*(1-sustainLevel));
+                    lastValueForRelease = value;
+                    values.setValue(i, value);
+                    break;
+                }
             case State::sustain:
-                values.setValue(i, sustainLevel);
-                break;
+                {
+                    float value = sustainLevel;
+                    lastValueForRelease = value;
+                    values.setValue(i, value);
+                    break;
+                }
             case State::release:
-                values.setValue(i, sustainLevel-(sustainLevel*position));
-                break;
+                {
+                    values.setValue(i, sustainLevel-(sustainLevel*position));
+                    break;
+                }
+            case State::prematureRelease:
+                {
+                    values.setValue(i, lastValueForRelease-(lastValueForRelease*position));
+                    break;
+                }
             case State::inactive:
-                values.setValue(i, 0.0);
-                break;
+                {
+                    values.setValue(i, 0.0);
+                    break;
+                }
             default:
-                break;
+                {
+                    break;
+                }
         }
         progressPosition();
     }
@@ -55,14 +78,21 @@ void Envelope::progressPosition()
         switch (static_cast<State>(currentState))
         {
             case State::attack:
-                position += 1.0/(attackTime*sampleRate);
-                break;
+                {
+                    position += 1.0/(attackTime*sampleRate);
+                    break;
+                }
             case State::decay:
-                position += 1.0/(decayTime*sampleRate);
-                break;
+                {
+                    position += 1.0/(decayTime*sampleRate);
+                    break;
+                }
             case State::release:
-                position += 1.0/(releaseTime*sampleRate);
-                break;
+            case State::prematureRelease:
+                {
+                    position += 1.0/(releaseTime*sampleRate);
+                    break;
+                }
             default:
                 break;
         }
@@ -71,14 +101,13 @@ void Envelope::progressPosition()
             switch (static_cast<State>(currentState))
             {
                 case State::attack:
-                    progressState();
-                    break;
                 case State::decay:
-                    progressState();
-                    break;
                 case State::release:
-                    progressState();
-                    break;
+                case State::prematureRelease:
+                    {
+                        progressState();
+                        break;
+                    }
                 default:
                     break;
             }
@@ -91,29 +120,50 @@ void Envelope::progressState()
     switch (static_cast<State>(currentState))
     {
         case State::attack:
-            currentState = State::decay;
-            break;
+            {
+                currentState = State::decay;
+                break;
+            }
         case State::decay:
-            currentState = State::sustain;
-            break;
+            {
+                currentState = State::sustain;
+                break;
+            }
         case State::sustain:
-            currentState = State::release;
-            break;
+            {
+                currentState = State::release;
+                break;
+            }
         case State::release:
-            currentState = State::inactive;
-            break;
+        case State::prematureRelease:
+            {
+                currentState = State::inactive;
+                break;
+            }
         case State::inactive:
-            break;
+            {
+                break;
+            }
         default:
-            break;
+            {
+                break;
+            }
     }
     position = 0.0;
 }
 
 void Envelope::release()
 {
-    currentState = State::release;
-    position = 0.0;
+    if (currentState == State::sustain)
+    {
+        currentState = State::release;
+        position = 0.0;
+    }
+    else
+    {
+        currentState = State::prematureRelease;
+        position = 0.0;
+    }
 }
 
 void Envelope::setAttackTime(float seconds)

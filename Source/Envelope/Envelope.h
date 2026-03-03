@@ -25,6 +25,7 @@ public:
         decay,
         sustain,
         release,
+        prematureRelease,
         inactive
     };
     State currentState = State::inactive;
@@ -45,6 +46,7 @@ private:
     float sampleRate = 0.0;
     // Position is from  [0-1)
     float position = 0.0;
+    float lastValueForRelease = 0.0;
     // Temporary: hard-coded here
     // SECONDS
     float attackTime = 0.0;
