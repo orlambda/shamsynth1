@@ -245,7 +245,12 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->updateNoiseLevel(currentNoiseLevel);
         voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
         voice->processBlock(buffer, totalNumOutputChannels);
+        // Temporary hard-coded values
+        voice->envelope.setAttackTime(0.2);
+        voice->envelope.setDecayTime(0.2);
+        voice->envelope.setReleaseTime(0.3);
     }
+    
 
     // Effects
     // for (auto& effect : effects)

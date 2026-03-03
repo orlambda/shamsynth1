@@ -22,6 +22,7 @@ public:
     enum class State
     {
         attack,
+        decay,
         sustain,
         release,
         inactive
@@ -34,8 +35,9 @@ public:
     ModifierBlock values;
     void calculateNextBlock(int samples);
     void reserveSpace(float sampleCount);
-    void setAttackTime(float milliseconds);
-    void setReleaseTime(float milliseconds);
+    void setAttackTime(float seconds);
+    void setDecayTime(float seconds);
+    void setReleaseTime(float seconds);
     void trigger(){currentState = State::attack; position = 0.0;}
     void immediatelySilence(){currentState = State::inactive;}
     void release();
@@ -45,6 +47,9 @@ private:
     float position = 0.0;
     // Temporary: hard-coded here
     // SECONDS
-    float attackTime = 0.5;
-    float releaseTime = 0.5;
+    float attackTime = 0.0;
+    float decayTime = 0.0;
+    bool timedSustain = false;
+    float sustainLevel = 0.7;
+    float releaseTime = 0.0;
 };
