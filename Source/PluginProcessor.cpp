@@ -324,8 +324,13 @@ void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer& midiBuffer)
 
 void Shamsynth1AudioProcessor::triggerVoice(int p_midiNoteNumber)
 {
-    // If this note is not already down
-    if (!voiceWithNoteDown(p_midiNoteNumber))
+    
+    if (voiceWithNoteDown(p_midiNoteNumber))
+    {
+        // TODO: optimise as function called twice
+        voices[voiceWithNoteDown(p_midiNoteNumber).value()]->queueNote(p_midiNoteNumber);
+    }
+    else
     {
         // Find available Voice and trigger
         std::optional<int> voiceToUse = availableVoice();
@@ -344,7 +349,7 @@ void Shamsynth1AudioProcessor::silenceVoice(int p_midiNoteNumber)
     if (voiceToSilence)
     {
         int index = voiceToSilence.value();
-        voices[index]->silence();
+        voices[index]->release();
     }
 }
 

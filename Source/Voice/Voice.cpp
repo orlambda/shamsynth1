@@ -43,13 +43,21 @@ void Voice::reserveSpace(int samplesPerBlock)
 void Voice::trigger(int p_midiNoteNumber) {
     envelope.trigger();
     midiNoteNumber = p_midiNoteNumber;
-    // TODO: check, waveOsc should already know its sampleRate?
     waveOsc.startNote(getFundamental());
 }
 
-void Voice::silence() {
+void Voice::release() {
 //    envelope.immediatelySilence();
     envelope.release();
+}
+
+void Voice::queueNote(int p_midiNoteNumber)
+{
+    envelope.queueTrigger();
+    // TODO: envelope trigger is queued but pitch change is not
+    // This is not yet a problem as only repeated notes are currently queued
+    midiNoteNumber = p_midiNoteNumber;
+    waveOsc.startNote(getFundamental());
 }
 
 void Voice::addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier)

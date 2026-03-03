@@ -19,45 +19,57 @@ void Envelope::calculateNextBlock(int samples)
         switch (static_cast<State>(currentState))
         {
             case State::attack:
-                {
-                    float value = position;
-                    lastValueForRelease = value;
-                    values.setValue(i, value);
-                    break;
+            {
+                float value = position;
+                lastValueForRelease = value;
+                values.setValue(i, value);
+                break;
                 }
             case State::decay:
-                {
-                    float value = 1.0-(position*(1-sustainLevel));
-                    lastValueForRelease = value;
-                    values.setValue(i, value);
-                    break;
-                }
+            {
+                float value = 1.0-(position*(1-sustainLevel));
+                lastValueForRelease = value;
+                lastValueForQuickRelease = value;
+                values.setValue(i, value);
+                break;
+            }
             case State::sustain:
-                {
-                    float value = sustainLevel;
-                    lastValueForRelease = value;
-                    values.setValue(i, value);
-                    break;
-                }
+            {
+                float value = sustainLevel;
+                lastValueForRelease = value;
+                lastValueForQuickRelease = value;
+                values.setValue(i, value);
+                break;
+            }
             case State::release:
-                {
-                    values.setValue(i, sustainLevel-(sustainLevel*position));
-                    break;
-                }
+            {
+                float value = sustainLevel-(sustainLevel*position);
+                lastValueForQuickRelease = value;
+                values.setValue(i, value);
+                break;
+            }
             case State::prematureRelease:
-                {
-                    values.setValue(i, lastValueForRelease-(lastValueForRelease*position));
-                    break;
-                }
+            {
+                float value = lastValueForRelease-(lastValueForRelease*position);
+                lastValueForQuickRelease = value;
+                values.setValue(i, value);
+                break;
+            }
+            case State::quickReleaseToRetrigger:
+            {
+                float value = lastValueForQuickRelease-(lastValueForQuickRelease*position);
+                values.setValue(i, value);
+                break;
+            }
             case State::inactive:
-                {
-                    values.setValue(i, 0.0);
-                    break;
-                }
+            {
+                values.setValue(i, 0.0);
+                break;
+            }
             default:
-                {
-                    break;
-                }
+            {
+                break;
+            }
         }
         progressPosition();
     }
@@ -78,21 +90,26 @@ void Envelope::progressPosition()
         switch (static_cast<State>(currentState))
         {
             case State::attack:
-                {
-                    position += 1.0/(attackTime*sampleRate);
-                    break;
-                }
+            {
+                position += 1.0/(attackTime*sampleRate);
+                break;
+            }
             case State::decay:
-                {
-                    position += 1.0/(decayTime*sampleRate);
-                    break;
-                }
+            {
+                position += 1.0/(decayTime*sampleRate);
+                break;
+            }
             case State::release:
             case State::prematureRelease:
-                {
-                    position += 1.0/(releaseTime*sampleRate);
-                    break;
-                }
+            {
+                position += 1.0/(releaseTime*sampleRate);
+                break;
+            }
+            case State::quickReleaseToRetrigger:
+            {
+                position += 1.0/(quickReleaseTime*sampleRate);
+                break;
+            }
             default:
                 break;
         }
@@ -104,10 +121,11 @@ void Envelope::progressPosition()
                 case State::decay:
                 case State::release:
                 case State::prematureRelease:
-                    {
-                        progressState();
-                        break;
-                    }
+                case State::quickReleaseToRetrigger:
+                {
+                    progressState();
+                    break;
+                }
                 default:
                     break;
             }
@@ -120,34 +138,40 @@ void Envelope::progressState()
     switch (static_cast<State>(currentState))
     {
         case State::attack:
-            {
-                currentState = State::decay;
-                break;
-            }
+        {
+            currentState = State::decay;
+            break;
+        }
         case State::decay:
-            {
-                currentState = State::sustain;
-                break;
-            }
+        {
+            currentState = State::sustain;
+            break;
+        }
         case State::sustain:
-            {
-                currentState = State::release;
-                break;
-            }
+        {
+            currentState = State::release;
+            break;
+        }
         case State::release:
         case State::prematureRelease:
-            {
-                currentState = State::inactive;
-                break;
-            }
+        {
+            currentState = State::inactive;
+            break;
+        }
+        case State::quickReleaseToRetrigger:
+        {
+            // Probably unnecesary as immediately retriggering
+            currentState = State::inactive;
+            trigger();
+        }
         case State::inactive:
-            {
-                break;
-            }
+        {
+            break;
+        }
         default:
-            {
-                break;
-            }
+        {
+            break;
+        }
     }
     position = 0.0;
 }
@@ -163,6 +187,24 @@ void Envelope::release()
     {
         currentState = State::prematureRelease;
         position = 0.0;
+    }
+}
+
+void Envelope::trigger()
+{
+    currentState = State::attack; position = 0.0;
+}
+
+void Envelope::queueTrigger()
+{
+    if (currentState == State::attack || currentState == State::decay || currentState == State::sustain)
+    {
+        currentState = State::quickReleaseToRetrigger;
+        position = 0.0;
+    }
+    else
+    {
+        trigger();
     }
 }
 

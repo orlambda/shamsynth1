@@ -44,7 +44,8 @@ public:
     
     // Change state
     void trigger(int p_midiNoteNumber);
-    void silence();
+    void release();
+    void queueNote(int p_midiNoteNumber);
     
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.

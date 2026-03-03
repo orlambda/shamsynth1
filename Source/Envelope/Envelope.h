@@ -26,6 +26,7 @@ public:
         sustain,
         release,
         prematureRelease,
+        quickReleaseToRetrigger,
         inactive
     };
     State currentState = State::inactive;
@@ -39,18 +40,21 @@ public:
     void setAttackTime(float seconds);
     void setDecayTime(float seconds);
     void setReleaseTime(float seconds);
-    void trigger(){currentState = State::attack; position = 0.0;}
+    void trigger();
     void immediatelySilence(){currentState = State::inactive;}
     void release();
+    void queueTrigger();
 private:
     float sampleRate = 0.0;
     // Position is from  [0-1)
     float position = 0.0;
+    float lastValueForQuickRelease = 0.0;
     float lastValueForRelease = 0.0;
     // Temporary: hard-coded here
     // SECONDS
     float attackTime = 0.0;
     float decayTime = 0.0;
+    float quickReleaseTime = 0.01;
     bool timedSustain = false;
     float sustainLevel = 0.7;
     float releaseTime = 0.0;
