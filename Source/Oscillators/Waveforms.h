@@ -23,4 +23,5 @@ namespace Waveforms
     constexpr static int sinQuarterTableSize = 80000;
 
     void testWavetables();
+    void testTriangleWave();
 }

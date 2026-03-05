@@ -29,6 +29,15 @@ void Waveforms::testWavetables()
     }
 }
 
+void Waveforms::testTriangleWave()
+{
+    for (float i = 0; i <= 2.0 * juce::MathConstants<double>::pi; i = i+(0.1 * juce::MathConstants<double>::halfPi))
+    {
+        float a = Waveforms::triangle(i);
+        float b = a;
+    }
+}
+
 void Waveforms::populateWavetables()
 {
 
