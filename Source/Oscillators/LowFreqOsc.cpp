@@ -75,7 +75,7 @@ void LowFreqOsc::setSampleRate(float sr)
     updateAngleDelta();
 }
 
-float LowFreqOsc::setValue(int position, float value)
+void LowFreqOsc::setValue(int position, float value)
 {
     if (position < values.size())
     {

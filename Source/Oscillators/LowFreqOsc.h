@@ -34,7 +34,7 @@ public:
     void updateAngleDelta();
     void reserveSpace(int sampleCount) {values.reserveSpace(sampleCount);}
     ModifierBlock values;
-    float setValue(int position, float value);
+    void setValue(int position, float value);
     float getValue(int position);
 private:
     float sampleRate = 0.0;
