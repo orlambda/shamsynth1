@@ -83,7 +83,7 @@ public:
 private:
     //==============================================================================
     std::vector<std::shared_ptr<Voice>> voices;
-    int numberOfVoices = 4;
+    int numberOfVoices = 16;
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);
