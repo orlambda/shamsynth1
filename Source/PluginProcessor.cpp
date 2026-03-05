@@ -129,11 +129,18 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    // TODO: check that activating/deactivating buses calls prepareToPlay() (i.e. that num of channels will always be correct)
+    int totalNumChannels = getTotalNumOutputChannels();
+    if (getTotalNumInputChannels() > totalNumChannels)
+    {
+        int totalNumChannels = getTotalNumInputChannels();
+    }
+    
     // Pre-playback initialisation
     for (auto voice : voices)
     {
         voice->setSampleRate(sampleRate);
-        voice->reserveSpace(samplesPerBlock);
+        voice->reserveSpace(samplesPerBlock, totalNumChannels);
     }
     // Refactor repetitive code
     lfo1.setSampleRate(sampleRate);

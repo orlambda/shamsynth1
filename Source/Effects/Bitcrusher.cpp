@@ -37,7 +37,7 @@ void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutp
             currentValue -= remainder;
             // Change range back to [-1,1]
             currentValue = currentValue * 2 - 1;
-            buffer.setSample(channel, sample, currentValue);
+            buffer.setSample(channel, sample, currentValue * 0.2);
         }
     }
     

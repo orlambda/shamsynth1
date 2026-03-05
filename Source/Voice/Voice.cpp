@@ -18,13 +18,28 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
 {
     if (isActive())
     {
+        float totalNumChannels = buffer.getNumChannels();
         float totalNumSamples = buffer.getNumSamples();
+        if (totalNumSamples != voiceBuffer.getNumSamples() || totalNumChannels != voiceBuffer.getNumChannels())
+        {
+            reserveSpace(totalNumSamples, totalNumChannels);
+        }
+        voiceBuffer.clear();
         envelope.calculateNextBlock(totalNumSamples);
-        // Each oscillator/generator
-        // Starting with a white noise generator
-        waveOsc.processBlock(buffer, totalNumOutputChannels, envelope);
-        whiteNoise.processBlock(buffer, totalNumOutputChannels);
-        bitcrusher.processBlock(buffer, totalNumOutputChannels);
+        waveOsc.processBlock(voiceBuffer, totalNumOutputChannels, envelope);
+        whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels);
+        bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels);
+        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
+        {
+            // TODO: check and use this instead
+//            buffer.addFrom(i, 0, voiceBuffer, i, 0, totalNumSamples);
+            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+            {
+                buffer.addSample(channel, sample, voiceBuffer.getSample(channel, sample));
+                // TODO: check this is unnecessary as voiceBuffer is cleared at start of block
+                voiceBuffer.setSample(channel, sample, 0.0);
+            }
+        }
     }
 }
 
@@ -35,9 +50,10 @@ void Voice::setSampleRate(float rate)
     envelope.setSampleRate(rate);
 }
 
-void Voice::reserveSpace(int samplesPerBlock)
+void Voice::reserveSpace(int samplesPerBlock, int totalNumChannels)
 {
     envelope.reserveSpace(samplesPerBlock);
+    voiceBuffer.setSize(totalNumChannels, samplesPerBlock);
 }
 
 void Voice::trigger(int p_midiNoteNumber) {

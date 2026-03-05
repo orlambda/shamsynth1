@@ -54,7 +54,7 @@ public:
     // Temporary
     // TODO: make static - sampleRate the same for every Voice
     void setSampleRate(float rate);
-    void reserveSpace(int samplesPerBlock);
+    void reserveSpace(int samplesPerBlock, int totalNumChannels);
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateOsc1SineLevel(float level) {waveOsc.updateSineLevel(level);}
     void updateOsc1TriangleLevel(float level) {waveOsc.updateTriangleLevel(level);}
@@ -74,6 +74,8 @@ private:
     // TODO: how to initialise?
     int midiNoteNumber = 0;
     // float fundamental = 0.0;
+    
+    juce::AudioBuffer<float> voiceBuffer;
     
     // White Noise Generator
     NoiseGenerator whiteNoise;
