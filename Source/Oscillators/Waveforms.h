@@ -12,9 +12,15 @@
 
 #include <JuceHeader.h>
 
+static juce::AudioSampleBuffer sinQuarterTable;
+
 namespace Waveforms
 {
+    void populateWavetables();
     float sin(float angle);
     float triangle(float angle);
     float square(float angle);
+    constexpr static int sinQuarterTableSize = 80000;
+
+    void testWavetables();
 }

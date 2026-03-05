@@ -142,6 +142,9 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     lfo2->setSampleRate(sampleRate);
     lfo2->startOsc(*lfo2FrequencyParameter);
     lfo2->reserveSpace(samplesPerBlock);
+    
+    Waveforms::populateWavetables();
+    Waveforms::testWavetables();
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
