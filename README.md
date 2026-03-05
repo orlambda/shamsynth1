@@ -1,60 +1,50 @@
 # shamsynth1 v1.0.12
-A synthesiser plugin made with C++ and JUCE.
 
-To build this plugin, use [JUCE](https://juce.com/get-juce/). Clone the repo, open the .jucer file, save and open in your IDE, and build.
+## IMPORTANT SAFETY WARNING
+This audio plugin may contain errors which result in extremely loud and unexpected sounds. To protect your hearing, please use at a low volume and do not listen on headphones.
+
+## Overview
+A polyphonic synthesiser plugin made with C++ and JUCE with a variety of waveforms, white noise, a bitcrusher, and LFOs.
+
+## Installation and usage
+To compile this plugin you will need to use [JUCE](https://juce.com/get-juce/). Clone the repo, open the `.jucer` file in the Projucer, save and open in your IDE, and build. Once you have downloaded or built the plugin, move it to the relevant folder. E.g. for AU plugins on macOS, the folder is `/Library/Audio/Plug-Ins/Components`. The folder location is different on Windows and for VST3 - check the location for your system. You should now be able to open the plugin in a DAW or other host, such as Logic Pro or Reaper. You may need to scan for new plugins. JUCE also provide an audio plugin host for debugging if you don't want to install a full DAW - see [https://juce.com/tutorials/tutorial_create_projucer_basic_plugin/]() and scroll to 'Set up plug-in debugging (optional)' for instructions on how to install that. You don't need to set the plugin host as an executable in your IDE unless you are planning on debugging.
 
 I am using macOS 15 and haven't tested the plugin on other platforms. I test both AU and VST3 builds. I hope to build to CLAP when JUCE 9 is released.
 
 ## Current features
-- Sine wave oscillator
-    - Volume parameter
-    - Tune parameter
-- Noise generator
-    - Volume parameter
-- Polyphony
-- Bitcrusher
-    - Bit depth parameter
+- 16-voice polyphony
+- Oscillator per voice
+    - Level parameter & slider
+    - Sin level parameter & slider
+    - Triangle level parameter & slider
+    - Square level parameter & slider
+    - Tune parameter & slider
+- Bitcrusher per voice
+    - Bit depth parameter & slider
+- White noise generator per voice
+    - Level parameter & slider
+- LFO 1, currently acts as tremolo effect
+    - Frequency parameter & slider
+    - Depth parameter & slider
+    - Routed to Oscillator output volume
+- LFO 2, currently acts as vibrato and noise tremolo
+    - Frequency parameter & slider
+    - Depth parameter & slider
+    - Routed to noise generator volume and wave osc tune
+- Output volume parameter & slider
 - MIDI control
     - Pitch
     - Note on
     - Note off
-- LFO 1, currently acts as tremolo effect
-    - Frequency parameter
-    - Depth parameter
-    - Routed to output volume
-- LFO 2, currently acts as vibrato and noise tremolo
-    - Frequency parameter
-    - Depth parameter
-    - Routed to noise generator volume and wave osc tune
-- Output volume parameter
+- Parameters can be read from and written to by a host DAW
 
 ## Future features
-- Enable DAW automation
-- Multiple wave oscillators (2?) with controls:
-    - Wave type
-        - Sine
-        - Square
-        - Triangle
-    - Wave blend?
-    - Relative pitch -24 - +24
-    - Volume ADSR envelope
-        - 4 dials, 0 - 1
-    - Volume envelope overall time 0.1 - 10s
-    - Pitch ADSR envelope
-        - 4 dials, 0 - 1
-    - Pitch envelope depth -24 - +24
-    - Pitch envelope
-    - Volume
-- White noise generator controls:
-    - Volume ADSR envelope
-        - 4 dials, 0 - 1
-    - Volume envelope overall time 0.1 - 10s
-    - Volume
+- ASDR Envelope
+    - Sliders
 - LFO controls:
-    - Frequency
-    - Depth
     - Wave shape
     - Phase offset?
 - Modulation matrix (or similar)
-    - Routing from LFOs and other sources
+    - Routing from LFOs, envelopes, and other signal sources
 - Measure volume in dB
+- Touch sensitivity
