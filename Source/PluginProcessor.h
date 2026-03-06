@@ -69,6 +69,10 @@ public:
     std::atomic<float>* osc1TuneParameter = nullptr;
     std::atomic<float>* noiseLevelParameter = nullptr;
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
+    std::atomic<float>* env1AttackTimeParameter = nullptr;
+    std::atomic<float>* env1DecayTimeParameter = nullptr;
+    std::atomic<float>* env1SustainLevelParameter = nullptr;
+    std::atomic<float>* env1ReleaseTimeParameter = nullptr;
     std::atomic<float>* lfo1FrequencyParameter = nullptr;
     std::atomic<float>* lfo1DepthParameter = nullptr;
     std::atomic<float>* lfo2FrequencyParameter = nullptr;

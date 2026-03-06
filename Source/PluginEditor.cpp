@@ -88,6 +88,42 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     bitcrusherBitDepthSlider.setTextValueSuffix("");
     addAndMakeVisible(&bitcrusherBitDepthSlider);
     
+    env1AttackTimeLabel.setText("A Time", juce::dontSendNotification);
+    addAndMakeVisible(env1AttackTimeLabel);
+    env1AttackTimeAttachment.reset(new SliderAttachment (valueTreeState, "env1AttackTime", env1AttackTimeSlider));
+    env1AttackTimeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    env1AttackTimeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    env1AttackTimeSlider.setPopupDisplayEnabled(true, false, this);
+    env1AttackTimeSlider.setTextValueSuffix(" seconds");
+    addAndMakeVisible(&env1AttackTimeSlider);
+    
+    env1DecayTimeLabel.setText("D Time", juce::dontSendNotification);
+    addAndMakeVisible(env1DecayTimeLabel);
+    env1DecayTimeAttachment.reset(new SliderAttachment (valueTreeState, "env1DecayTime", env1DecayTimeSlider));
+    env1DecayTimeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    env1DecayTimeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    env1DecayTimeSlider.setPopupDisplayEnabled(true, false, this);
+    env1DecayTimeSlider.setTextValueSuffix(" seconds");
+    addAndMakeVisible(&env1DecayTimeSlider);
+    
+    env1SustainLevelLabel.setText("S Level", juce::dontSendNotification);
+    addAndMakeVisible(env1SustainLevelLabel);
+    env1SustainLevelAttachment.reset(new SliderAttachment (valueTreeState, "env1SustainLevel", env1SustainLevelSlider));
+    env1SustainLevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    env1SustainLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    env1SustainLevelSlider.setPopupDisplayEnabled(true, false, this);
+    env1SustainLevelSlider.setTextValueSuffix("");
+    addAndMakeVisible(&env1SustainLevelSlider);
+    
+    env1ReleaseTimeLabel.setText("R Time", juce::dontSendNotification);
+    addAndMakeVisible(env1ReleaseTimeLabel);
+    env1ReleaseTimeAttachment.reset(new SliderAttachment (valueTreeState, "env1ReleaseTime", env1ReleaseTimeSlider));
+    env1ReleaseTimeSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    env1ReleaseTimeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    env1ReleaseTimeSlider.setPopupDisplayEnabled(true, false, this);
+    env1ReleaseTimeSlider.setTextValueSuffix(" seconds");
+    addAndMakeVisible(&env1ReleaseTimeSlider);
+    
     lfo1FrequencyLabel.setText("LFO 1 Freq", juce::dontSendNotification);
     addAndMakeVisible(lfo1FrequencyLabel);
     lfo1FrequencyAttachment.reset(new SliderAttachment (valueTreeState, "lfo1Frequency", lfo1FrequencySlider));
@@ -173,16 +209,24 @@ void Shamsynth1AudioProcessorEditor::resized()
     noiseLevelLabel.setBounds(520, 180, 200, 50);
     bitcrusherBitDepthSlider.setBounds(640, 40, 20, 150);
     bitcrusherBitDepthLabel.setBounds(620, 180, 200, 50);
-    lfo1FrequencySlider.setBounds(40, 240, 20, 150);
-    lfo1FrequencyLabel.setBounds(20, 380, 200, 50);
-    lfo1DepthSlider.setBounds(140, 240, 20, 150);
-    lfo1DepthLabel.setBounds(120, 380, 200, 50);
-    lfo2FrequencySlider.setBounds(240, 240, 20, 150);
-    lfo2FrequencyLabel.setBounds(220, 380, 200, 50);
-    lfo2DepthSlider.setBounds(340, 240, 20, 150);
-    lfo2DepthLabel.setBounds(320, 380, 200, 50);
-    outputVolumeSlider.setBounds(640, 240, 20, 150);
-    outputVolumeLabel.setBounds(620, 380, 200, 50);
+    env1AttackTimeSlider.setBounds(40, 240, 20, 150);
+    env1AttackTimeLabel.setBounds(20, 380, 200, 50);
+    env1DecayTimeSlider.setBounds(140, 240, 20, 150);
+    env1DecayTimeLabel.setBounds(120, 380, 200, 50);
+    env1SustainLevelSlider.setBounds(240, 240, 20, 150);
+    env1SustainLevelLabel.setBounds(220, 380, 200, 50);
+    env1ReleaseTimeSlider.setBounds(340, 240, 20, 150);
+    env1ReleaseTimeLabel.setBounds(320, 380, 200, 50);
+    lfo1FrequencySlider.setBounds(40, 440, 20, 150);
+    lfo1FrequencyLabel.setBounds(20, 580, 200, 50);
+    lfo1DepthSlider.setBounds(140, 440, 20, 150);
+    lfo1DepthLabel.setBounds(120, 580, 200, 50);
+    lfo2FrequencySlider.setBounds(240, 440, 20, 150);
+    lfo2FrequencyLabel.setBounds(220, 580, 200, 50);
+    lfo2DepthSlider.setBounds(340, 440, 20, 150);
+    lfo2DepthLabel.setBounds(320, 580, 200, 50);
+    outputVolumeSlider.setBounds(640, 440, 20, 150);
+    outputVolumeLabel.setBounds(620, 580, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

@@ -12,7 +12,8 @@
 
 #include <iostream>
 
-Voice::Voice() {}
+Voice::Voice() {
+}
 
 void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
@@ -36,8 +37,6 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
             for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
             {
                 buffer.addSample(channel, sample, voiceBuffer.getSample(channel, sample));
-                // TODO: check this is unnecessary as voiceBuffer is cleared at start of block
-                voiceBuffer.setSample(channel, sample, 0.0);
             }
         }
     }
@@ -54,6 +53,14 @@ void Voice::reserveSpace(int samplesPerBlock, int totalNumChannels)
 {
     envelope.reserveSpace(samplesPerBlock);
     voiceBuffer.setSize(totalNumChannels, samplesPerBlock);
+}
+
+void Voice::updateADSRSettings(float a, float d, float s, float r)
+{
+    envelope.setAttackTime(a);
+    envelope.setDecayTime(d);
+    envelope.setSustainLevel(s);
+    envelope.setReleaseTime(r);
 }
 
 void Voice::trigger(int p_midiNoteNumber) {

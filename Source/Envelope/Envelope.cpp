@@ -237,6 +237,12 @@ void Envelope::setDecayTime(float seconds)
         decayTime = seconds;
     }
 }
+
+void Envelope::setSustainLevel(float level)
+{
+    sustainLevel = level;
+}
+
 void Envelope::setReleaseTime(float seconds)
 {
     // min ramp is 2 samples

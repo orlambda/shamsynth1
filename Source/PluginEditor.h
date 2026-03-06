@@ -33,7 +33,7 @@ private:
     
     // Window
     int windowWidth = 750;
-    int windowHeight = 570;
+    int windowHeight = 750;
 
     // Controls
     juce::AudioProcessorValueTreeState& valueTreeState;
@@ -65,6 +65,22 @@ private:
     juce::Label bitcrusherBitDepthLabel;
     juce::Slider bitcrusherBitDepthSlider;
     std::unique_ptr<SliderAttachment> bitcrusherBitDepthAttachment;
+    
+    juce::Label env1AttackTimeLabel;
+    juce::Slider env1AttackTimeSlider;
+    std::unique_ptr<SliderAttachment> env1AttackTimeAttachment;
+    
+    juce::Label env1DecayTimeLabel;
+    juce::Slider env1DecayTimeSlider;
+    std::unique_ptr<SliderAttachment> env1DecayTimeAttachment;
+    
+    juce::Label env1SustainLevelLabel;
+    juce::Slider env1SustainLevelSlider;
+    std::unique_ptr<SliderAttachment> env1SustainLevelAttachment;
+    
+    juce::Label env1ReleaseTimeLabel;
+    juce::Slider env1ReleaseTimeSlider;
+    std::unique_ptr<SliderAttachment> env1ReleaseTimeAttachment;
     
     juce::Label lfo1FrequencyLabel;
     juce::Slider lfo1FrequencySlider;

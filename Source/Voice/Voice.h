@@ -60,6 +60,7 @@ public:
     void updateOsc1TriangleLevel(float level) {waveOsc.updateTriangleLevel(level);}
     void updateOsc1SquareLevel(float level) {waveOsc.updateSquareLevel(level);}
     void updateOsc1Tune(float tune) {waveOsc.updateTune(tune);}
+    void updateADSRSettings(float a, float d, float s, float r);
     void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
     

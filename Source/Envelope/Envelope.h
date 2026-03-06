@@ -39,6 +39,7 @@ public:
     void reserveSpace(float sampleCount);
     void setAttackTime(float seconds);
     void setDecayTime(float seconds);
+    void setSustainLevel(float level);
     void setReleaseTime(float seconds);
     void trigger();
     void immediatelySilence(){currentState = State::inactive;}
@@ -50,12 +51,13 @@ private:
     float position = 0.0;
     float lastValueForQuickRelease = 0.0;
     float lastValueForRelease = 0.0;
-    // Temporary: hard-coded here
+    // Temporary: hard-coded heretw
     // SECONDS
     float attackTime = 0.0;
     float decayTime = 0.0;
+    float sustainLevel = 1.0;
+    float releaseTime = 0.0;
     float quickReleaseTime = 0.01;
     bool timedSustain = false;
-    float sustainLevel = 0.7;
-    float releaseTime = 0.0;
+
 };
