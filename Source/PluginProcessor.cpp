@@ -163,6 +163,7 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     Waveforms::populateWavetables();
 //    Waveforms::testWavetables();
 //    Waveforms::testTriangleWave();
+    currentlyPowerOn = powerOnParameter.isTrue();
 }
 
 void Shamsynth1AudioProcessor::releaseResources()
@@ -201,8 +202,8 @@ bool Shamsynth1AudioProcessor::isBusesLayoutSupported (const BusesLayout& layout
 
 void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    
     juce::ScopedNoDenormals noDenormals;
+
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     auto totalNumSamples = buffer.getNumSamples();
@@ -219,84 +220,83 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = 0; i < totalNumOutputChannels; ++i)
         {buffer.clear(i, 0, totalNumSamples);}
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    
-    // Parameter buffers
-    bool currentPowerOn = powerOnParameter.isTrue();
-    float currentOsc1Level = *osc1LevelParameter;
-    float currentOsc1SineLevel = *osc1SineLevelParameter;
-    float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
-    float currentOsc1SquareLevel = *osc1SquareLevelParameter;
-    float currentOsc1Tune = *osc1TuneParameter;
-    float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
-    float currentNoiseLevel = *noiseLevelParameter;
-    float currentEnv1AttackTime = *env1AttackTimeParameter;
-    float currentEnv1DecayTime = *env1DecayTimeParameter;
-    float currentEnv1SustainLevel = *env1SustainLevelParameter;
-    float currentEnv1ReleaseTime = *env1ReleaseTimeParameter;
-    float currentLfo1Frequency = *lfo1FrequencyParameter;
-    float currentLfo1Depth = *lfo1DepthParameter;
-    float currentLfo2Frequency = *lfo2FrequencyParameter;
-    float currentLfo2Depth = *lfo2DepthParameter;
-    float currentOutputVolume = *outputVolumeParameter;
-    if (!currentPowerOn)
+    if (checkOnOffState())
     {
-        currentOutputVolume = 0.0f;
-    }
-    
-    // MIDI
-    // Avoid changing midiMessages
-    juce::MidiBuffer midiBuffer = midiMessages;
-    // Keyboard component in plugin window
-    keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
-    processMidi(midiBuffer);
-    
-    // LFOs etc
-    lfo1.setFrequency(currentLfo1Frequency);
-    lfo1.setDepth(currentLfo1Depth);
-    lfo1.calculateNextBlock(totalNumSamples);
-    lfo2->setFrequency(currentLfo2Frequency);
-    lfo2->setDepth(currentLfo2Depth);
-    lfo2->calculateNextBlock(totalNumSamples);
-    
-    // Synthesis
-    for (auto& voice : voices)
-    {
-        voice->updateOsc1Level(currentOsc1Level);
-        voice->updateOsc1SineLevel(currentOsc1SineLevel);
-        voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
-        voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
-        voice->updateOsc1Tune(currentOsc1Tune);
-        voice->updateNoiseLevel(currentNoiseLevel);
-        voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
-        voice->processBlock(buffer, totalNumOutputChannels);
-        // Temporary hard-coded values
-        voice->envelope.setAttackTime(currentEnv1AttackTime);
-        voice->envelope.setDecayTime(currentEnv1DecayTime);
-        voice->envelope.setSustainLevel(currentEnv1SustainLevel);
-        voice->envelope.setReleaseTime(currentEnv1ReleaseTime);
-    }
-    
-
-    // Effects
-    // for (auto& effect : effects)
-        // {effect->processBlock(buffer);}
-
-    // Final volume
-    // Scale down volume to account for increase from LFO and prevent clipping
-    float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
-    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
-    {
-        for (int sample = 0; sample < totalNumSamples; ++sample)
+        
+        // This is the place where you'd normally do the guts of your plugin's
+        // audio processing...
+        // Make sure to reset the state if your inner loop is processing
+        // the samples and the outer loop is handling the channels.
+        // Alternatively, you can process the samples with the channels
+        // interleaved by keeping the same state.
+        
+        // Parameter buffers
+        float currentOsc1Level = *osc1LevelParameter;
+        float currentOsc1SineLevel = *osc1SineLevelParameter;
+        float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
+        float currentOsc1SquareLevel = *osc1SquareLevelParameter;
+        float currentOsc1Tune = *osc1TuneParameter;
+        float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
+        float currentNoiseLevel = *noiseLevelParameter;
+        float currentEnv1AttackTime = *env1AttackTimeParameter;
+        float currentEnv1DecayTime = *env1DecayTimeParameter;
+        float currentEnv1SustainLevel = *env1SustainLevelParameter;
+        float currentEnv1ReleaseTime = *env1ReleaseTimeParameter;
+        float currentLfo1Frequency = *lfo1FrequencyParameter;
+        float currentLfo1Depth = *lfo1DepthParameter;
+        float currentLfo2Frequency = *lfo2FrequencyParameter;
+        float currentLfo2Depth = *lfo2DepthParameter;
+        float currentOutputVolume = *outputVolumeParameter;
+        
+        // MIDI
+        // Avoid changing midiMessages
+        juce::MidiBuffer midiBuffer = midiMessages;
+        // Keyboard component in plugin window
+        keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
+        processMidi(midiBuffer);
+        
+        // LFOs etc
+        lfo1.setFrequency(currentLfo1Frequency);
+        lfo1.setDepth(currentLfo1Depth);
+        lfo1.calculateNextBlock(totalNumSamples);
+        lfo2->setFrequency(currentLfo2Frequency);
+        lfo2->setDepth(currentLfo2Depth);
+        lfo2->calculateNextBlock(totalNumSamples);
+        
+        // Synthesis
+        for (auto& voice : voices)
         {
-            float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
-            float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
-            buffer.setSample(channel, sample, finalValue);
+            voice->updateOsc1Level(currentOsc1Level);
+            voice->updateOsc1SineLevel(currentOsc1SineLevel);
+            voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
+            voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
+            voice->updateOsc1Tune(currentOsc1Tune);
+            voice->updateNoiseLevel(currentNoiseLevel);
+            voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
+            voice->processBlock(buffer, totalNumOutputChannels);
+            // Temporary hard-coded values
+            voice->envelope.setAttackTime(currentEnv1AttackTime);
+            voice->envelope.setDecayTime(currentEnv1DecayTime);
+            voice->envelope.setSustainLevel(currentEnv1SustainLevel);
+            voice->envelope.setReleaseTime(currentEnv1ReleaseTime);
+        }
+        
+        
+        // Effects
+        // for (auto& effect : effects)
+        // {effect->processBlock(buffer);}
+        
+        // Final volume
+        // Scale down volume to account for increase from LFO and prevent clipping
+        float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
+        for (int channel = 0; channel < totalNumOutputChannels; ++channel)
+        {
+            for (int sample = 0; sample < totalNumSamples; ++sample)
+            {
+                float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
+                float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
+                buffer.setSample(channel, sample, finalValue);
+            }
         }
     }
 }
@@ -415,4 +415,49 @@ std::optional<int> Shamsynth1AudioProcessor::availableVoice()
     }
     return {};
     
+}
+
+bool Shamsynth1AudioProcessor::checkOnOffState()
+{
+    // Currently on
+    if (currentlyPowerOn)
+    {
+        // Just been told to switch off
+        if (!powerOnParameter.isTrue())
+        {
+            resetState();
+            currentlyPowerOn = false;
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    // Currently off
+    else
+    {
+        // Just been told to turn on
+        if (powerOnParameter.isTrue())
+        {
+            currentlyPowerOn = true;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+}
+
+void Shamsynth1AudioProcessor::resetState()
+{
+    // Reset Oscs
+    for (auto voice : voices)
+    {
+        voice->reset();
+    }
+    // Reset LFOs
+    lfo1.resetLFO();
+    lfo2->resetLFO();
 }

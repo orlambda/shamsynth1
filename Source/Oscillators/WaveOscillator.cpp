@@ -24,10 +24,10 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             // Apply LFO to tune
             for (auto modifier: tuneModifiers)
             {
-                currentTuneAdjustment = 0;
+                currentTuneAdjustment = 0.0f;
                 // temp scaling - measures LFO depth
                 
-                float scale = 12;
+                float scale = 12.0f;
                 currentTuneAdjustment = currentTuneAdjustment + (modifier->getValue(sample) * scale);
             }
             updateAngleDelta();
@@ -40,7 +40,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             {
                 buffer.addSample(channel, sample, sampleValue);
             }
-            currentAngle = fmod(currentAngle + angleDelta, 2.0 * juce::MathConstants<double>::pi);
+            currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
         }
     }
 }
@@ -66,14 +66,14 @@ void WaveOscillator::startNote(float f)
 void WaveOscillator::updateAngleDelta()
 {
     // Tune is currently in semitones (probably change this to cents)
-    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentTune + currentTuneAdjustment) * 100);
-    angleDelta = (adjustedFrequency / sampleRate) * 2.0 * juce::MathConstants<double>::pi;
+    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentTune + currentTuneAdjustment) * 100.0f);
+    angleDelta = (adjustedFrequency / sampleRate) * 2.0f * juce::MathConstants<double>::pi;
 }
 
 void WaveOscillator::setFrequency(float f)
 {
     // Use abs for now to deal with negative values
-    if (f >= 0.0)
+    if (f >= 0.0f)
         {frequency = f;}
     updateAngleDelta();
 }
@@ -82,4 +82,10 @@ void WaveOscillator::setSampleRate(float sr)
 {
     sampleRate = sr;
     updateAngleDelta();
+}
+
+void WaveOscillator::reset()
+{
+    resetAngle();
+    isActive = false;
 }

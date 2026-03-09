@@ -26,6 +26,7 @@ public:
     void startOsc(float f);
     void stopOsc();
     void calculateNextBlock(int samples);
+    void resetLFO();
     void resetAngle();
     void progressAngle();
     void setFrequency(float f);
@@ -37,10 +38,10 @@ public:
     void setValue(int position, float value);
     float getValue(int position);
 private:
-    float sampleRate = 0.0;
-    float currentAngle = 0.0;
-    float angleDelta = 0.0;
-    float frequency = 0.0;
-    float depth = 0.0;
+    float sampleRate = 0.0f;
+    float currentAngle = 0.0f;
+    float angleDelta = 0.0f;
+    float frequency = 0.0f;
+    float depth = 0.0f;
     bool isActive = false;
 };

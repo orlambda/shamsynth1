@@ -23,7 +23,7 @@ void LowFreqOsc::startOsc(float f)
 
 void LowFreqOsc::stopOsc()
 {
-    isActive = false;
+    resetLFO();
 }
 
 void LowFreqOsc::calculateNextBlock(int samples)
@@ -33,28 +33,28 @@ void LowFreqOsc::calculateNextBlock(int samples)
     values.reserveSpace(samples);
     for (int i = 0; i < samples; ++i)
     {
-        float value = 0.0;
+        float value = 0.0f;
         if (isActive) {
             value = Waveforms::sin(currentAngle + angleDelta) * depth;
         }
         values.setValue(i, value);
-        currentAngle = fmod(currentAngle + angleDelta, 2 * juce::MathConstants<double>::pi);
+        currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
     }
 }
 
 void LowFreqOsc::resetAngle()
 {
-    currentAngle = 0.0;
+    currentAngle = 0.0f;
 }
 
 void LowFreqOsc::progressAngle()
 {
-    currentAngle = fmod(currentAngle + angleDelta, 2 * juce::MathConstants<double>::pi);
+    currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
 }
 
 void LowFreqOsc::updateAngleDelta()
 {
-    angleDelta = (frequency / sampleRate) * 2.0 * juce::MathConstants<double>::pi;
+    angleDelta = (frequency / sampleRate) * 2.0f * juce::MathConstants<double>::pi;
 }
 
 void LowFreqOsc::setFrequency(float f)
@@ -88,3 +88,8 @@ float LowFreqOsc::getValue(int position)
     return values.getValue(position);
 }
 
+void LowFreqOsc::resetLFO()
+{
+    resetAngle();
+    isActive = false;
+}

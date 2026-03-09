@@ -81,9 +81,14 @@ public:
     std::atomic<float>* outputVolumeParameter = nullptr;
     // TODO: try juce::AudioParameterBool*
     atomicBool powerOnParameter{nullptr};
+    bool currentlyPowerOn = true;
+    
+    bool checkOnOffState();
+    void resetState();
     
     juce::MidiKeyboardState keyboardState;
     
+    // TODO: decide whether to use shared pointers
     LowFreqOsc lfo1;
     std::shared_ptr<LowFreqOsc> lfo2 = std::make_shared<LowFreqOsc>();
 
@@ -103,7 +108,7 @@ private:
     // Effects
     
     // Volume
-    float outputVolumeScale = 0.5;
+    float outputVolumeScale = 0.5f;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)

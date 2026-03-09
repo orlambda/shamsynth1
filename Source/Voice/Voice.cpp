@@ -92,3 +92,9 @@ void Voice::addOscTuneModifier(std::shared_ptr<LowFreqOsc> modifier)
 {
     waveOsc.tuneModifiers.push_back(modifier);
 }
+
+void Voice::reset()
+{
+    waveOsc.reset();
+    envelope.reset();
+}

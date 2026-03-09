@@ -27,7 +27,7 @@ void Envelope::calculateNextBlock(int samples)
                 }
             case State::decay:
             {
-                float value = 1.0-(position*(1-sustainLevel));
+                float value = 1.0f-(position*(1.0f-sustainLevel));
                 lastValueForRelease = value;
                 lastValueForQuickRelease = value;
                 values.setValue(i, value);
@@ -63,7 +63,7 @@ void Envelope::calculateNextBlock(int samples)
             }
             case State::inactive:
             {
-                values.setValue(i, 0.0);
+                values.setValue(i, 0.0f);
                 break;
             }
             default:
@@ -91,29 +91,29 @@ void Envelope::progressPosition()
         {
             case State::attack:
             {
-                position += 1.0/(attackTime*sampleRate);
+                position += 1.0f/(attackTime*sampleRate);
                 break;
             }
             case State::decay:
             {
-                position += 1.0/(decayTime*sampleRate);
+                position += 1.0f/(decayTime*sampleRate);
                 break;
             }
             case State::release:
             case State::prematureRelease:
             {
-                position += 1.0/(releaseTime*sampleRate);
+                position += 1.0f/(releaseTime*sampleRate);
                 break;
             }
             case State::quickReleaseToRetrigger:
             {
-                position += 1.0/(quickReleaseTime*sampleRate);
+                position += 1.0f/(quickReleaseTime*sampleRate);
                 break;
             }
             default:
                 break;
         }
-        if (position >= 1.0)
+        if (position >= 1.0f)
         {
             switch (static_cast<State>(currentState))
             {
@@ -173,7 +173,7 @@ void Envelope::progressState()
             break;
         }
     }
-    position = 0.0;
+    position = 0.0f;
 }
 
 void Envelope::release()
@@ -181,18 +181,18 @@ void Envelope::release()
     if (currentState == State::sustain)
     {
         currentState = State::release;
-        position = 0.0;
+        position = 0.0f;
     }
     else
     {
         currentState = State::prematureRelease;
-        position = 0.0;
+        position = 0.0f;
     }
 }
 
 void Envelope::trigger()
 {
-    currentState = State::attack; position = 0.0;
+    currentState = State::attack; position = 0.0f;
 }
 
 void Envelope::queueTrigger()
@@ -200,7 +200,7 @@ void Envelope::queueTrigger()
     if (currentState == State::attack || currentState == State::decay || currentState == State::sustain)
     {
         currentState = State::quickReleaseToRetrigger;
-        position = 0.0;
+        position = 0.0f;
     }
     else
     {
@@ -211,8 +211,8 @@ void Envelope::queueTrigger()
 void Envelope::setAttackTime(float seconds)
 {
     // min ramp is 2 samples
-    float lengthOfSample = 1.0/sampleRate;
-    float min = lengthOfSample * 2.0;
+    float lengthOfSample = 1.0f/sampleRate;
+    float min = lengthOfSample * 2.0f;
     if (attackTime < min)
     {
         attackTime = min;
@@ -226,8 +226,8 @@ void Envelope::setAttackTime(float seconds)
 void Envelope::setDecayTime(float seconds)
 {
     // min ramp is 2 samples
-    float lengthOfSample = 1.0/sampleRate;
-    float min = lengthOfSample * 2.0;
+    float lengthOfSample = 1.0f/sampleRate;
+    float min = lengthOfSample * 2.0f;
     if (decayTime < min)
     {
         decayTime = min;
@@ -246,8 +246,8 @@ void Envelope::setSustainLevel(float level)
 void Envelope::setReleaseTime(float seconds)
 {
     // min ramp is 2 samples
-    float lengthOfSample = 1.0/sampleRate;
-    float min = lengthOfSample * 2.0;
+    float lengthOfSample = 1.0f/sampleRate;
+    float min = lengthOfSample * 2.0f;
     if (releaseTime < min)
     {
         releaseTime = min;
@@ -256,5 +256,12 @@ void Envelope::setReleaseTime(float seconds)
     {
         releaseTime = seconds;
     }
-    
+}
+
+void Envelope::reset()
+{
+    position = 0.0f;
+    lastValueForQuickRelease = 0.0f;
+    lastValueForRelease = 0.0f;
+    currentState = State::inactive;
 }

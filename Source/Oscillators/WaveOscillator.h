@@ -24,7 +24,9 @@ public:
     // Abruptly ends all sound
     void silence();
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope);
+    void resetAngle(){currentAngle = 0.0f;}
     void trigger(float f);
+    void reset();
     void setFrequency(float f);
     // Is this necessary or can it
         // a) stay in the constructor if it won't change within Oscillator's lifetime (check this), or
@@ -40,20 +42,20 @@ public:
     std::vector<std::shared_ptr<LowFreqOsc>> tuneModifiers;
     
     // Temporary
-    float sampleRate = 0.0;
+    float sampleRate = 0.0f;
 private:
     // TODO: initialise in constructor
-    float currentAngle = 0.0;
-    float angleDelta = 0.0;
+    float currentAngle = 0.0f;
+    float angleDelta = 0.0f;
     
-    float frequency = 0.0;
+    float frequency = 0.0f;
     
-    float currentLevel = 1.0;
-    float currentSineLevel = 1.0;
-    float currentTriangleLevel = 1.0;
-    float currentSquareLevel = 1.0;
-    float currentTune = 0.0;
-    float currentTuneAdjustment = 0.0;
+    float currentLevel = 1.0f;
+    float currentSineLevel = 1.0f;
+    float currentTriangleLevel = 1.0f;
+    float currentSquareLevel = 1.0f;
+    float currentTune = 0.0f;
+    float currentTuneAdjustment = 0.0f;
 
     
     bool isActive = false;

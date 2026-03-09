@@ -45,19 +45,20 @@ public:
     void immediatelySilence(){currentState = State::inactive;}
     void release();
     void queueTrigger();
+    void reset();
 private:
-    float sampleRate = 0.0;
+    float sampleRate = 0.0f;
     // Position is from  [0-1)
-    float position = 0.0;
-    float lastValueForQuickRelease = 0.0;
-    float lastValueForRelease = 0.0;
+    float position = 0.0f;
+    float lastValueForQuickRelease = 0.0f;
+    float lastValueForRelease = 0.0f;
     // Temporary: hard-coded heretw
     // SECONDS
-    float attackTime = 0.0;
-    float decayTime = 0.0;
-    float sustainLevel = 1.0;
-    float releaseTime = 0.0;
-    float quickReleaseTime = 0.01;
+    float attackTime = 0.0f;
+    float decayTime = 0.0f;
+    float sustainLevel = 1.0f;
+    float releaseTime = 0.0f;
+    float quickReleaseTime = 0.01f;
     bool timedSustain = false;
 
 };

@@ -46,6 +46,7 @@ public:
     void trigger(int p_midiNoteNumber);
     void release();
     void queueNote(int p_midiNoteNumber);
+    void reset();
     
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.
