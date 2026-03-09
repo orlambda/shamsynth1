@@ -17,12 +17,12 @@
 
 void Waveforms::testWavetables()
 {
-    for (float i = 0.0; i < juce::MathConstants<double>::pi; i = i + (0.01 * juce::MathConstants<double>::pi))
+    for (float i = 0.0f; i < juce::MathConstants<double>::pi; i = i + (0.01f * juce::MathConstants<double>::pi))
     {
         auto a = Waveforms::sin(i);
         auto b = std::sin(i);
         auto difference = a - b;
-        if (difference > 0.001)
+        if (difference > 0.001f)
         {
             int c = a;
         }
@@ -31,7 +31,7 @@ void Waveforms::testWavetables()
 
 void Waveforms::testTriangleWave()
 {
-    for (float i = 0; i <= 2.0 * juce::MathConstants<double>::pi; i = i+(0.1 * juce::MathConstants<double>::halfPi))
+    for (float i = 0.0f; i <= 2.0f * juce::MathConstants<double>::pi; i = i+(0.1f * juce::MathConstants<double>::halfPi))
     {
         float a = Waveforms::triangle(i);
         float b = a;
@@ -45,7 +45,7 @@ void Waveforms::populateWavetables()
     sinQuarterTable.setSize(1, sinQuarterTableSize);
     for (int i = 0; i < sinQuarterTableSize; ++i)
     {
-        auto value = std::sin(juce::MathConstants<double>::halfPi * ((i * 1.0) / sinQuarterTableSize));
+        auto value = std::sin(juce::MathConstants<double>::halfPi * ((i * 1.0f) / sinQuarterTableSize));
         sinQuarterTable.setSample(0, i, value);
         int a = 0;
     }
@@ -58,7 +58,7 @@ void Waveforms::populateWavetables()
 
 float Waveforms::sin(float angle)
 {
-    auto normalisedAngle = fmod(angle, 2.0 * juce::MathConstants<double>::pi);
+    auto normalisedAngle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
     auto angleWithinQuarter = fmod(angle, juce::MathConstants<double>::halfPi);
     // TODO: Interpolation
     int sampleIndex = ceil((angleWithinQuarter / juce::MathConstants<double>::halfPi) * sinQuarterTableSize);
@@ -74,9 +74,9 @@ float Waveforms::sin(float angle)
         sampleIndex = sinQuarterTableSize-1;
     }
     auto valueWithinQuarter = sinQuarterTable.getSample(0, sampleIndex);
-    if (normalisedAngle >= 1.5 * juce::MathConstants<double>::pi)
+    if (normalisedAngle >= 1.5f * juce::MathConstants<double>::pi)
     {
-        return -1 + valueWithinQuarter;
+        return -1.0f + valueWithinQuarter;
     }
     else if (normalisedAngle >= juce::MathConstants<double>::pi)
     {
@@ -84,7 +84,7 @@ float Waveforms::sin(float angle)
     }
     else if (normalisedAngle >= juce::MathConstants<double>::halfPi)
     {
-        return 1 - valueWithinQuarter;
+        return 1.0f - valueWithinQuarter;
     }
     else
     {
@@ -95,15 +95,15 @@ float Waveforms::sin(float angle)
 float Waveforms::triangle(float angle)
 {
     // TODO: avoid using mod both here and in WaveOscillator
-    auto normalisedAngle = fmod(angle, 2.0 * juce::MathConstants<double>::pi);
+    auto normalisedAngle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
     auto angleWithinQuarter = fmod(angle, juce::MathConstants<double>::halfPi);
     // Triangle wave is symmetrical - calculate value within quarter
     // Angle within quarter is in range [0, 0.5 * pi)
     // Value within quarter is in range [0, 1)
     auto valueWithinQuarter = angleWithinQuarter / juce::MathConstants<double>::halfPi;
-    if (normalisedAngle >= 1.5 * juce::MathConstants<double>::pi)
+    if (normalisedAngle >= 1.5f * juce::MathConstants<double>::pi)
     {
-        return -1 + valueWithinQuarter;
+        return -1.0f + valueWithinQuarter;
     }
     else if (normalisedAngle >= juce::MathConstants<double>::pi)
     {
@@ -111,7 +111,7 @@ float Waveforms::triangle(float angle)
     }
     else if (normalisedAngle >= juce::MathConstants<double>::halfPi)
     {
-        return 1 - valueWithinQuarter;
+        return 1.0f - valueWithinQuarter;
     }
     else
     {
@@ -123,14 +123,14 @@ float Waveforms::square(float angle)
 {
     // TODO: avoid using mod both here and in WaveOscillator?
     // TODO: use lookup table?
-    auto normalisedAngle = fmod(angle, 2.0 * juce::MathConstants<double>::pi);
+    auto normalisedAngle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
     // [0, pi) = 1, [pi, 2*pi) = -1
     if (normalisedAngle >= juce::MathConstants<double>::pi)
     {
-        return 1.0;
+        return 1.0f;
     }
     else
     {
-        return -1.0;
+        return -1.0f;
     }
 }

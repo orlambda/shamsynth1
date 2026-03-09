@@ -20,7 +20,7 @@ namespace Waveforms
     float sin(float angle);
     float triangle(float angle);
     float square(float angle);
-    constexpr static int sinQuarterTableSize = 80000;
+    constexpr static int sinQuarterTableSize = 2048;
 
     void testWavetables();
     void testTriangleWave();
