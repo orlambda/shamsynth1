@@ -3,7 +3,7 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.23" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.24" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
@@ -19,6 +19,8 @@
       <GROUP id="{EECC66FC-ADF1-99E6-C228-9585404174F8}" name="Helpers">
         <FILE id="cpk8Fu" name="audio_maths.cpp" compile="1" resource="0" file="Source/Helpers/audio_maths.cpp"/>
         <FILE id="vEchpc" name="audio_maths.h" compile="0" resource="0" file="Source/Helpers/audio_maths.h"/>
+        <FILE id="PP043g" name="wrappers.cpp" compile="1" resource="0" file="Source/Helpers/wrappers.cpp"/>
+        <FILE id="bNII6u" name="wrappers.h" compile="0" resource="0" file="Source/Helpers/wrappers.h"/>
       </GROUP>
       <GROUP id="{5CD9CA21-EE9B-05EF-08EA-155FBE27060C}" name="ModifierBlock">
         <FILE id="iOYz3o" name="ModifierBlock.cpp" compile="1" resource="0"

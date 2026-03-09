@@ -23,7 +23,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
      #endif
        ),
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
-               {
+   {
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Level", 1), "Osc 1 Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1SineLevel", 1), "Osc 1 Sine Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1TriangleLevel", 1), "Osc 1 Triangle Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
@@ -39,7 +39,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1Depth", 1), "LFO 1 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Frequency", 1), "LFO 2 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Depth", 1), "LFO 2 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f)
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f),
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("powerOn", 1), "Power On", true)
     })
 #endif
 {
@@ -59,6 +60,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo2FrequencyParameter = parameters.getRawParameterValue("lfo2Frequency");
     lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
+    powerOnParameter = parameters.getRawParameterValue("powerOn");
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
@@ -225,6 +227,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // interleaved by keeping the same state.
     
     // Parameter buffers
+    bool currentPowerOn = powerOnParameter.isTrue();
     float currentOsc1Level = *osc1LevelParameter;
     float currentOsc1SineLevel = *osc1SineLevelParameter;
     float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
@@ -241,6 +244,10 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentLfo2Frequency = *lfo2FrequencyParameter;
     float currentLfo2Depth = *lfo2DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
+    if (!currentPowerOn)
+    {
+        currentOutputVolume = 0.0f;
+    }
     
     // MIDI
     // Avoid changing midiMessages

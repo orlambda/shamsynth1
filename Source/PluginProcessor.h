@@ -11,6 +11,7 @@
 #include "Voice/Voice.h"
 #include "Effects/Bitcrusher.h"
 #include "Envelope/Envelope.h"
+#include "Helpers/wrappers.h"
 #include "Oscillators/LowFreqOsc.h"
 
 #include <JuceHeader.h>
@@ -78,6 +79,8 @@ public:
     std::atomic<float>* lfo2FrequencyParameter = nullptr;
     std::atomic<float>* lfo2DepthParameter = nullptr;
     std::atomic<float>* outputVolumeParameter = nullptr;
+    // TODO: try juce::AudioParameterBool*
+    atomicBool powerOnParameter{nullptr};
     
     juce::MidiKeyboardState keyboardState;
     
@@ -86,6 +89,7 @@ public:
 
 private:
     //==============================================================================
+    
     std::vector<std::shared_ptr<Voice>> voices;
     int numberOfVoices = 16;
     

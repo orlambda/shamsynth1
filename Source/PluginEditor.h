@@ -20,6 +20,7 @@ class Shamsynth1AudioProcessorEditor :  public juce::AudioProcessorEditor,
 {
 public:
     typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+    typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
     
     Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor&);
     ~Shamsynth1AudioProcessorEditor() override;
@@ -98,10 +99,12 @@ private:
     juce::Slider lfo2DepthSlider;
     std::unique_ptr<SliderAttachment> lfo2DepthAttachment;
     
-    
     juce::Label outputVolumeLabel;
     juce::Slider outputVolumeSlider;
     std::unique_ptr<SliderAttachment> outputVolumeAttachment;
+    
+    juce::ToggleButton powerOnButton;
+    std::unique_ptr<ButtonAttachment> powerOnAttachment;
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;

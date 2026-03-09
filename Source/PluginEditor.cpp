@@ -169,6 +169,10 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     outputVolumeSlider.setTextValueSuffix("");
     addAndMakeVisible(&outputVolumeSlider);
     
+    powerOnAttachment.reset(new ButtonAttachment(valueTreeState, "powerOn", powerOnButton));
+    powerOnButton.setButtonText("Power On Button");
+    addAndMakeVisible(powerOnButton);
+    
     // MIDI
     addAndMakeVisible(keyboardComponent);
 }
@@ -225,8 +229,9 @@ void Shamsynth1AudioProcessorEditor::resized()
     lfo2FrequencyLabel.setBounds(220, 580, 200, 50);
     lfo2DepthSlider.setBounds(340, 440, 20, 150);
     lfo2DepthLabel.setBounds(320, 580, 200, 50);
-    outputVolumeSlider.setBounds(640, 440, 20, 150);
-    outputVolumeLabel.setBounds(620, 580, 200, 50);
+    outputVolumeSlider.setBounds(540, 440, 20, 150);
+    outputVolumeLabel.setBounds(520, 580, 200, 50);
+    powerOnButton.setBounds(650, 465, 100, 100);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }
