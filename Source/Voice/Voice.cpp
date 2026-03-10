@@ -88,7 +88,7 @@ void Voice::addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier)
     whiteNoise.levelModifiers.push_back(modifier);
 }
 
-void Voice::addOscTuneModifier(std::shared_ptr<LowFreqOsc> modifier)
+void Voice::addOscTuneModifier(std::shared_ptr<ModifierBlock> modifier)
 {
     waveOsc.tuneModifiers.push_back(modifier);
 }

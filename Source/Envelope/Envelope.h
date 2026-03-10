@@ -34,7 +34,7 @@ public:
     void setSampleRate(float rate){sampleRate = rate;}
     void progressPosition();
     void progressState();
-    ModifierBlock values;
+    std::shared_ptr<ModifierBlock> values = std::make_shared<ModifierBlock>();
     void calculateNextBlock(int samples);
     void reserveSpace(float sampleCount);
     void setAttackTime(float seconds);

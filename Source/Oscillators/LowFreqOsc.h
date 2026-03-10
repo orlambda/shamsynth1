@@ -33,8 +33,8 @@ public:
     void setSampleRate(float sr);
     void setDepth(float d);
     void updateAngleDelta();
-    void reserveSpace(int sampleCount) {values.reserveSpace(sampleCount);}
-    ModifierBlock values;
+    void reserveSpace(int sampleCount) {values->reserveSpace(sampleCount);}
+    std::shared_ptr<ModifierBlock> values = std::make_shared<ModifierBlock>();
     void setValue(int position, float value);
     float getValue(int position);
 private:

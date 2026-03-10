@@ -22,9 +22,10 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
             // Apply LFO to tune
+            currentTuneAdjustment = 0.0f;
             for (auto modifier: tuneModifiers)
             {
-                currentTuneAdjustment = 0.0f;
+                
                 // temp scaling - measures LFO depth
                 
                 float scale = 12.0f;
@@ -35,7 +36,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             float sineSampleValue = Waveforms::sin(currentAngle) * currentSineLevel;
             float triangleSampleValue = Waveforms::triangle(currentAngle) * currentTriangleLevel;
             float squareSampleValue = Waveforms::square(currentAngle) * currentSquareLevel;
-            float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue) * currentLevel * envelope.values.getValue(sample);
+            float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue) * currentLevel * envelope.values->getValue(sample);
             for (int channel = 0; channel < totalNumOutputChannels; ++channel)
             {
                 buffer.addSample(channel, sample, sampleValue);

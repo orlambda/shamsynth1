@@ -40,7 +40,9 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Frequency", 1), "LFO 2 Frequency", juce::NormalisableRange<float>(0.0f, 40.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo2Depth", 1), "LFO 2 Depth", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f),
-        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("powerOn", 1), "Power On", true)
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("powerOn", 1), "Power On", true),
+        // Routings
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("lfo1ToTune", 1), "LFO1 to Tune", false)
     })
 #endif
 {
@@ -61,12 +63,15 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
     powerOnParameter = parameters.getRawParameterValue("powerOn");
+    // Routings
+    lfo1ToTuneParameter = parameters.getRawParameterValue("lfo1ToTune");
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
         voices.back()->addNoiseLevelModifier(lfo2);
-        voices.back()->addOscTuneModifier(lfo2);
+        voices.back()->addOscTuneModifier(lfo2->values);
+        voices.back()->addOscTuneModifier(voices.back()->envelope.values);
     }
 }
 

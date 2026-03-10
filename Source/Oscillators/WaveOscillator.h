@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../Oscillators/LowFreqOsc.h"
+#include "../ModifierBlock/ModifierBlock.h"
 #include "../Envelope/Envelope.h"
 
 #include <JuceHeader.h>
@@ -39,7 +39,7 @@ public:
     void updateSquareLevel(float level) {currentSquareLevel = level;}
     void updateTune(float tune) {currentTune = tune; updateAngleDelta();}
     
-    std::vector<std::shared_ptr<LowFreqOsc>> tuneModifiers;
+    std::vector<std::shared_ptr<ModifierBlock>> tuneModifiers;
     
     // Temporary
     float sampleRate = 0.0f;

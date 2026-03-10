@@ -106,6 +106,10 @@ private:
     juce::ToggleButton powerOnButton;
     std::unique_ptr<ButtonAttachment> powerOnAttachment;
     
+    // Routings
+    juce::ToggleButton lfo1ToTuneButton;
+    std::unique_ptr<ButtonAttachment> lfo1ToTuneAttachment;
+    
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;
     
