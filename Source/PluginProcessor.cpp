@@ -42,7 +42,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f),
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID("powerOn", 1), "Power On", true),
         // Routings
-        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("lfo1ToTune", 1), "LFO1 to Tune", false)
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("adsrToTune", 1), "LFO1 to Tune", false)
     })
 #endif
 {
@@ -64,14 +64,13 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
     powerOnParameter = parameters.getRawParameterValue("powerOn");
     // Routings
-    lfo1ToTuneParameter = parameters.getRawParameterValue("lfo1ToTune");
+    adsrToTuneParameter = parameters.getRawParameterValue("adsrToTune");
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
         voices.back()->addNoiseLevelModifier(lfo2);
         voices.back()->addOscTuneModifier(lfo2->values);
-        voices.back()->addOscTuneModifier(voices.back()->envelope.values);
     }
 }
 
@@ -252,6 +251,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         float currentLfo2Frequency = *lfo2FrequencyParameter;
         float currentLfo2Depth = *lfo2DepthParameter;
         float currentOutputVolume = *outputVolumeParameter;
+        bool currentlyRoutingADSRToTune = adsrToTuneParameter.isTrue();
         
         // MIDI
         // Avoid changing midiMessages
@@ -268,9 +268,36 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         lfo2->setDepth(currentLfo2Depth);
         lfo2->calculateNextBlock(totalNumSamples);
         
-        // Synthesis
+        // Synthesis & routing
         for (auto& voice : voices)
         {
+            // Routing HORRIBLE TEMPORARY CODE
+            if (currentlyRoutingADSRToTune)
+            {
+                bool foundModifier = false;
+                for (auto modifier : voice->waveOsc.tuneModifiers)
+                {
+                    if (modifier == voice->envelope.values)
+                    {
+                        foundModifier = true;
+                        break;
+                    }
+                }
+                if (!foundModifier)
+                {
+                    voice->addOscTuneModifier(voice->envelope.values);
+                }
+            }
+            else
+            {
+                for (auto modifier = voice->waveOsc.tuneModifiers.begin(); modifier != voice->waveOsc.tuneModifiers.end();)
+                {
+                    if (*modifier == voice->envelope.values)
+                        modifier = voice->waveOsc.tuneModifiers.erase(modifier);
+                    else
+                        ++modifier;
+                }
+            }
             voice->updateOsc1Level(currentOsc1Level);
             voice->updateOsc1SineLevel(currentOsc1SineLevel);
             voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);

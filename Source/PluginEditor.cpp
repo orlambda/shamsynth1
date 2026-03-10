@@ -173,6 +173,10 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     powerOnButton.setButtonText("Power On Button");
     addAndMakeVisible(powerOnButton);
     
+    adsrToTuneAttachment.reset(new ButtonAttachment(valueTreeState, "adsrToTune", adsrToTuneButton));
+    adsrToTuneButton.setButtonText("Route ADSR to Tune");
+    addAndMakeVisible(adsrToTuneButton);
+    
     // MIDI
     addAndMakeVisible(keyboardComponent);
 }
@@ -232,6 +236,7 @@ void Shamsynth1AudioProcessorEditor::resized()
     outputVolumeSlider.setBounds(540, 440, 20, 150);
     outputVolumeLabel.setBounds(520, 580, 200, 50);
     powerOnButton.setBounds(650, 465, 100, 100);
+    adsrToTuneButton.setBounds(420, 200, 100, 100);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

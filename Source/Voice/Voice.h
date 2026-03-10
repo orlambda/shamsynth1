@@ -69,7 +69,9 @@ public:
     // Rename modifiers: modulation, lfos, signals..
     void addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier);
     void addOscTuneModifier(std::shared_ptr<ModifierBlock> modifier);
-    
+    // Temporarily public to access modifiers in processor
+    // osc1
+    WaveOscillator waveOsc;
 private:
     // State
     float sampleRate;
@@ -82,8 +84,7 @@ private:
     // White Noise Generator
     NoiseGenerator whiteNoise;
     
-    // osc1
-    WaveOscillator waveOsc;
+    
     
     // effects
     Bitcrusher bitcrusher;

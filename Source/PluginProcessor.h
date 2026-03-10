@@ -82,7 +82,7 @@ public:
     // TODO: try juce::AudioParameterBool*
     atomicBool powerOnParameter{nullptr};
     // Routings
-    std::atomic<float>* lfo1ToTuneParameter{nullptr};
+    atomicBool adsrToTuneParameter{nullptr};
     bool currentlyPowerOn = true;
     
     bool checkOnOffState();
