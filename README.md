@@ -1,4 +1,4 @@
-# shamsynth1 v1.0.28
+# shamsynth1 v1.0.29
 
 ## IMPORTANT SAFETY WARNING
 This audio plugin may contain errors which result in extremely loud and unexpected sounds. To protect your hearing, please use at a low volume and do not listen on headphones.
@@ -21,6 +21,9 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - Tune parameter & slider
 - Bitcrusher per voice
     - Bit depth parameter & slider
+- Wavefolder per voice
+    - Threshold parameter & slider
+    - Scaling parameter & slider
 - White noise generator per voice
     - Level parameter & slider
 - Parameter modulation (routings are temporarily hard-coded)
