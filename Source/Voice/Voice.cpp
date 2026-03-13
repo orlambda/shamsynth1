@@ -30,6 +30,7 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
         waveOsc.processBlock(voiceBuffer, totalNumOutputChannels, envelope);
         whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels);
         bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels);
+        wavefolder.processBlock(voiceBuffer, totalNumOutputChannels);
         for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
         {
             // TODO: check and use this instead

@@ -31,6 +31,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Tune", 1), "Osc 1 Tune", -24.0f, 24.0f, 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1WavefolderThreshold", 1), "Osc 1 Wavefolder Threshold", 0.0f, 1.0f, 1.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1WavefolderScaling", 1), "Osc 1 Wavefolder Scaling", 0.0f, 4.0f, 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("env1AttackTime", 1), "Env 1 Attack Time", juce::NormalisableRange<float>(0.0f, 5.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("env1DecayTime", 1), "Env 1 Decay Time", juce::NormalisableRange<float>(0.0f, 5.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("env1SustainLevel", 1), "Env 1 Sustain Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
@@ -53,6 +55,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     osc1TuneParameter = parameters.getRawParameterValue("osc1Tune");
     noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
     bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
+    osc1WavefolderThresholdParameter = parameters.getRawParameterValue("osc1WavefolderThreshold");
+    osc1WavefolderScalingParameter = parameters.getRawParameterValue("osc1WavefolderScaling");
     env1AttackTimeParameter = parameters.getRawParameterValue("env1AttackTime");
     env1DecayTimeParameter = parameters.getRawParameterValue("env1DecayTime");
     env1SustainLevelParameter = parameters.getRawParameterValue("env1SustainLevel");
@@ -241,6 +245,8 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         float currentOsc1SquareLevel = *osc1SquareLevelParameter;
         float currentOsc1Tune = *osc1TuneParameter;
         float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
+        float currentOsc1WavefolderThreshold = *osc1WavefolderThresholdParameter;
+        float currentOsc1WavefolderScaling = *osc1WavefolderScalingParameter;
         float currentNoiseLevel = *noiseLevelParameter;
         float currentEnv1AttackTime = *env1AttackTimeParameter;
         float currentEnv1DecayTime = *env1DecayTimeParameter;
@@ -305,6 +311,8 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
             voice->updateOsc1Tune(currentOsc1Tune);
             voice->updateNoiseLevel(currentNoiseLevel);
             voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
+            voice->updateWavefolderThreshold(currentOsc1WavefolderThreshold);
+            voice->updateWavefolderScaling(currentOsc1WavefolderScaling);
             voice->processBlock(buffer, totalNumOutputChannels);
             // Temporary hard-coded values
             voice->envelope.setAttackTime(currentEnv1AttackTime);

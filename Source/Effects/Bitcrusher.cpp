@@ -40,7 +40,4 @@ void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutp
             buffer.setSample(channel, sample, currentValue);
         }
     }
-    
-    
-    
 }

@@ -88,6 +88,27 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     bitcrusherBitDepthSlider.setTextValueSuffix("");
     addAndMakeVisible(&bitcrusherBitDepthSlider);
     
+    osc1WavefolderGeneralLabel.setText("Wavefolder", juce::dontSendNotification);
+    addAndMakeVisible(osc1WavefolderGeneralLabel);
+    
+    osc1WavefolderThresholdLabel.setText("Threshold", juce::dontSendNotification);
+    addAndMakeVisible(osc1WavefolderThresholdLabel);
+    osc1WavefolderThresholdAttachment.reset(new SliderAttachment (valueTreeState, "osc1WavefolderThreshold", osc1WavefolderThresholdSlider));
+    osc1WavefolderThresholdSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1WavefolderThresholdSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1WavefolderThresholdSlider.setPopupDisplayEnabled(true, false, this);
+    osc1WavefolderThresholdSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1WavefolderThresholdSlider);
+    
+    osc1WavefolderScalingLabel.setText("Scale", juce::dontSendNotification);
+    addAndMakeVisible(osc1WavefolderScalingLabel);
+    osc1WavefolderScalingAttachment.reset(new SliderAttachment (valueTreeState, "osc1WavefolderScaling", osc1WavefolderScalingSlider));
+    osc1WavefolderScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1WavefolderScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1WavefolderScalingSlider.setPopupDisplayEnabled(true, false, this);
+    osc1WavefolderScalingSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1WavefolderScalingSlider);
+    
     env1AttackTimeLabel.setText("A Time", juce::dontSendNotification);
     addAndMakeVisible(env1AttackTimeLabel);
     env1AttackTimeAttachment.reset(new SliderAttachment (valueTreeState, "env1AttackTime", env1AttackTimeSlider));
@@ -217,6 +238,11 @@ void Shamsynth1AudioProcessorEditor::resized()
     noiseLevelLabel.setBounds(520, 180, 200, 50);
     bitcrusherBitDepthSlider.setBounds(640, 40, 20, 150);
     bitcrusherBitDepthLabel.setBounds(620, 180, 200, 50);
+    osc1WavefolderGeneralLabel.setBounds(770, 205, 200, 50);
+    osc1WavefolderThresholdSlider.setBounds(740, 40, 20, 150);
+    osc1WavefolderThresholdLabel.setBounds(720, 180, 200, 50);
+    osc1WavefolderScalingSlider.setBounds(840, 40, 20, 150);
+    osc1WavefolderScalingLabel.setBounds(820, 180, 200, 50);
     env1AttackTimeSlider.setBounds(40, 240, 20, 150);
     env1AttackTimeLabel.setBounds(20, 380, 200, 50);
     env1DecayTimeSlider.setBounds(140, 240, 20, 150);

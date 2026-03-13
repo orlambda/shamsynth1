@@ -33,7 +33,7 @@ private:
     Shamsynth1AudioProcessor& audioProcessor;
     
     // Window
-    int windowWidth = 750;
+    int windowWidth = 950;
     int windowHeight = 750;
 
     // Controls
@@ -66,6 +66,16 @@ private:
     juce::Label bitcrusherBitDepthLabel;
     juce::Slider bitcrusherBitDepthSlider;
     std::unique_ptr<SliderAttachment> bitcrusherBitDepthAttachment;
+    
+    juce::Label osc1WavefolderGeneralLabel;
+    
+    juce::Label osc1WavefolderThresholdLabel;
+    juce::Slider osc1WavefolderThresholdSlider;
+    std::unique_ptr<SliderAttachment> osc1WavefolderThresholdAttachment;
+    
+    juce::Label osc1WavefolderScalingLabel;
+    juce::Slider osc1WavefolderScalingSlider;
+    std::unique_ptr<SliderAttachment> osc1WavefolderScalingAttachment;
     
     juce::Label env1AttackTimeLabel;
     juce::Slider env1AttackTimeSlider;

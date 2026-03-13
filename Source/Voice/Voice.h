@@ -15,6 +15,7 @@
 #include "../Oscillators/LowFreqOsc.h"
 #include "../Effects/Bitcrusher.h"
 #include "../Envelope/Envelope.h"
+#include "../Wavefolder/Wavefolder.h"
 
 #include <JuceHeader.h>
 
@@ -64,6 +65,8 @@ public:
     void updateADSRSettings(float a, float d, float s, float r);
     void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
+    void updateWavefolderThreshold(float threshold) {wavefolder.setThreshold(threshold);}
+    void updateWavefolderScaling(float scaling) {wavefolder.setScaling(scaling);}
     
     // However a modulation matrix will probably change implementation, wait till then before refactoring
     // Rename modifiers: modulation, lfos, signals..
@@ -84,8 +87,7 @@ private:
     // White Noise Generator
     NoiseGenerator whiteNoise;
     
-    
-    
     // effects
     Bitcrusher bitcrusher;
+    Wavefolder wavefolder;
 };

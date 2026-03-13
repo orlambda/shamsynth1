@@ -70,6 +70,8 @@ public:
     std::atomic<float>* osc1TuneParameter = nullptr;
     std::atomic<float>* noiseLevelParameter = nullptr;
     std::atomic<float>* bitcrusherBitDepthParameter = nullptr;
+    std::atomic<float>* osc1WavefolderThresholdParameter = nullptr;
+    std::atomic<float>* osc1WavefolderScalingParameter = nullptr;
     std::atomic<float>* env1AttackTimeParameter = nullptr;
     std::atomic<float>* env1DecayTimeParameter = nullptr;
     std::atomic<float>* env1SustainLevelParameter = nullptr;
