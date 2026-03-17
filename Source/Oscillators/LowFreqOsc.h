@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../ModifierBlock/ModifierBlock.h"
+#include "../Modulation/ModifierBlock.h"
 #include "../Oscillators/Waveforms.h"
 
 #include <vector>

@@ -9,3 +9,20 @@
 */
 
 #pragma once
+
+#include "ModulatableFloat.h"
+
+#include <vector>
+
+class ModMatrix
+{
+    public:
+    private:
+    
+};
+
+class DestinationList
+{
+public:
+    std::vector<ModulatableFloat> v;
+};

@@ -10,7 +10,9 @@
 
 #pragma once
 
-#include "../ModifierBlock/ModifierBlock.h"
+#include "../Parameters.h"
+#include "../Modulation/ModifierBlock.h"
+#include "../Modulation/ModulatableFloat.h"
 #include "../Envelope/Envelope.h"
 
 #include <JuceHeader.h>
@@ -37,7 +39,7 @@ public:
     void updateSineLevel(float level) {currentSineLevel = level;}
     void updateTriangleLevel(float level) {currentTriangleLevel = level;}
     void updateSquareLevel(float level) {currentSquareLevel = level;}
-    void updateTune(float tune) {currentTune = tune; updateAngleDelta();}
+    void updateTune(float tune) {currentTune.setValue(tune); updateAngleDelta();}
     
     std::vector<std::shared_ptr<ModifierBlock>> tuneModifiers;
     
@@ -54,7 +56,7 @@ private:
     float currentSineLevel = 1.0f;
     float currentTriangleLevel = 1.0f;
     float currentSquareLevel = 1.0f;
-    float currentTune = 0.0f;
+    ModulatableFloat currentTune = ModulatableFloat(osc1TuneMin, osc1TuneMax, osc1TuneDefault, osc1TuneScalingDefault, Limit::bound, [](float value, float modulation, float scaling){return value + (modulation * scaling);});
     float currentTuneAdjustment = 0.0f;
 
     

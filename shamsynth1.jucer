@@ -3,11 +3,13 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.29" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.30" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
     <GROUP id="{CABB3CB8-7DF3-A8CC-10BE-ACA7E822C919}" name="Source">
+      <FILE id="ifU0k4" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
+      <FILE id="feojhS" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
       <GROUP id="{A788A923-C392-CD5A-B8C4-6C048A13CC71}" name="Effects">
         <FILE id="LTSqgh" name="Bitcrusher.cpp" compile="1" resource="0" file="Source/Effects/Bitcrusher.cpp"/>
         <FILE id="pAmQhS" name="Bitcrusher.h" compile="0" resource="0" file="Source/Effects/Bitcrusher.h"/>
@@ -22,14 +24,16 @@
         <FILE id="PP043g" name="wrappers.cpp" compile="1" resource="0" file="Source/Helpers/wrappers.cpp"/>
         <FILE id="bNII6u" name="wrappers.h" compile="0" resource="0" file="Source/Helpers/wrappers.h"/>
       </GROUP>
-      <GROUP id="{5CD9CA21-EE9B-05EF-08EA-155FBE27060C}" name="ModifierBlock">
-        <FILE id="iOYz3o" name="ModifierBlock.cpp" compile="1" resource="0"
-              file="Source/ModifierBlock/ModifierBlock.cpp"/>
-        <FILE id="diLoXr" name="ModifierBlock.h" compile="0" resource="0" file="Source/ModifierBlock/ModifierBlock.h"/>
-      </GROUP>
       <GROUP id="{7A8859A2-DE8F-C7B6-9EC3-1C6807EB0F7D}" name="Modulation">
+        <FILE id="y20Hqy" name="ModifierBlock.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModifierBlock.cpp"/>
+        <FILE id="mgZayk" name="ModifierBlock.h" compile="0" resource="0" file="Source/Modulation/ModifierBlock.h"/>
         <FILE id="piDOZw" name="ModMatrix.cpp" compile="1" resource="0" file="Source/Modulation/ModMatrix.cpp"/>
         <FILE id="ySmDmx" name="ModMatrix.h" compile="0" resource="0" file="Source/Modulation/ModMatrix.h"/>
+        <FILE id="cUWJVI" name="ModulatableFloat.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulatableFloat.cpp"/>
+        <FILE id="N0BZmc" name="ModulatableFloat.h" compile="0" resource="0"
+              file="Source/Modulation/ModulatableFloat.h"/>
       </GROUP>
       <GROUP id="{6FD9ACFB-EE8C-3969-80B2-D0D40523F01C}" name="Noise">
         <FILE id="xTXyiX" name="NoiseGenerator.cpp" compile="1" resource="0"

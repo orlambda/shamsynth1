@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "Parameters.h"
 #include "Voice/Voice.h"
 #include "Effects/Bitcrusher.h"
 #include "Envelope/Envelope.h"

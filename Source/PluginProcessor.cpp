@@ -28,7 +28,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1SineLevel", 1), "Osc 1 Sine Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1TriangleLevel", 1), "Osc 1 Triangle Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1SquareLevel", 1), "Osc 1 Square Level", juce::NormalisableRange<float>(0.0f, 1.0f), 1.0f),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Tune", 1), "Osc 1 Tune", -24.0f, 24.0f, 0.0f),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1Tune", 1), "Osc 1 Tune", osc1TuneMin, osc1TuneMax, osc1TuneDefault),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("noiseLevel", 1), "Noise Level", juce::NormalisableRange<float>(0.0f, 1.0f), 0.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("bitcrusherBitDepth", 1), "Bit Depth", 1.0f, 32.0f, 32.0f),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1WavefolderThreshold", 1), "Osc 1 Wavefolder Threshold", 0.0f, 1.0f, 1.0f),
