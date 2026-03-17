@@ -10,10 +10,11 @@
 
 #pragma once
 
-#include "../Parameters.h"
+#include "../Envelope/Envelope.h"
 #include "../Modulation/ModifierBlock.h"
 #include "../Modulation/ModulatableFloat.h"
-#include "../Envelope/Envelope.h"
+#include "../Parameters.h"
+#include "../Wavefolder/Wavefolder.h"
 
 #include <JuceHeader.h>
 
@@ -40,6 +41,8 @@ public:
     void updateTriangleLevel(float level) {currentTriangleLevel = level;}
     void updateSquareLevel(float level) {currentSquareLevel = level;}
     void updateTune(float tune) {currentTune.setValue(tune); updateAngleDelta();}
+    void updateWavefolderThreshold(float threshold) {wavefolder.setThreshold(threshold);}
+    void updateWavefolderScaling(float scaling) {wavefolder.setScaling(scaling);}
     
     std::vector<std::shared_ptr<ModifierBlock>> tuneModifiers;
     
@@ -58,7 +61,8 @@ private:
     float currentSquareLevel = 1.0f;
     ModulatableFloat currentTune = ModulatableFloat(osc1TuneMin, osc1TuneMax, osc1TuneDefault, osc1TuneScalingDefault, Limit::bound, [](float value, float modulation, float scaling){return value + (modulation * scaling);});
     float currentTuneAdjustment = 0.0f;
-
     
     bool isActive = false;
+    
+    Wavefolder wavefolder;
 };
