@@ -26,6 +26,7 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
             reserveSpace(totalNumSamples, totalNumChannels);
         }
         voiceBuffer.clear();
+        waveOsc.clearModulationSignalBlocks();
         envelope.calculateNextBlock(totalNumSamples);
         waveOsc.processBlock(voiceBuffer, totalNumOutputChannels, envelope);
         whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels);
@@ -51,8 +52,15 @@ void Voice::setSampleRate(float rate)
 
 void Voice::reserveSpace(int samplesPerBlock, int totalNumChannels)
 {
+    waveOsc.reserveSpace(samplesPerBlock);
     envelope.reserveSpace(samplesPerBlock);
     voiceBuffer.setSize(totalNumChannels, samplesPerBlock);
+}
+
+void Voice::clearModulationBlocks()
+{
+    waveOsc.clearModulationSignalBlocks();
+    voiceBuffer.clear();
 }
 
 void Voice::updateADSRSettings(float a, float d, float s, float r)
@@ -88,7 +96,7 @@ void Voice::addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier)
     whiteNoise.levelModifiers.push_back(modifier);
 }
 
-void Voice::addOscTuneModifier(std::shared_ptr<ModifierBlock> modifier)
+void Voice::addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier)
 {
     waveOsc.tuneModifiers.push_back(modifier);
 }

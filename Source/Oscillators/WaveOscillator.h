@@ -11,7 +11,7 @@
 #pragma once
 
 #include "../Envelope/Envelope.h"
-#include "../Modulation/ModifierBlock.h"
+#include "../Modulation/ModulationSignalBlock.h"
 #include "../Modulation/ModulatableFloat.h"
 #include "../Parameters.h"
 #include "../Wavefolder/Wavefolder.h"
@@ -35,6 +35,8 @@ public:
         // a) stay in the constructor if it won't change within Oscillator's lifetime (check this), or
         // b) be passed in through startNote()
     void setSampleRate(float sr);
+    void reserveSpace(int samplesPerBlock);
+    void clearModulationSignalBlocks();
     void updateAngleDelta();
     void updateLevel(float level) {currentLevel = level;}
     void updateSineLevel(float level) {currentSineLevel = level;}
@@ -44,7 +46,7 @@ public:
     void updateWavefolderThreshold(float threshold) {wavefolder.setThreshold(threshold);}
     void updateWavefolderScaling(float scaling) {wavefolder.setScaling(scaling);}
     
-    std::vector<std::shared_ptr<ModifierBlock>> tuneModifiers;
+    std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
     
     // Temporary
     float sampleRate = 0.0f;
@@ -59,7 +61,8 @@ private:
     float currentSineLevel = 1.0f;
     float currentTriangleLevel = 1.0f;
     float currentSquareLevel = 1.0f;
-    ModulatableFloat currentTune = ModulatableFloat(osc1TuneMin, osc1TuneMax, osc1TuneDefault, osc1TuneScalingDefault, Limit::bound, [](float value, float modulation, float scaling){return value + (modulation * scaling);});
+    // TODO: ADD SCALING TO FUNCTION?
+    ModulatableFloat currentTune = ModulatableFloat(osc1TuneMin, osc1TuneMax, osc1TuneDefault, Limit::bound, [](float value, float modulation){return value + modulation;});
     float currentTuneAdjustment = 0.0f;
     
     bool isActive = false;

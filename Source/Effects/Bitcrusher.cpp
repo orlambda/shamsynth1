@@ -10,18 +10,6 @@
 
 #include "Bitcrusher.h"
 
-Bitcrusher::Bitcrusher()
-{
-    // Temporary safe value
-    bitDepth = 32.0f;
-}
-
-// TEMP: NOT USED
-Bitcrusher::Bitcrusher(juce::AudioProcessor& p_p)
-{}
-//Bitcrusher::Bitcrusher(juce::AudioProcessor& p_p) : p(p_p)
-//{}
-
 void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
     float currentBitDepth = bitDepth;

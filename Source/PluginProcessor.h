@@ -11,9 +11,9 @@
 #include "Parameters.h"
 #include "Voice/Voice.h"
 #include "Effects/Bitcrusher.h"
-#include "Envelope/Envelope.h"
 #include "Helpers/wrappers.h"
 #include "Oscillators/LowFreqOsc.h"
+#include "Modulation/ModulationMatrix.h"
 
 #include <JuceHeader.h>
 
@@ -86,22 +86,30 @@ public:
     atomicBool powerOnParameter{nullptr};
     // Routings
     atomicBool adsrToTuneParameter{nullptr};
+    std::atomic<float>* osc1EnvToTuneScalingParameter = nullptr;
     bool currentlyPowerOn = true;
     
     bool checkOnOffState();
     void resetState();
-    
+
     juce::MidiKeyboardState keyboardState;
     
     // TODO: decide whether to use shared pointers
     LowFreqOsc lfo1;
     std::shared_ptr<LowFreqOsc> lfo2 = std::make_shared<LowFreqOsc>();
+    
+    ModulationMatrix modMatrix;
 
 private:
     //==============================================================================
     
     std::vector<std::shared_ptr<Voice>> voices;
     int numberOfVoices = 16;
+    
+    int expectedSamplesPerBlock = 0;
+    
+    void reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels);
+    void populateModMatrix();
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);

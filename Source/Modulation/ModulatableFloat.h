@@ -10,8 +10,12 @@
 
 #pragma once
 
-#include <functional>
+#include "ModulationSignalBlock.h"
 
+#include <functional>
+#include <memory>
+
+// How out-of-range values are treated
 enum class Limit
 {
     bound,
@@ -23,13 +27,14 @@ enum class Limit
 class ModulatableFloat
 {
 public:
-    ModulatableFloat(float p_min, float p_max, float p_value, float p_modulationScaling, Limit p_limitingMethod, std::function<float (float, float, float)> p_modulationFunction);
-    // How out-of-range values are treated
+    ModulatableFloat(float p_min, float p_max, float p_value, Limit p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
+    void reserveSpace(int samplesPerBlock);
     void setValue(float p_value);
     void resetModulatedValue() {modulatedValue = unmodulatedValue;}
-    void applyModulation(float modulationValue);
+    void clearAllModulation();
+    void applyModulationSignal(std::shared_ptr<ModulationSignalBlock> block, float scaling);
     float getUnmodulatedValue() {return unmodulatedValue;}
-    float getModulatedValue();
+    float getModulatedValue(int blockIndex);
 private:
     float min;
     float max;
@@ -38,6 +43,7 @@ private:
     float modulatedValue;
     float modulationScaling;
     Limit limitingMethod;
-    std::function<float (float value, float modulationValue, float scaling)> modulationFunction;
+    std::function<float (float value, float modulationValue)> modulationFunction;
+    ModulationSignalBlock inputSignalBlock;
 };
 

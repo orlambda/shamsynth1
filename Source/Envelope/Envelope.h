@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../Modulation/ModifierBlock.h"
+#include "../Modulation/ModulationSignalBlock.h"
 
 #include <vector>
 
@@ -34,7 +34,7 @@ public:
     void setSampleRate(float rate){sampleRate = rate;}
     void progressPosition();
     void progressState();
-    std::shared_ptr<ModifierBlock> values = std::make_shared<ModifierBlock>();
+    std::shared_ptr<ModulationSignalBlock> values = std::make_shared<ModulationSignalBlock>();
     void calculateNextBlock(int samples);
     void reserveSpace(float sampleCount);
     void setAttackTime(float seconds);

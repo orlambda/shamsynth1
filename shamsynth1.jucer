@@ -3,7 +3,7 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.31" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.32" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
@@ -25,15 +25,30 @@
         <FILE id="bNII6u" name="wrappers.h" compile="0" resource="0" file="Source/Helpers/wrappers.h"/>
       </GROUP>
       <GROUP id="{7A8859A2-DE8F-C7B6-9EC3-1C6807EB0F7D}" name="Modulation">
-        <FILE id="y20Hqy" name="ModifierBlock.cpp" compile="1" resource="0"
-              file="Source/Modulation/ModifierBlock.cpp"/>
-        <FILE id="mgZayk" name="ModifierBlock.h" compile="0" resource="0" file="Source/Modulation/ModifierBlock.h"/>
-        <FILE id="piDOZw" name="ModMatrix.cpp" compile="1" resource="0" file="Source/Modulation/ModMatrix.cpp"/>
-        <FILE id="ySmDmx" name="ModMatrix.h" compile="0" resource="0" file="Source/Modulation/ModMatrix.h"/>
         <FILE id="cUWJVI" name="ModulatableFloat.cpp" compile="1" resource="0"
               file="Source/Modulation/ModulatableFloat.cpp"/>
         <FILE id="N0BZmc" name="ModulatableFloat.h" compile="0" resource="0"
               file="Source/Modulation/ModulatableFloat.h"/>
+        <FILE id="YoKy2B" name="ModulationInputManager.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationInputManager.cpp"/>
+        <FILE id="ManJM5" name="ModulationInputManager.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationInputManager.h"/>
+        <FILE id="Cs7eaj" name="ModulationMatrix.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationMatrix.cpp"/>
+        <FILE id="fGi8Qd" name="ModulationMatrix.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationMatrix.h"/>
+        <FILE id="gYGB2P" name="ModulationOutputManager.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationOutputManager.cpp"/>
+        <FILE id="ptAq3F" name="ModulationOutputManager.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationOutputManager.h"/>
+        <FILE id="s7VrXB" name="ModulationRouting.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationRouting.cpp"/>
+        <FILE id="Ikgzex" name="ModulationRouting.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationRouting.h"/>
+        <FILE id="UWCaIV" name="ModulationSignalBlock.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationSignalBlock.cpp"/>
+        <FILE id="GUK33m" name="ModulationSignalBlock.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationSignalBlock.h"/>
       </GROUP>
       <GROUP id="{6FD9ACFB-EE8C-3969-80B2-D0D40523F01C}" name="Noise">
         <FILE id="xTXyiX" name="NoiseGenerator.cpp" compile="1" resource="0"

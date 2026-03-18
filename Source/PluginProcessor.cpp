@@ -44,7 +44,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("outputVolume", 1), "Output Volume", juce::NormalisableRange<float>(0.0f, 1.0f), 0.5f),
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID("powerOn", 1), "Power On", true),
         // Routings
-        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("adsrToTune", 1), "LFO1 to Tune", false)
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("adsrToTune", 1), "LFO1 to Tune", false),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", envToTuneScalingMin, envToTuneScalingMax, envToTuneScalingDefault)
     })
 #endif
 {
@@ -69,13 +70,13 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     powerOnParameter = parameters.getRawParameterValue("powerOn");
     // Routings
     adsrToTuneParameter = parameters.getRawParameterValue("adsrToTune");
+    osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToTuneScaling");
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
-        voices.back()->addNoiseLevelModifier(lfo2);
-        voices.back()->addOscTuneModifier(lfo2->values);
     }
+    populateModMatrix();
 }
 
 Shamsynth1AudioProcessor::~Shamsynth1AudioProcessor()
@@ -154,19 +155,26 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
         int totalNumChannels = getTotalNumInputChannels();
     }
     
+    expectedSamplesPerBlock = samplesPerBlock;
+    
     // Pre-playback initialisation
     for (auto voice : voices)
     {
         voice->setSampleRate(sampleRate);
         voice->reserveSpace(samplesPerBlock, totalNumChannels);
     }
-    // Refactor repetitive code
+    
+    reserveSignalBlockSpace(samplesPerBlock, totalNumChannels);
+    
+//     Refactor repetitive code
     lfo1.setSampleRate(sampleRate);
     lfo1.startOsc(*lfo1FrequencyParameter);
-    lfo1.reserveSpace(samplesPerBlock);
     lfo2->setSampleRate(sampleRate);
     lfo2->startOsc(*lfo2FrequencyParameter);
-    lfo2->reserveSpace(samplesPerBlock);
+    
+    // Reserve space in
+    
+    
     
     Waveforms::populateWavetables();
 //    Waveforms::testWavetables();
@@ -215,6 +223,10 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
     auto totalNumSamples = buffer.getNumSamples();
+    if (totalNumSamples != expectedSamplesPerBlock)
+    {
+        reserveSignalBlockSpace(totalNumSamples, buffer.getNumChannels());
+    }
     
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
@@ -228,115 +240,124 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     for (auto i = 0; i < totalNumOutputChannels; ++i)
         {buffer.clear(i, 0, totalNumSamples);}
 
-    if (checkOnOffState())
+    if (!checkOnOffState())
     {
-        
-        // This is the place where you'd normally do the guts of your plugin's
-        // audio processing...
-        // Make sure to reset the state if your inner loop is processing
-        // the samples and the outer loop is handling the channels.
-        // Alternatively, you can process the samples with the channels
-        // interleaved by keeping the same state.
-        
-        // Parameter buffers
-        float currentOsc1Level = *osc1LevelParameter;
-        float currentOsc1SineLevel = *osc1SineLevelParameter;
-        float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
-        float currentOsc1SquareLevel = *osc1SquareLevelParameter;
-        float currentOsc1Tune = *osc1TuneParameter;
-        float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
-        float currentOsc1WavefolderThreshold = *osc1WavefolderThresholdParameter;
-        float currentOsc1WavefolderScaling = *osc1WavefolderScalingParameter;
-        float currentNoiseLevel = *noiseLevelParameter;
-        float currentEnv1AttackTime = *env1AttackTimeParameter;
-        float currentEnv1DecayTime = *env1DecayTimeParameter;
-        float currentEnv1SustainLevel = *env1SustainLevelParameter;
-        float currentEnv1ReleaseTime = *env1ReleaseTimeParameter;
-        float currentLfo1Frequency = *lfo1FrequencyParameter;
-        float currentLfo1Depth = *lfo1DepthParameter;
-        float currentLfo2Frequency = *lfo2FrequencyParameter;
-        float currentLfo2Depth = *lfo2DepthParameter;
-        float currentOutputVolume = *outputVolumeParameter;
-        bool currentlyRoutingADSRToTune = adsrToTuneParameter.isTrue();
-        
-        // MIDI
-        // Avoid changing midiMessages
-        juce::MidiBuffer midiBuffer = midiMessages;
-        // Keyboard component in plugin window
-        keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
-        processMidi(midiBuffer);
-        
-        // LFOs etc
-        lfo1.setFrequency(currentLfo1Frequency);
-        lfo1.setDepth(currentLfo1Depth);
-        lfo1.calculateNextBlock(totalNumSamples);
-        lfo2->setFrequency(currentLfo2Frequency);
-        lfo2->setDepth(currentLfo2Depth);
-        lfo2->calculateNextBlock(totalNumSamples);
-        
-        // Synthesis & routing
-        for (auto& voice : voices)
+        return;
+    }
+    
+    // This is the place where you'd normally do the guts of your plugin's
+    // audio processing...
+    // Make sure to reset the state if your inner loop is processing
+    // the samples and the outer loop is handling the channels.
+    // Alternatively, you can process the samples with the channels
+    // interleaved by keeping the same state.
+    
+    // Parameter buffers
+    float currentOsc1Level = *osc1LevelParameter;
+    float currentOsc1SineLevel = *osc1SineLevelParameter;
+    float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
+    float currentOsc1SquareLevel = *osc1SquareLevelParameter;
+    float currentOsc1Tune = *osc1TuneParameter;
+    float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
+    float currentOsc1WavefolderThreshold = *osc1WavefolderThresholdParameter;
+    float currentOsc1WavefolderScaling = *osc1WavefolderScalingParameter;
+    float currentNoiseLevel = *noiseLevelParameter;
+    float currentEnv1AttackTime = *env1AttackTimeParameter;
+    float currentEnv1DecayTime = *env1DecayTimeParameter;
+    float currentEnv1SustainLevel = *env1SustainLevelParameter;
+    float currentEnv1ReleaseTime = *env1ReleaseTimeParameter;
+    float currentLfo1Frequency = *lfo1FrequencyParameter;
+    float currentLfo1Depth = *lfo1DepthParameter;
+    float currentLfo2Frequency = *lfo2FrequencyParameter;
+    float currentLfo2Depth = *lfo2DepthParameter;
+    float currentOutputVolume = *outputVolumeParameter;
+    bool currentlyRoutingADSRToTune = adsrToTuneParameter.isTrue();
+    
+    // MIDI
+    
+    // Avoid changing midiMessages
+    // TODO: Optimisation - should midiBuffer have space allocated in prepareToPlay()?
+    juce::MidiBuffer midiBuffer = midiMessages;
+    // Add messages from plugin window keyboard component
+    keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
+    // Trigger or silence voices
+    // TODO: consider if silencing voices here affects modulation i/o
+    processMidi(midiBuffer);
+    
+    // TEMPORARY
+    for (auto voice : voices)
+    {
+        voice->clearModulationBlocks();
+    }
+    
+    // LFOs etc
+    lfo1.setFrequency(currentLfo1Frequency);
+    lfo1.setDepth(currentLfo1Depth);
+    lfo1.calculateNextBlock(totalNumSamples);
+    lfo2->setFrequency(currentLfo2Frequency);
+    lfo2->setDepth(currentLfo2Depth);
+    lfo2->calculateNextBlock(totalNumSamples);
+    
+    // Synthesis & routing
+    for (auto& voice : voices)
+    {
+        // Routing HORRIBLE TEMPORARY CODE
+        if (currentlyRoutingADSRToTune)
         {
-            // Routing HORRIBLE TEMPORARY CODE
-            if (currentlyRoutingADSRToTune)
+            // Add modifier if not already present
+            bool foundModifier = false;
+            for (auto modifier : voice->waveOsc.tuneModifiers)
             {
-                bool foundModifier = false;
-                for (auto modifier : voice->waveOsc.tuneModifiers)
+                if (modifier == voice->envelope.values)
                 {
-                    if (modifier == voice->envelope.values)
-                    {
-                        foundModifier = true;
-                        break;
-                    }
-                }
-                if (!foundModifier)
-                {
-                    voice->addOscTuneModifier(voice->envelope.values);
+                    foundModifier = true;
+                    break;
                 }
             }
-            else
+            if (!foundModifier)
             {
-                for (auto modifier = voice->waveOsc.tuneModifiers.begin(); modifier != voice->waveOsc.tuneModifiers.end();)
-                {
-                    if (*modifier == voice->envelope.values)
-                        modifier = voice->waveOsc.tuneModifiers.erase(modifier);
-                    else
-                        ++modifier;
-                }
+                voice->addOscTuneModifier(voice->envelope.values);
             }
-            voice->updateOsc1Level(currentOsc1Level);
-            voice->updateOsc1SineLevel(currentOsc1SineLevel);
-            voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
-            voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
-            voice->updateOsc1Tune(currentOsc1Tune);
-            voice->updateNoiseLevel(currentNoiseLevel);
-            voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
-            voice->updateWavefolderThreshold(currentOsc1WavefolderThreshold);
-            voice->updateWavefolderScaling(currentOsc1WavefolderScaling);
-            voice->processBlock(buffer, totalNumOutputChannels);
-            // Temporary hard-coded values
-            voice->envelope.setAttackTime(currentEnv1AttackTime);
-            voice->envelope.setDecayTime(currentEnv1DecayTime);
-            voice->envelope.setSustainLevel(currentEnv1SustainLevel);
-            voice->envelope.setReleaseTime(currentEnv1ReleaseTime);
         }
-        
-        
-        // Effects
-        // for (auto& effect : effects)
-        // {effect->processBlock(buffer);}
-        
-        // Final volume
-        // Scale down volume to account for increase from LFO and prevent clipping
-        float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
-        for (int channel = 0; channel < totalNumOutputChannels; ++channel)
+        else
         {
-            for (int sample = 0; sample < totalNumSamples; ++sample)
+            // Remove modifier if present
+            for (auto modifier = voice->waveOsc.tuneModifiers.begin(); modifier != voice->waveOsc.tuneModifiers.end();)
             {
-                float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
-                float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
-                buffer.setSample(channel, sample, finalValue);
+                if (*modifier == voice->envelope.values)
+                    modifier = voice->waveOsc.tuneModifiers.erase(modifier);
+                else
+                    ++modifier;
             }
+        }
+        voice->updateOsc1Level(currentOsc1Level);
+        voice->updateOsc1SineLevel(currentOsc1SineLevel);
+        voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
+        voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
+        voice->updateOsc1Tune(currentOsc1Tune);
+        voice->updateNoiseLevel(currentNoiseLevel);
+        voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
+        voice->updateWavefolderThreshold(currentOsc1WavefolderThreshold);
+        voice->updateWavefolderScaling(currentOsc1WavefolderScaling);
+        voice->updateADSRSettings(currentEnv1AttackTime, currentEnv1DecayTime, currentEnv1SustainLevel, currentEnv1ReleaseTime);
+        
+        voice->processBlock(buffer, totalNumOutputChannels);
+    }
+    
+    // Effects
+    // for (auto& effect : effects)
+    // {effect->processBlock(buffer);}
+    
+    // Final volume
+    // Scale down volume to account for increase from LFO and prevent clipping
+    float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
+    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
+    {
+        for (int sample = 0; sample < totalNumSamples; ++sample)
+        {
+            float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
+            float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
+            buffer.setSample(channel, sample, finalValue);
         }
     }
 }
@@ -500,4 +521,25 @@ void Shamsynth1AudioProcessor::resetState()
     // Reset LFOs
     lfo1.resetLFO();
     lfo2->resetLFO();
+}
+
+void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels)
+{
+    for (auto voice : voices)
+    {
+        voice->reserveSpace(samplesPerBlock, totalNumChannels);
+    }
+    
+    lfo1.reserveSpace(samplesPerBlock);
+    lfo2->reserveSpace(samplesPerBlock);
+}
+
+void Shamsynth1AudioProcessor::populateModMatrix()
+{
+    // Temporary
+    for (auto voice : voices)
+    {
+        voice->addNoiseLevelModifier(lfo2);
+        voice->addOscTuneModifier(lfo2->outputSignalBlock);
+    }
 }

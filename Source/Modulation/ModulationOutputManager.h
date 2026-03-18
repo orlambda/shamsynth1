@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    ModMatrix.h
-    Created: 13 Mar 2026 9:29:11pm
+    ModulationOutputManager.h
+    Created: 18 Mar 2026 4:02:39pm
     Author:  Orlando Shamlou
 
   ==============================================================================
@@ -10,19 +10,9 @@
 
 #pragma once
 
-#include "ModulatableFloat.h"
-
-#include <vector>
-
-class ModMatrix
-{
-    public:
-    private:
-    
-};
-
-class DestinationList
+class ModulationOutput
 {
 public:
-    std::vector<ModulatableFloat> v;
+protected:
+private:    
 };

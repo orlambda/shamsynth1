@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../Modulation/ModifierBlock.h"
+#include "../Modulation/ModulationSignalBlock.h"
 #include "../Oscillators/Waveforms.h"
 
 #include <vector>
@@ -33,8 +33,8 @@ public:
     void setSampleRate(float sr);
     void setDepth(float d);
     void updateAngleDelta();
-    void reserveSpace(int sampleCount) {values->reserveSpace(sampleCount);}
-    std::shared_ptr<ModifierBlock> values = std::make_shared<ModifierBlock>();
+    void reserveSpace(int sampleCount) {outputSignalBlock->reserveSpace(sampleCount);}
+    std::shared_ptr<ModulationSignalBlock> outputSignalBlock = std::make_shared<ModulationSignalBlock>();
     void setValue(int position, float value);
     float getValue(int position);
 private:

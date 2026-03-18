@@ -55,6 +55,7 @@ public:
     // Temporary
     // TODO: make static - sampleRate the same for every Voice
     void setSampleRate(float rate);
+    void clearModulationBlocks();
     void reserveSpace(int samplesPerBlock, int totalNumChannels);
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateOsc1SineLevel(float level) {waveOsc.updateSineLevel(level);}
@@ -70,7 +71,7 @@ public:
     // However a modulation matrix will probably change implementation, wait till then before refactoring
     // Rename modifiers: modulation, lfos, signals..
     void addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier);
-    void addOscTuneModifier(std::shared_ptr<ModifierBlock> modifier);
+    void addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier);
     // Temporarily public to access modifiers in processor
     // osc1
     WaveOscillator waveOsc;
