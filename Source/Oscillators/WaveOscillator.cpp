@@ -12,8 +12,6 @@
 #include "Waveforms.h"
 #include "../Helpers/audio_maths.h"
 
-#include <cmath>
-
 void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope)
 {
     clearModulationSignalBlocks();

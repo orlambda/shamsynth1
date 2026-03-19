@@ -10,11 +10,9 @@
 
 #pragma once
 
-#include "ModulatableFloat.h"
 #include "ModulationRouting.h"
 #include "ModulationSignalBlock.h"
 
-#include <memory>
 #include <vector>
 
 class ModulationMatrix

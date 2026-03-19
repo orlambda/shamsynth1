@@ -13,7 +13,6 @@
 #include "ModulationSignalBlock.h"
 #include "ModulatableFloat.h"
 
-#include <memory>
 
 class ModulationInputManager
 {

@@ -9,10 +9,9 @@
 */
 
 #include "LowFreqOsc.h"
+#include "../Oscillators/Waveforms.h"
 
 #include <JuceHeader.h>
-
-#include <math.h>
 
 void LowFreqOsc::startOsc(float f)
 {

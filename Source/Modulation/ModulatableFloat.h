@@ -13,7 +13,6 @@
 #include "ModulationSignalBlock.h"
 
 #include <functional>
-#include <memory>
 
 // How out-of-range values are treated
 enum class Limit

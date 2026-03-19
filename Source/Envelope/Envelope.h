@@ -12,9 +12,7 @@
 
 #include "../Modulation/ModulationSignalBlock.h"
 
-#include <vector>
-
-// AR envelope - sustains while key is held
+// ADSR envelope
 
 class Envelope
 {

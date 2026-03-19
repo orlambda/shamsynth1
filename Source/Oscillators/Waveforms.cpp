@@ -10,9 +10,6 @@
 
 #include "Waveforms.h"
 
-// May not need this when using lookup table
-#include <cmath>
-
 // All Waveform functions interpret an angle in radians and return values of range [1, -1]
 
 void Waveforms::testWavetables()

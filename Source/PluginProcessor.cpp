@@ -9,7 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-#include <memory>
+#include "Oscillators/Waveforms.h"
 
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()

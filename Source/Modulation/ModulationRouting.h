@@ -14,7 +14,6 @@
 
 #include <JuceHeader.h>
 
-#include <memory>
 
 class ModulationRouting
 {

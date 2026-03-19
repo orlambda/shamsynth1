@@ -8,9 +8,7 @@
 
 #pragma once
 
-#include "Parameters.h"
 #include "Voice/Voice.h"
-#include "Effects/Bitcrusher.h"
 #include "Helpers/wrappers.h"
 #include "Oscillators/LowFreqOsc.h"
 #include "Modulation/ModulationMatrix.h"

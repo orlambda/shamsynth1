@@ -11,7 +11,6 @@
 #pragma once
 
 #include "../Envelope/Envelope.h"
-#include "../Modulation/ModulationSignalBlock.h"
 #include "../Modulation/ModulatableFloat.h"
 #include "../Parameters.h"
 #include "../Wavefolder/Wavefolder.h"

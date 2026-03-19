@@ -10,8 +10,6 @@
 
 #include "Voice.h"
 
-#include <iostream>
-
 Voice::Voice() {
 }
 

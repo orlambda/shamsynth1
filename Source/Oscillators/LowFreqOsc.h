@@ -11,9 +11,6 @@
 #pragma once
 
 #include "../Modulation/ModulationSignalBlock.h"
-#include "../Oscillators/Waveforms.h"
-
-#include <vector>
 
 // This is similar to WaveOscillator but I am avoiding multiple inheritance
 // Think about how else to avoid repetitive code
