@@ -16,5 +16,12 @@
     - Full matrix
         - Add all signal inputs and outputs to mod matrix
         - Dynamically make sliders and parameters
+    - Naming
+        - Decide on either input/output or source/destination? Or when to use one or the other?
+    - Parameter Consistency
+        - parameter order in modulation functions (e.g. sourceID, shared_ptr<source>?)
+- SignalBlocks (and anything which contains a signal block)
+    - What happens if one block is larger than usual, then the next is the usual size? Is the larger size still passed around?
+    - Should reserve space change to setSize()?
 ## Notes
 
