@@ -1,4 +1,4 @@
-# shamsynth1 v1.0.29
+# shamsynth1 v1.0.35
 
 ## IMPORTANT SAFETY WARNING
 This audio plugin may contain errors which result in extremely loud and unexpected sounds. To protect your hearing, please use at a low volume and do not listen on headphones.
@@ -26,11 +26,10 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - Scaling parameter & slider
 - White noise generator per voice
     - Level parameter & slider
-- Parameter modulation (routings are temporarily hard-coded)
+- Modulation sources (these routings are temporarily hard-coded)
     - ADSR Envelope
         - Envelope stage parameters and sliders
         - Routed to oscillator output volume
-        - Routable to oscillator tune (toggleable with button & parameter)
     - LFO 1, currently acts as tremolo effect
         - Frequency parameter & slider
         - Depth parameter & slider
@@ -38,7 +37,9 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - LFO 2, currently acts as vibrato and noise tremolo
         - Frequency parameter & slider
         - Depth parameter & slider
-        - Routed to noise generator volume and oscillator tune
+        - Routed to noise generator volume
+- Modulation Matrix
+    - Allows ADSR Envelope to be routed to Oscillator Tune with variable scaling
 - Output volume parameter & slider
 - MIDI control
     - Pitch
