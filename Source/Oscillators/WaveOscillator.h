@@ -17,7 +17,7 @@
 
 #include <JuceHeader.h>
 
-// Adds all Waveforms for a Voice
+// Sums all Waveforms for a Voice
 class WaveOscillator
 {
 public:
@@ -26,13 +26,10 @@ public:
     // Abruptly ends all sound
     void silence();
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope);
-    void resetAngle(){currentAngle = 0.0f;}
+    void resetAngle() {currentAngle = 0.0f;}
     void trigger(float f);
     void reset();
     void setFrequency(float f);
-    // Is this necessary or can it
-        // a) stay in the constructor if it won't change within Oscillator's lifetime (check this), or
-        // b) be passed in through startNote()
     void setSampleRate(float sr);
     void reserveSpace(int samplesPerBlock);
     void clearModulationSignalBlocks();
@@ -41,11 +38,13 @@ public:
     void updateSineLevel(float level) {currentSineLevel = level;}
     void updateTriangleLevel(float level) {currentTriangleLevel = level;}
     void updateSquareLevel(float level) {currentSquareLevel = level;}
-    void updateTune(float tune) {currentTune.setValue(tune); updateAngleDelta();}
+    void updateTune(float tune) {currentTune->setValue(tune); updateAngleDelta();}
     void updateWavefolderThreshold(float threshold) {wavefolder.setThreshold(threshold);}
     void updateWavefolderScaling(float scaling) {wavefolder.setScaling(scaling);}
     
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
+    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneMin, osc1TuneMax, osc1TuneDefault, RangeLimits::bound,
+                                                                                       [](float value, float modulation){return value + (modulation * osc1TuneModMultiplicationFactor);});
     
     // Temporary
     float sampleRate = 0.0f;
@@ -60,8 +59,6 @@ private:
     float currentSineLevel = 1.0f;
     float currentTriangleLevel = 1.0f;
     float currentSquareLevel = 1.0f;
-    // TODO: ADD SCALING TO FUNCTION?
-    ModulatableFloat currentTune = ModulatableFloat(osc1TuneMin, osc1TuneMax, osc1TuneDefault, Limit::bound, [](float value, float modulation){return value + modulation;});
     float currentTuneAdjustment = 0.0f;
     
     bool isActive = false;

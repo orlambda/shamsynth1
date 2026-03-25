@@ -15,7 +15,7 @@
 class Bitcrusher {
 public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    // TODO: make private, work out how to get value (function, pass processor reference in constructor, etc)
+    // TODO: make private
     // Temporary safe value
     float bitDepth = 32.0f;
 private:

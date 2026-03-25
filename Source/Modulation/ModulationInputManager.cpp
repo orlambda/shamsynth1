@@ -10,11 +10,41 @@
 
 #include "ModulationInputManager.h"
 
-void ModulationInputManager::applyModulation(std::shared_ptr<ModulationSignalBlock> block, float scaling)
+ModulationInputManager::ModulationInputManager(bool perVoice) : perVoice(perVoice)
+{}
+
+void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<ModulationOutput>> outputs, float scaling, bool outputIsPerVoice)
+{
+    if (perVoice)
+    {
+        if (outputIsPerVoice)
+        {
+            for (int i = 0; i < inputs.size() && i < outputs.size(); ++i)
+            {
+                inputs[i]->applyModulationSignal(outputs[i], scaling);
+            }
+        }
+        else
+        {
+            for (auto input : inputs)
+            {
+                input->applyModulationSignal(outputs[0], scaling);
+            }
+        }
+    }
+    else
+    {
+        for (auto output : outputs)
+        {
+            inputs[0]->applyModulationSignal(output, scaling);
+        }
+    }
+}
+
+void ModulationInputManager::reserveSpace(int totalNumSamples)
 {
     for (auto input : inputs)
     {
-        // CURRENTLY INCORRECT
-        input->applyModulationSignal(block, scaling);
+        input->reserveSpace(totalNumSamples);
     }
 }

@@ -29,6 +29,5 @@ public:
     std::vector<std::shared_ptr<LowFreqOsc>> levelModifiers;
 private:
     juce::Random random;
-
 };
 

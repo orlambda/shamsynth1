@@ -14,20 +14,13 @@
 
 void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope)
 {
-    clearModulationSignalBlocks();
+//    clearModulationSignalBlocks();
     float totalNumSamples = buffer.getNumSamples();
     if (isActive)
     {
-        // Apply LFO and envelope to tune
-        for (auto modifier: tuneModifiers)
-        {
-            // TODO - TEMPORARY MAGIC NUMBER
-            float tuneScaling = 6.0f;
-            currentTune.applyModulationSignal(modifier, tuneScaling);
-        }
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
-            currentTuneAdjustment = currentTune.getModulatedValue(sample);
+            currentTuneAdjustment = currentTune->getModulatedValue(sample);
             updateAngleDelta();
             // Update angle delta here instead of in frequency/tune setters?
             float sineSampleValue = Waveforms::sin(currentAngle) * currentSineLevel;
@@ -43,7 +36,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
         wavefolder.processBlock(buffer, totalNumOutputChannels);
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
-            buffer.applyGain(sample, 1, currentLevel * envelope.values->getValue(sample));
+            buffer.applyGain(sample, 1, currentLevel * envelope.output->getValue(sample));
         }
     }
 }
@@ -69,7 +62,7 @@ void WaveOscillator::startNote(float f)
 void WaveOscillator::updateAngleDelta()
 {
     // Tune is currently in semitones (probably change this to cents)
-    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentTune.getUnmodulatedValue() + currentTuneAdjustment) * 100.0f);
+    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentTune->getUnmodulatedValue() + currentTuneAdjustment) * 100.0f);
     angleDelta = (adjustedFrequency / sampleRate) * 2.0f * juce::MathConstants<double>::pi;
 }
 
@@ -89,7 +82,7 @@ void WaveOscillator::setSampleRate(float sr)
 
 void WaveOscillator::reserveSpace(int samplesPerBlock)
 {
-    currentTune.reserveSpace(samplesPerBlock);
+    currentTune->reserveSpace(samplesPerBlock);
 }
 
 void WaveOscillator::reset()
@@ -100,5 +93,5 @@ void WaveOscillator::reset()
 
 void WaveOscillator::clearModulationSignalBlocks()
 {
-    currentTune.clearAllModulation();
+    currentTune->clearAllModulation();
 }

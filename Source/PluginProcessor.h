@@ -97,12 +97,16 @@ public:
     std::shared_ptr<LowFreqOsc> lfo2 = std::make_shared<LowFreqOsc>();
     
     ModulationMatrix modMatrix;
+    
+    // TODO: keep these as maps of IDs and I/O Managers>?? initalise as empty map, add them in populateMatrix()?
+    std::shared_ptr<ModulationOutputManager> osc1EnvOutputManager = std::make_shared<ModulationOutputManager>(true);
+    std::shared_ptr<ModulationInputManager> osc1TuneInputManager = std::make_shared<ModulationInputManager>(true);
 
 private:
     //==============================================================================
     
     std::vector<std::shared_ptr<Voice>> voices;
-    int numberOfVoices = 16;
+    const int numberOfVoices = 16;
     
     int expectedSamplesPerBlock = 0;
     
@@ -119,7 +123,10 @@ private:
     // Effects
     
     // Volume
-    float outputVolumeScale = 0.5f;
+    const float outputVolumeScale = 0.5f;
+    
+    // Temporary pointers for modMatrix
+//    std::shared_ptr<>;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)

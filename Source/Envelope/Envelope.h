@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../Modulation/ModulationSignalBlock.h"
+#include "../Modulation/ModulationOutput.h"
 
 // ADSR envelope
 
@@ -32,7 +32,6 @@ public:
     void setSampleRate(float rate){sampleRate = rate;}
     void progressPosition();
     void progressState();
-    std::shared_ptr<ModulationSignalBlock> values = std::make_shared<ModulationSignalBlock>();
     void calculateNextBlock(int samples);
     void reserveSpace(float sampleCount);
     void setAttackTime(float seconds);
@@ -44,13 +43,13 @@ public:
     void release();
     void queueTrigger();
     void reset();
+    std::shared_ptr<ModulationOutput> output = std::make_shared<ModulationOutput>();
 private:
     float sampleRate = 0.0f;
     // Position is from  [0-1)
     float position = 0.0f;
     float lastValueForQuickRelease = 0.0f;
     float lastValueForRelease = 0.0f;
-    // Temporary: hard-coded heretw
     // SECONDS
     float attackTime = 0.0f;
     float decayTime = 0.0f;

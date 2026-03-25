@@ -10,16 +10,13 @@
 
 #include "ModulatableFloat.h"
 
-ModulatableFloat::ModulatableFloat(float p_min, float p_max, float p_value, Limit p_limitingMethod, std::function<float (float, float)> p_modulationFunction) : min(p_min), max(p_max), defaultValue(p_value), unmodulatedValue(p_value), modulatedValue(p_value), limitingMethod(p_limitingMethod), modulationFunction(p_modulationFunction)
+ModulatableFloat::ModulatableFloat(float p_min, float p_max, float p_value, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction) : min(p_min), max(p_max), defaultValue(p_value), unmodulatedValue(p_value), modulatedValue(p_value), limitingMethod(p_limitingMethod), modulationFunction(p_modulationFunction)
 {
 }
 
 void ModulatableFloat::reserveSpace(int samplesPerBlock)
 {
-    if (samplesPerBlock > inputSignalBlock.size())
-    {
-        inputSignalBlock.reserveSpace(samplesPerBlock);
-    }
+    input->reserveBlockSpace(samplesPerBlock);
 }
 
 void ModulatableFloat::setValue(float p_value)
@@ -28,27 +25,19 @@ void ModulatableFloat::setValue(float p_value)
     resetModulatedValue();
 }
 
-// THE VALUES PASSED IN block ARE WRONG
-void ModulatableFloat::applyModulationSignal(std::shared_ptr<ModulationSignalBlock> block, float scaling)
+void ModulatableFloat::applyModulationSignal(std::shared_ptr<ModulationOutput> output, float scaling)
 {
-    // TODO: delete when this is unnecessary
-    reserveSpace(block->size());
-    for (int i = 0; i < block->size(); ++i)
-    {
-        // TODO: addValue()
-        float valueToAdd = inputSignalBlock.getValue(i) + (block->getValue(i) * scaling);
-        inputSignalBlock.setValue(i, valueToAdd);
-    }
+    input->applyModulation(output, scaling);
 }
 
 float ModulatableFloat::getModulatedValue(int blockIndex)
 {
-    float value = modulationFunction(modulatedValue, inputSignalBlock.getValue(blockIndex));
-    if ((limitingMethod == Limit::bound || limitingMethod == Limit::upperBound) && value > max)
+    float value = modulationFunction(modulatedValue, input->getValue(blockIndex));
+    if ((limitingMethod == RangeLimits::bound || limitingMethod == RangeLimits::upperBound) && value > max)
     {
         return max;
     }
-    else if((limitingMethod == Limit::bound || limitingMethod == Limit::lowerBound) && value < min)
+    else if((limitingMethod == RangeLimits::bound || limitingMethod == RangeLimits::lowerBound) && value < min)
     {
         return min;
     }
@@ -60,5 +49,5 @@ float ModulatableFloat::getModulatedValue(int blockIndex)
 
 void ModulatableFloat::clearAllModulation()
 {
-    inputSignalBlock.resetValues();
+    input->resetBlockValues();
 }

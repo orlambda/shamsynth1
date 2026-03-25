@@ -10,29 +10,17 @@
 
 #include "ModulationMatrix.h"
 
-void ModulationMatrix::addRouting(std::shared_ptr<ModulationSignalBlock> source, std::shared_ptr<ModulationSignalBlock> destination)
+
+void ModulationMatrix::addSource(ModulationSourceID sourceID, std::shared_ptr<ModulationOutputManager> source)
 {
-    // REFACTOR: add routing
-    routings.push_back(ModulationRouting(source, destination));
+    sources.insert({sourceID, source});
+}
+void ModulationMatrix::addRouting(ModulationSourceID sourceID, ModulationDestinationID destinationID, std::shared_ptr<ModulationInputManager> destination)
+{
+    sources[sourceID]->addModulationTarget(destinationID, destination);
+}
+void ModulationMatrix::sendModulation(ModulationSourceID sourceID, ModulationDestinationID destinationID, float scaling)
+{
+    sources[sourceID]->sendModulation(destinationID, scaling);
 }
 
-void ModulationMatrix::setScaling(std::shared_ptr<ModulationSignalBlock> source, std::shared_ptr<ModulationSignalBlock> destination, float scaling)
-{
-    // REFACTOR: find routing
-    for (auto routing: routings)
-    {
-        if (source == routing.getSource() && destination == routing.getDestination())
-        {
-            routing.setScaling(scaling);
-            return;
-        }
-    }
-}
-
-void ModulationMatrix::applyModulation()
-{
-    for (auto routing : routings)
-    {
-        routing.applyModulation();
-    }
-}

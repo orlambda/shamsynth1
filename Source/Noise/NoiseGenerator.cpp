@@ -13,9 +13,6 @@
 void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
     float totalNumSamples = buffer.getNumSamples();
-    
-    // Each oscillator/generator
-    // Starting with a white noise generator
 
     for (auto sample = 0; sample < totalNumSamples; ++sample)
     {

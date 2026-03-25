@@ -3,7 +3,7 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.34" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.35" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
@@ -25,6 +25,10 @@
         <FILE id="bNII6u" name="wrappers.h" compile="0" resource="0" file="Source/Helpers/wrappers.h"/>
       </GROUP>
       <GROUP id="{7A8859A2-DE8F-C7B6-9EC3-1C6807EB0F7D}" name="Modulation">
+        <FILE id="klfHID" name="ModulationInput.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationInput.cpp" skipPCH="0"/>
+        <FILE id="tLFD2w" name="ModulationInput.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationInput.h"/>
         <FILE id="cUWJVI" name="ModulatableFloat.cpp" compile="1" resource="0"
               file="Source/Modulation/ModulatableFloat.cpp"/>
         <FILE id="N0BZmc" name="ModulatableFloat.h" compile="0" resource="0"
@@ -53,6 +57,10 @@
               file="Source/Modulation/ModulationSignalBlock.cpp"/>
         <FILE id="GUK33m" name="ModulationSignalBlock.h" compile="0" resource="0"
               file="Source/Modulation/ModulationSignalBlock.h"/>
+        <FILE id="X96gtQ" name="ModulationOutput.cpp" compile="1" resource="0"
+              file="Source/Modulation/ModulationOutput.cpp"/>
+        <FILE id="l4TxY8" name="ModulationOutput.h" compile="0" resource="0"
+              file="Source/Modulation/ModulationOutput.h"/>
       </GROUP>
       <GROUP id="{6FD9ACFB-EE8C-3969-80B2-D0D40523F01C}" name="Noise">
         <FILE id="xTXyiX" name="NoiseGenerator.cpp" compile="1" resource="0"

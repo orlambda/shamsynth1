@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "../Modulation/ModulationInputManager.h"
+#include "../Modulation/ModulationOutputManager.h"
 #include "../Noise/NoiseGenerator.h"
 #include "../Oscillators/WaveOscillator.h"
 #include "../Oscillators/LowFreqOsc.h"
@@ -38,7 +40,6 @@ public:
         // Could see if I can change both manually, and print number of channels in buffer, etc.
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
     
-    // Temporary
     // TODO: make static - sampleRate the same for every Voice
     void setSampleRate(float rate);
     void clearModulationBlocks();
@@ -61,12 +62,16 @@ public:
     // Temporarily public to access modifiers in processor
     // osc1
     WaveOscillator waveOsc;
+    
+    std::shared_ptr<ModulationOutput> getEnvelopeOutput();
+    std::shared_ptr<ModulatableFloat> getTuneInput();
+
+    
 private:
     // State
     float sampleRate;
     // TODO: how to initialise?
     int midiNoteNumber = 0;
-    // float fundamental = 0.0;
     
     juce::AudioBuffer<float> voiceBuffer;
     

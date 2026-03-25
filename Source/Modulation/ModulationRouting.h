@@ -14,12 +14,10 @@
 
 #include <JuceHeader.h>
 
-
 class ModulationRouting
 {
 public:
     ModulationRouting(std::shared_ptr<ModulationSignalBlock> p_source, std::shared_ptr<ModulationSignalBlock> p_destination);
-    void applyModulation();
     float getScaling(){return scaling;}
     void setScaling(float s){scaling = s;}
     // Optimisation: can check source for info e.g. if it has non-0 values / has been cleared

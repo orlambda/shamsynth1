@@ -195,8 +195,17 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     addAndMakeVisible(powerOnButton);
     
     adsrToTuneAttachment.reset(new ButtonAttachment(valueTreeState, "adsrToTune", adsrToTuneButton));
-    adsrToTuneButton.setButtonText("Route ADSR to Tune");
+    adsrToTuneButton.setButtonText("Route Osc 1 Env to Tune");
     addAndMakeVisible(adsrToTuneButton);
+    
+    osc1EnvToTuneScalingLabel.setText("Osc 1 Env To Tune Scaling", juce::dontSendNotification);
+    addAndMakeVisible(osc1EnvToTuneScalingLabel);
+    osc1EnvToTuneScalingAttachment.reset(new SliderAttachment (valueTreeState, "osc1EnvToTuneScaling", osc1EnvToTuneScalingSlider));
+    osc1EnvToTuneScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1EnvToTuneScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1EnvToTuneScalingSlider.setPopupDisplayEnabled(true, false, this);
+    osc1EnvToTuneScalingSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1EnvToTuneScalingSlider);
     
     // MIDI
     addAndMakeVisible(keyboardComponent);
@@ -262,7 +271,9 @@ void Shamsynth1AudioProcessorEditor::resized()
     outputVolumeSlider.setBounds(540, 440, 20, 150);
     outputVolumeLabel.setBounds(520, 580, 200, 50);
     powerOnButton.setBounds(650, 465, 100, 100);
-    adsrToTuneButton.setBounds(420, 200, 100, 100);
+    adsrToTuneButton.setBounds(450, 275, 100, 100);
+    osc1EnvToTuneScalingSlider.setBounds(540, 240, 20, 150);
+    osc1EnvToTuneScalingLabel.setBounds(520, 380, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

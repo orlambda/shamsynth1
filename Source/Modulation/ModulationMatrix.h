@@ -8,21 +8,25 @@
   ==============================================================================
 */
 
+// Provides a map of all modulation output managers, allowing routing them to input managers and applying modulation with scaling.
+// IO managers connect to one or more sources / destinations.
+// Signal sources store their own routings.
+
 #pragma once
 
-#include "ModulationRouting.h"
+#include "ModulationIOList.h"
+#include "ModulationOutputManager.h"
 #include "ModulationSignalBlock.h"
 
+#include <map>
 #include <vector>
 
 class ModulationMatrix
 {
 public:
-    void addRouting(std::shared_ptr<ModulationSignalBlock> source, std::shared_ptr<ModulationSignalBlock> destination);
-    void setScaling(std::shared_ptr<ModulationSignalBlock> source, std::shared_ptr<ModulationSignalBlock> destination, float scaling);
-    void applyModulation();
+    void addSource(ModulationSourceID sourceID, std::shared_ptr<ModulationOutputManager> source);
+    void addRouting(ModulationSourceID sourceID, ModulationDestinationID destinationID, std::shared_ptr<ModulationInputManager> destination);
+    void sendModulation(ModulationSourceID sourceID, ModulationDestinationID destinationID, float scaling);
 private:
-    // TODO: find container to allow search by ?
-    // maybe use enums for source and target IDs (how does this work with per-voice sources/targets? 1 per voice?)
-    std::vector<ModulationRouting> routings;
+    std::map<ModulationSourceID, std::shared_ptr<ModulationOutputManager>> sources;
 };

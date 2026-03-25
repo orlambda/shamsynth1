@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#include "Modulation/ModulationIOList.h"
 #include "Oscillators/Waveforms.h"
 
 //==============================================================================
@@ -148,6 +149,13 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    // Get number of channels and samples per block
+    // For every voice, lfo, other input/output manager:
+        // Reserve block space
+        // Set sample rate
+    // Populate wavetable
+    // Power on
+    
     // TODO: check that activating/deactivating buses calls prepareToPlay() (i.e. that num of channels will always be correct)
     int totalNumChannels = getTotalNumOutputChannels();
     if (getTotalNumInputChannels() > totalNumChannels)
@@ -161,7 +169,6 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     for (auto voice : voices)
     {
         voice->setSampleRate(sampleRate);
-        voice->reserveSpace(samplesPerBlock, totalNumChannels);
     }
     
     reserveSignalBlockSpace(samplesPerBlock, totalNumChannels);
@@ -172,13 +179,8 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     lfo2->setSampleRate(sampleRate);
     lfo2->startOsc(*lfo2FrequencyParameter);
     
-    // Reserve space in
-    
-    
-    
     Waveforms::populateWavetables();
-//    Waveforms::testWavetables();
-//    Waveforms::testTriangleWave();
+
     currentlyPowerOn = powerOnParameter.isTrue();
 }
 
@@ -272,11 +274,14 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentLfo2Depth = *lfo2DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
     bool currentlyRoutingADSRToTune = adsrToTuneParameter.isTrue();
+    float currentosc1EnvToTuneScaling = *osc1EnvToTuneScalingParameter;
     
     // MIDI
+    // processAllMidi();
     
     // Avoid changing midiMessages
     // TODO: Optimisation - should midiBuffer have space allocated in prepareToPlay()?
+        // check the size of midibuffer - is it per message or per sample
     juce::MidiBuffer midiBuffer = midiMessages;
     // Add messages from plugin window keyboard component
     keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
@@ -298,38 +303,12 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     lfo2->setDepth(currentLfo2Depth);
     lfo2->calculateNextBlock(totalNumSamples);
     
+    osc1EnvOutputManager->reserveSpace(totalNumSamples);
+    osc1TuneInputManager->reserveSpace(totalNumSamples);
+    
     // Synthesis & routing
     for (auto& voice : voices)
     {
-        // Routing HORRIBLE TEMPORARY CODE
-        if (currentlyRoutingADSRToTune)
-        {
-            // Add modifier if not already present
-            bool foundModifier = false;
-            for (auto modifier : voice->waveOsc.tuneModifiers)
-            {
-                if (modifier == voice->envelope.values)
-                {
-                    foundModifier = true;
-                    break;
-                }
-            }
-            if (!foundModifier)
-            {
-                voice->addOscTuneModifier(voice->envelope.values);
-            }
-        }
-        else
-        {
-            // Remove modifier if present
-            for (auto modifier = voice->waveOsc.tuneModifiers.begin(); modifier != voice->waveOsc.tuneModifiers.end();)
-            {
-                if (*modifier == voice->envelope.values)
-                    modifier = voice->waveOsc.tuneModifiers.erase(modifier);
-                else
-                    ++modifier;
-            }
-        }
         voice->updateOsc1Level(currentOsc1Level);
         voice->updateOsc1SineLevel(currentOsc1SineLevel);
         voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
@@ -341,6 +320,14 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->updateWavefolderScaling(currentOsc1WavefolderScaling);
         voice->updateADSRSettings(currentEnv1AttackTime, currentEnv1DecayTime, currentEnv1SustainLevel, currentEnv1ReleaseTime);
         
+        voice->envelope.calculateNextBlock(totalNumSamples);
+    }
+    if (currentlyRoutingADSRToTune)
+    {
+        modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
+    }
+    for (auto& voice : voices)
+    {
         voice->processBlock(buffer, totalNumOutputChannels);
     }
     
@@ -449,10 +436,6 @@ std::optional<int> Shamsynth1AudioProcessor::voiceWithNoteDown(int p_midiNoteNum
 {
     for (int i = 0; i < voices.size(); ++i)
     {
-//        if (voices[i]->isActive() && voices[i]->getMidiNoteNumber() == p_midiNoteNumber)
-//        {
-//            return i;
-//        }
         if (voices[i]->isActive())
         {
             if (voices[i]->getMidiNoteNumber() == p_midiNoteNumber)
@@ -460,7 +443,6 @@ std::optional<int> Shamsynth1AudioProcessor::voiceWithNoteDown(int p_midiNoteNum
                 return i;
             }
         }
-        
     }
     return {};
 }
@@ -475,7 +457,6 @@ std::optional<int> Shamsynth1AudioProcessor::availableVoice()
         }
     }
     return {};
-    
 }
 
 bool Shamsynth1AudioProcessor::checkOnOffState()
@@ -529,7 +510,6 @@ void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int samplesPerBlock, int 
     {
         voice->reserveSpace(samplesPerBlock, totalNumChannels);
     }
-    
     lfo1.reserveSpace(samplesPerBlock);
     lfo2->reserveSpace(samplesPerBlock);
 }
@@ -540,6 +520,28 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     for (auto voice : voices)
     {
         voice->addNoiseLevelModifier(lfo2);
-        voice->addOscTuneModifier(lfo2->outputSignalBlock);
     }
+    
+    // Assign outputs to all OutputManagers
+        // Poly OutputManagers
+    for (auto voice : voices)
+    {
+        osc1EnvOutputManager->addOutput(voice->getEnvelopeOutput());
+    }
+    // Mono/global OutputManagers
+    
+    // Assign inputs to all InputManagers
+        // Poly OutputManagers
+    for (auto voice : voices)
+    {
+        osc1TuneInputManager->addTargetModulationFloat(voice->waveOsc.currentTune);
+    }
+    // Mono/global InputManagers
+    
+    // Add all OutputManagers to modMatrix
+    modMatrix.addSource(ModulationSourceID::adsrEnv, osc1EnvOutputManager);
+    
+    // For each OutputManager
+        // Add all InputManagers
+    modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
 }

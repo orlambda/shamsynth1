@@ -8,18 +8,24 @@
   ==============================================================================
 */
 
+// Handles a global modulation signal input (e.g. LFO frequency) or set of per-voice modulation inputs (e.g. Tune)
+
 #pragma once
 
-#include "ModulationSignalBlock.h"
 #include "ModulatableFloat.h"
-
+#include "ModulationOutput.h"
 
 class ModulationInputManager
 {
 public:
-    void addModulationInput(std::shared_ptr<ModulatableFloat> f){inputs.push_back(f);}
-    void applyModulation(std::shared_ptr<ModulationSignalBlock> block, float scaling);
+    ModulationInputManager(bool p_perVoice);
+    void addTargetModulationFloat(std::shared_ptr<ModulatableFloat> f) {inputs.push_back(f);}
+    void applyModulation(std::vector<std::shared_ptr<ModulationOutput>> blocks, float scaling, bool outputIsPerVoice);
+    // Is this ever used?
+    bool isPerVoice() {return perVoice;}
+    void reserveSpace(int totalNumSamples);
 protected:
 private:
     std::vector<std::shared_ptr<ModulatableFloat>> inputs;
+    bool perVoice;
 };

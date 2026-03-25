@@ -16,54 +16,50 @@ void Envelope::calculateNextBlock(int samples)
     // TEMPORARY: ALWAYS SILENCE
     for (int i = 0; i < samples; ++i)
     {
-        switch (static_cast<State>(currentState))
+        // TODO: best practice - uninitialised?
+        float value;
+        switch (currentState)
         {
             case State::attack:
             {
-                float value = position;
+                value = position;
                 lastValueForRelease = value;
-                values->setValue(i, value);
                 break;
                 }
             case State::decay:
             {
-                float value = 1.0f-(position*(1.0f-sustainLevel));
+                value = 1.0f-(position*(1.0f-sustainLevel));
                 lastValueForRelease = value;
                 lastValueForQuickRelease = value;
-                values->setValue(i, value);
                 break;
             }
             case State::sustain:
             {
-                float value = sustainLevel;
+                value = sustainLevel;
                 lastValueForRelease = value;
                 lastValueForQuickRelease = value;
-                values->setValue(i, value);
                 break;
             }
             case State::release:
             {
-                float value = sustainLevel-(sustainLevel*position);
+                value = sustainLevel-(sustainLevel*position);
                 lastValueForQuickRelease = value;
-                values->setValue(i, value);
                 break;
             }
             case State::prematureRelease:
             {
-                float value = lastValueForRelease-(lastValueForRelease*position);
+                value = lastValueForRelease-(lastValueForRelease*position);
                 lastValueForQuickRelease = value;
-                values->setValue(i, value);
                 break;
             }
             case State::quickReleaseToRetrigger:
             {
-                float value = lastValueForQuickRelease-(lastValueForQuickRelease*position);
-                values->setValue(i, value);
+                value = lastValueForQuickRelease-(lastValueForQuickRelease*position);
                 break;
             }
             case State::inactive:
             {
-                values->setValue(i, 0.0f);
+                value = 0.0f;
                 break;
             }
             default:
@@ -71,16 +67,14 @@ void Envelope::calculateNextBlock(int samples)
                 break;
             }
         }
+        output->setValue(i, value);
         progressPosition();
     }
 }
 
 void Envelope::reserveSpace(float sampleCount)
 {
-    if (sampleCount > values->size())
-    {
-        values->reserveSpace(sampleCount);
-    }
+    output->reserveBlockSpace(sampleCount);
 }
 
 void Envelope::progressPosition()

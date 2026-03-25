@@ -10,7 +10,8 @@
 
 #include "Voice.h"
 
-Voice::Voice() {
+Voice::Voice()
+{
 }
 
 void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
@@ -24,15 +25,11 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
             reserveSpace(totalNumSamples, totalNumChannels);
         }
         voiceBuffer.clear();
-        waveOsc.clearModulationSignalBlocks();
-        envelope.calculateNextBlock(totalNumSamples);
         waveOsc.processBlock(voiceBuffer, totalNumOutputChannels, envelope);
         whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels);
         bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels);
         for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
         {
-            // TODO: check and use this instead
-//            buffer.addFrom(i, 0, voiceBuffer, i, 0, totalNumSamples);
             for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
             {
                 buffer.addSample(channel, sample, voiceBuffer.getSample(channel, sample));
@@ -103,4 +100,15 @@ void Voice::reset()
 {
     waveOsc.reset();
     envelope.reset();
+}
+
+
+std::shared_ptr<ModulationOutput> Voice::getEnvelopeOutput()
+{
+    return envelope.output;
+}
+
+std::shared_ptr<ModulatableFloat> Voice::getTuneInput()
+{
+    return waveOsc.currentTune;
 }

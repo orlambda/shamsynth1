@@ -10,12 +10,13 @@
 
 #pragma once
 
+// TODO: use namespace?
+
 constexpr float osc1TuneMin = -24.0f;
 constexpr float osc1TuneMax = 24.0f;
 constexpr float osc1TuneDefault = 0.0f;
 
-// temporary as scaling will be a parameter?
-constexpr float osc1TuneScalingDefault = 12.0f;
+constexpr float osc1TuneModMultiplicationFactor = 12.0f;
 
 constexpr float envToTuneScalingMin = 0.0f;
 constexpr float envToTuneScalingMax = 1.0f;

@@ -120,6 +120,10 @@ private:
     juce::ToggleButton adsrToTuneButton;
     std::unique_ptr<ButtonAttachment> adsrToTuneAttachment;
     
+    juce::Label osc1EnvToTuneScalingLabel;
+    juce::Slider osc1EnvToTuneScalingSlider;
+    std::unique_ptr<SliderAttachment> osc1EnvToTuneScalingAttachment;
+    
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;
     
