@@ -27,9 +27,6 @@ void LowFreqOsc::stopOsc()
 
 void LowFreqOsc::calculateNextBlock(int samples)
 {
-    // This will only be true if we are sent more samples in a block than expected
-    // We avoid allocating space in usual cases
-    outputSignalBlock->reserveSpace(samples);
     for (int i = 0; i < samples; ++i)
     {
         float value = 0.0f;
@@ -37,6 +34,7 @@ void LowFreqOsc::calculateNextBlock(int samples)
             value = Waveforms::sin(currentAngle + angleDelta) * depth;
         }
         outputSignalBlock->setValue(i, value);
+        output->setValue(i, value);
         currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
     }
 }

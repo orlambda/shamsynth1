@@ -188,8 +188,6 @@ void Shamsynth1AudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
-    //  TODO: Is this necessary (I don't think so)
-    voices.clear();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -290,10 +288,13 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     processMidi(midiBuffer);
     
     // TEMPORARY
+    // move to function e.g. clearAllModulationBlocks();
     for (auto voice : voices)
     {
         voice->clearModulationBlocks();
     }
+    // TODO: make e.g. lfo->clearModulationBlock();
+    lfo2->output->block->resetValues();
     
     // LFOs etc
     lfo1.setFrequency(currentLfo1Frequency);
@@ -326,6 +327,8 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     {
         modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
     }
+    // TODO: magic number
+    modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, 1.0f);
     for (auto& voice : voices)
     {
         voice->processBlock(buffer, totalNumOutputChannels);
@@ -540,7 +543,7 @@ void Shamsynth1AudioProcessor::populateModMatrix()
         osc1EnvOutputManager->addOutput(voice->getEnvelopeOutput());
     }
     // Mono/global OutputManagers
-    
+    lfo2OutputManager->addOutput(lfo2->output);
     // Assign inputs to all InputManagers
         // Poly OutputManagers
     for (auto voice : voices)
@@ -551,8 +554,10 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     
     // Add all OutputManagers to modMatrix
     modMatrix.addSource(ModulationSourceID::adsrEnv, osc1EnvOutputManager);
+    modMatrix.addSource(ModulationSourceID::lfo2, lfo2OutputManager);
     
     // For each OutputManager
         // Add all InputManagers
     modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
+    modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
 }

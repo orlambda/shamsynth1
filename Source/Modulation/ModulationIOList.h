@@ -27,5 +27,5 @@ enum class ModulationDestinationID
     lfo2Freq,
     lfo2Depth,
     wavefolderThreshold,
-    wavefolderScale
+    wavefolderAmount
 };
