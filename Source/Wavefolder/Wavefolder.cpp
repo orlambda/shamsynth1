@@ -21,12 +21,12 @@ void Wavefolder::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutp
             if (currentValue > threshold)
             {
                 float difference = currentValue - threshold;
-                buffer.setSample(channel, sample, currentValue - (difference * scaling));
+                buffer.setSample(channel, sample, currentValue - (difference * amount));
             }
             else if (currentValue < -threshold)
             {
                 float difference = threshold - currentValue;
-                buffer.setSample(channel, sample, currentValue + (difference * scaling));
+                buffer.setSample(channel, sample, currentValue + (difference * amount));
             }
         }
     }

@@ -53,7 +53,7 @@ public:
     void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
     void updateWavefolderThreshold(float threshold) {waveOsc.updateWavefolderThreshold(threshold);}
-    void updateWavefolderScaling(float scaling) {waveOsc.updateWavefolderScaling(scaling);}
+    void updateWavefolderAmount(float amount) {waveOsc.updateWavefolderAmount(amount);}
     
     // However a modulation matrix will probably change implementation, wait till then before refactoring
     // Rename modifiers: modulation, lfos, signals..
@@ -66,7 +66,6 @@ public:
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getTuneInput();
 
-    
 private:
     // State
     float sampleRate;

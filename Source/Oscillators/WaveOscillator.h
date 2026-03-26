@@ -40,7 +40,7 @@ public:
     void updateSquareLevel(float level) {currentSquareLevel = level;}
     void updateTune(float tune) {currentTune->setValue(tune); updateAngleDelta();}
     void updateWavefolderThreshold(float threshold) {wavefolder.setThreshold(threshold);}
-    void updateWavefolderScaling(float scaling) {wavefolder.setScaling(scaling);}
+    void updateWavefolderAmount(float amount) {wavefolder.SetAmount(amount);}
     
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
     std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneMin, osc1TuneMax, osc1TuneDefault, RangeLimits::bound,

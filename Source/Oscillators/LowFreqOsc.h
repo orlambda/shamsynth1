@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include "../Modulation/ModulationOutput.h"
 #include "../Modulation/ModulationSignalBlock.h"
 
 // This is similar to WaveOscillator but I am avoiding multiple inheritance
@@ -30,10 +31,12 @@ public:
     void setSampleRate(float sr);
     void setDepth(float d);
     void updateAngleDelta();
-    void reserveSpace(int sampleCount) {outputSignalBlock->reserveSpace(sampleCount);}
-    std::shared_ptr<ModulationSignalBlock> outputSignalBlock = std::make_shared<ModulationSignalBlock>();
+    void reserveSpace(int sampleCount);
     void setValue(int position, float value);
     float getValue(int position);
+    // TODO: replace with output
+    std::shared_ptr<ModulationSignalBlock> outputSignalBlock = std::make_shared<ModulationSignalBlock>();
+    std::shared_ptr<ModulationOutput> output = std::make_shared<ModulationOutput>();
 private:
     float sampleRate = 0.0f;
     float currentAngle = 0.0f;

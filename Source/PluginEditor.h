@@ -73,9 +73,9 @@ private:
     juce::Slider osc1WavefolderThresholdSlider;
     std::unique_ptr<SliderAttachment> osc1WavefolderThresholdAttachment;
     
-    juce::Label osc1WavefolderScalingLabel;
-    juce::Slider osc1WavefolderScalingSlider;
-    std::unique_ptr<SliderAttachment> osc1WavefolderScalingAttachment;
+    juce::Label osc1WavefolderAmountLabel;
+    juce::Slider osc1WavefolderAmountSlider;
+    std::unique_ptr<SliderAttachment> osc1WavefolderAmountAttachment;
     
     juce::Label env1AttackTimeLabel;
     juce::Slider env1AttackTimeSlider;

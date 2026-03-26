@@ -21,10 +21,10 @@ class Wavefolder
 {
 public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    void setThreshold(float f){threshold = abs(f);};
-    void setScaling(float s){scaling = s;};
+    void setThreshold(float f) {threshold = abs(f);};
+    void SetAmount(float s) {amount = s;};
 private:
     float threshold = 1.0f;
-    float scaling = 1.0f;
+    float amount = 1.0f;
 };
 

@@ -100,14 +100,14 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1WavefolderThresholdSlider.setTextValueSuffix("");
     addAndMakeVisible(&osc1WavefolderThresholdSlider);
     
-    osc1WavefolderScalingLabel.setText("Scale", juce::dontSendNotification);
-    addAndMakeVisible(osc1WavefolderScalingLabel);
-    osc1WavefolderScalingAttachment.reset(new SliderAttachment (valueTreeState, "osc1WavefolderScaling", osc1WavefolderScalingSlider));
-    osc1WavefolderScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
-    osc1WavefolderScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    osc1WavefolderScalingSlider.setPopupDisplayEnabled(true, false, this);
-    osc1WavefolderScalingSlider.setTextValueSuffix("");
-    addAndMakeVisible(&osc1WavefolderScalingSlider);
+    osc1WavefolderAmountLabel.setText("Amount", juce::dontSendNotification);
+    addAndMakeVisible(osc1WavefolderAmountLabel);
+    osc1WavefolderAmountAttachment.reset(new SliderAttachment (valueTreeState, "osc1WavefolderAmount", osc1WavefolderAmountSlider));
+    osc1WavefolderAmountSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1WavefolderAmountSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1WavefolderAmountSlider.setPopupDisplayEnabled(true, false, this);
+    osc1WavefolderAmountSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1WavefolderAmountSlider);
     
     env1AttackTimeLabel.setText("A Time", juce::dontSendNotification);
     addAndMakeVisible(env1AttackTimeLabel);
@@ -250,8 +250,8 @@ void Shamsynth1AudioProcessorEditor::resized()
     osc1WavefolderGeneralLabel.setBounds(770, 205, 200, 50);
     osc1WavefolderThresholdSlider.setBounds(740, 40, 20, 150);
     osc1WavefolderThresholdLabel.setBounds(720, 180, 200, 50);
-    osc1WavefolderScalingSlider.setBounds(840, 40, 20, 150);
-    osc1WavefolderScalingLabel.setBounds(820, 180, 200, 50);
+    osc1WavefolderAmountSlider.setBounds(840, 40, 20, 150);
+    osc1WavefolderAmountLabel.setBounds(820, 180, 200, 50);
     env1AttackTimeSlider.setBounds(40, 240, 20, 150);
     env1AttackTimeLabel.setBounds(20, 380, 200, 50);
     env1DecayTimeSlider.setBounds(140, 240, 20, 150);
