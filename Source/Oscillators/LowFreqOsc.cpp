@@ -31,11 +31,11 @@ void LowFreqOsc::calculateNextBlock(int samples)
     {
         float value = 0.0f;
         if (isActive) {
-            value = Waveforms::sin(currentAngle + angleDelta) * depth;
+            value = Waveforms::sin(currentAngle) * depth;
+            currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
         }
         outputSignalBlock->setValue(i, value);
         output->setValue(i, value);
-        currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
     }
 }
 
