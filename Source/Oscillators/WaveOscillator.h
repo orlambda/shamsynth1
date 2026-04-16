@@ -17,13 +17,15 @@
 
 #include <JuceHeader.h>
 
+using namespace ParameterValues;
+
 // Sums all Waveforms for a Voice
 class WaveOscillator
 {
 public:
     void startNote(float f);
     void endNote();
-    // Abruptly ends all sound
+    // Abruptly end all sound
     void silence();
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope);
     void resetAngle() {currentAngle = 0.0f;}
@@ -43,7 +45,7 @@ public:
     void updateWavefolderAmount(float amount) {wavefolder.SetAmount(amount);}
     
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
-    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneMin, osc1TuneMax, osc1TuneDefault, RangeLimits::bound,
+    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue, RangeLimits::bound,
                                                                                        [](float value, float modulation){return value + (modulation * osc1TuneModMultiplicationFactor);});
     
     // Temporary
