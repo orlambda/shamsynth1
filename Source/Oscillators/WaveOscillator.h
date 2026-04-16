@@ -57,11 +57,11 @@ private:
     
     float frequency = 0.0f;
     
-    float currentLevel = 1.0f;
-    float currentSineLevel = 1.0f;
-    float currentTriangleLevel = 1.0f;
-    float currentSquareLevel = 1.0f;
-    float currentTuneAdjustment = 0.0f;
+    float currentLevel = osc1LevelValues.defaultValue;
+    float currentSineLevel = osc1SineLevelValues.defaultValue;
+    float currentTriangleLevel = osc1TriangleLevelValues.defaultValue;
+    float currentSquareLevel = osc1SquareLevelValues.defaultValue;
+    float currentAdjustedTune = osc1TuneValues.defaultValue;
     
     bool isActive = false;
     
