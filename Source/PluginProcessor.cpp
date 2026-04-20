@@ -179,8 +179,8 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 //     Refactor repetitive code
     lfo1.setSampleRate(sampleRate);
     lfo1.startOsc(*lfo1FrequencyParameter);
-    lfo2->setSampleRate(sampleRate);
-    lfo2->startOsc(*lfo2FrequencyParameter);
+    lfo2.setSampleRate(sampleRate);
+    lfo2.startOsc(*lfo2FrequencyParameter);
     
     Waveforms::populateWavetables();
 
@@ -297,15 +297,15 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->clearModulationBlocks();
     }
     // TODO: make e.g. lfo->clearModulationBlock();
-    lfo2->output->block->resetValues();
+    lfo2.output->block->resetValues();
     
     // LFOs etc
     lfo1.setFrequency(currentLfo1Frequency);
     lfo1.setDepth(currentLfo1Depth);
     lfo1.calculateNextBlock(totalNumSamples);
-    lfo2->setFrequency(currentLfo2Frequency);
-    lfo2->setDepth(currentLfo2Depth);
-    lfo2->calculateNextBlock(totalNumSamples);
+    lfo2.setFrequency(currentLfo2Frequency);
+    lfo2.setDepth(currentLfo2Depth);
+    lfo2.calculateNextBlock(totalNumSamples);
     
     osc1EnvOutputManager->reserveSpace(totalNumSamples);
     osc1TuneInputManager->reserveSpace(totalNumSamples);
@@ -332,6 +332,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     }
     // TODO: magic number
     modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, 1.0f);
+    modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, 1.0f);
     modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, 1.0f);
     for (auto& voice : voices)
     {
@@ -518,7 +519,7 @@ void Shamsynth1AudioProcessor::resetState()
     }
     // Reset LFOs
     lfo1.resetLFO();
-    lfo2->resetLFO();
+    lfo2.resetLFO();
 }
 
 void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels)
@@ -528,17 +529,11 @@ void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int samplesPerBlock, int 
         voice->reserveSpace(samplesPerBlock, totalNumChannels);
     }
     lfo1.reserveSpace(samplesPerBlock);
-    lfo2->reserveSpace(samplesPerBlock);
+    lfo2.reserveSpace(samplesPerBlock);
 }
 
 void Shamsynth1AudioProcessor::populateModMatrix()
-{
-    // Temporary
-    for (auto voice : voices)
-    {
-        voice->addNoiseLevelModifier(lfo2);
-    }
-    
+{    
     // Assign outputs to all OutputManagers
         // Poly OutputManagers
     for (auto voice : voices)
@@ -547,12 +542,13 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     }
     // Mono/global OutputManagers
     lfo1OutputManager->addOutput(lfo1.output);
-    lfo2OutputManager->addOutput(lfo2->output);
+    lfo2OutputManager->addOutput(lfo2.output);
     // Assign inputs to all InputManagers
-        // Poly OutputManagers
+        // Poly InputManagers
     for (auto voice : voices)
     {
         osc1LevelInputManager->addTargetModulationFloat(voice->waveOsc.currentLevel);
+        osc1NoiseLevelInputManager->addTargetModulationFloat(voice->getNoiseLevelInput());
         osc1TuneInputManager->addTargetModulationFloat(voice->waveOsc.currentTune);
     }
     // Mono/global InputManagers
@@ -566,5 +562,6 @@ void Shamsynth1AudioProcessor::populateModMatrix()
         // Add all InputManagers
     modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, osc1LevelInputManager);
+    modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, osc1NoiseLevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
 }

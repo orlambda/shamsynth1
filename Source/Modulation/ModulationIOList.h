@@ -21,6 +21,7 @@ enum class ModulationSourceID
 enum class ModulationDestinationID
 {
     osc1Level,
+    osc1NoiseLevel,
     osc1Tune,
     lfo1Freq,
     lfo1Depth,

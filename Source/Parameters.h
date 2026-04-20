@@ -14,7 +14,7 @@
  
  ## Osc 1 ##
  - WaveOscillator
-    level (f)
+    level (Modulatablefloat)
     sine level (f)
     triangle level (f)
     square level (f)
@@ -92,6 +92,7 @@ namespace ParameterValues {
 
     constexpr float osc1LevelMaximumModFactor = 1.0f;
     constexpr float osc1TuneMaximumModFactor = 12.0f;
+    constexpr float noiseLevelMaximumModFactor = 1.0f;
 
     constexpr float scalingMin = 0.0f;
     constexpr float scalingMax = 1.0f;

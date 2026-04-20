@@ -94,7 +94,7 @@ public:
     
     // TODO: decide whether to use shared pointers
     LowFreqOsc lfo1;
-    std::shared_ptr<LowFreqOsc> lfo2 = std::make_shared<LowFreqOsc>();
+    LowFreqOsc lfo2;
     
     ModulationMatrix modMatrix;
     
@@ -103,6 +103,7 @@ public:
     std::shared_ptr<ModulationOutputManager> lfo1OutputManager = std::make_shared<ModulationOutputManager>(false);
     std::shared_ptr<ModulationOutputManager> lfo2OutputManager = std::make_shared<ModulationOutputManager>(false);
     std::shared_ptr<ModulationInputManager> osc1LevelInputManager = std::make_shared<ModulationInputManager>(true);
+    std::shared_ptr<ModulationInputManager> osc1NoiseLevelInputManager = std::make_shared<ModulationInputManager>(true);
     std::shared_ptr<ModulationInputManager> osc1TuneInputManager = std::make_shared<ModulationInputManager>(true);
 
 private:

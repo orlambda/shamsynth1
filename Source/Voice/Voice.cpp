@@ -49,12 +49,14 @@ void Voice::reserveSpace(int samplesPerBlock, int totalNumChannels)
 {
     waveOsc.reserveSpace(samplesPerBlock);
     envelope.reserveSpace(samplesPerBlock);
+    whiteNoise.reserveSpace(samplesPerBlock);
     voiceBuffer.setSize(totalNumChannels, samplesPerBlock);
 }
 
 void Voice::clearModulationBlocks()
 {
     waveOsc.clearModulationSignalBlocks();
+    whiteNoise.clearModulationSignalBlocks();
     voiceBuffer.clear();
 }
 
@@ -86,11 +88,6 @@ void Voice::queueNote(int p_midiNoteNumber)
     waveOsc.startNote(getFundamental());
 }
 
-void Voice::addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier)
-{
-    whiteNoise.levelModifiers.push_back(modifier);
-}
-
 void Voice::addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier)
 {
     waveOsc.tuneModifiers.push_back(modifier);
@@ -108,10 +105,14 @@ std::shared_ptr<ModulationOutput> Voice::getEnvelopeOutput()
     return envelope.output;
 }
 
-
 std::shared_ptr<ModulatableFloat> Voice::getLevelInput()
 {
     return waveOsc.currentLevel;
+}
+
+std::shared_ptr<ModulatableFloat> Voice::getNoiseLevelInput()
+{
+    return whiteNoise.level;
 }
 
 std::shared_ptr<ModulatableFloat> Voice::getTuneInput()

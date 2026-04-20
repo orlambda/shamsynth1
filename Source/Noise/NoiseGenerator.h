@@ -8,25 +8,28 @@ NoiseGenerator.h
   ==============================================================================
 */
 
-
 #pragma once
 
+#include "../Modulation/ModulatableFloat.h"
 #include "../Oscillators/LowFreqOsc.h"
+#include "../Parameters.h"
 
 #include <JuceHeader.h>
 
 #include <vector>
 
+using namespace ParameterValues;
+
 class NoiseGenerator
 {
 public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    
-    // Temporary
+    void clearModulationSignalBlocks();
+    void reserveSpace(int samplesPerBlock);
+    void updateLevel(float p_level);
     float sampleRate = 0.0;
-    float currentLevel = 0.0;
-    // Consider making private, using add/remove lfo functions, etc.
-    std::vector<std::shared_ptr<LowFreqOsc>> levelModifiers;
+    std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues.minValue, noiseLevelValues.maxValue, noiseLevelValues.defaultValue, RangeLimits::lowerBound,
+                                                                                    [](float value, float modulation){return value * (modulation + 1) * noiseLevelMaximumModFactor;});
 private:
     juce::Random random;
 };

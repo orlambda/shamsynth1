@@ -50,22 +50,24 @@ public:
     void updateOsc1SquareLevel(float level) {waveOsc.updateSquareLevel(level);}
     void updateOsc1Tune(float tune) {waveOsc.updateTune(tune);}
     void updateADSRSettings(float a, float d, float s, float r);
-    void updateNoiseLevel(float level) {whiteNoise.currentLevel = level;}
+    void updateNoiseLevel(float level) {whiteNoise.updateLevel(level);}
     void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
     void updateWavefolderThreshold(float threshold) {waveOsc.updateWavefolderThreshold(threshold);}
     void updateWavefolderAmount(float amount) {waveOsc.updateWavefolderAmount(amount);}
     
     // However a modulation matrix will probably change implementation, wait till then before refactoring
     // Rename modifiers: modulation, lfos, signals..
-    void addNoiseLevelModifier(std::shared_ptr<LowFreqOsc> modifier);
     void addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier);
     // Temporarily public to access modifiers in processor
-    // osc1
-    WaveOscillator waveOsc;
     
+    // TODO: fix and use these
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getLevelInput();
+    std::shared_ptr<ModulatableFloat> getNoiseLevelInput();
     std::shared_ptr<ModulatableFloat> getTuneInput();
+    
+    // White Noise Generator
+    NoiseGenerator whiteNoise{};
 
 private:
     // State
@@ -75,8 +77,8 @@ private:
     
     juce::AudioBuffer<float> voiceBuffer;
     
-    // White Noise Generator
-    NoiseGenerator whiteNoise;
+    // osc1
+    WaveOscillator waveOsc;
     
     // effects
     Bitcrusher bitcrusher;

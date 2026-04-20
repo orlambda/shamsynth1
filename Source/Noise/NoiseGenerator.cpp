@@ -17,14 +17,26 @@ void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
     for (auto sample = 0; sample < totalNumSamples; ++sample)
     {
         // Generate noise at a level of 0.05
+        float currentLevel = level->getModulatedValue(sample);
         float sampleValue = (random.nextFloat() * 0.1 - 0.05) * currentLevel;
         for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
         {
-            for (auto modifier: levelModifiers)
-            {
-                sampleValue = sampleValue * (modifier->getValue(sample) + 1);
-            }
             buffer.addSample(channel, sample, sampleValue);
         }
     }
+}
+
+void NoiseGenerator::updateLevel(float p_level)
+{
+    level->setValue(p_level);
+}
+
+void NoiseGenerator::reserveSpace(int samplesPerBlock)
+{
+    level->reserveSpace(samplesPerBlock);
+}
+
+void NoiseGenerator::clearModulationSignalBlocks()
+{
+    level->clearAllModulation();
 }

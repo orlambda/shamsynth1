@@ -28,6 +28,7 @@ enum class RangeLimits
 class ModulatableFloat
 {
 public:
+    // TODO: constructor parameters: ParameterFloatValues object
     ModulatableFloat(float p_min, float p_max, float p_value, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
     void reserveSpace(int samplesPerBlock);
     void setValue(float p_value);
