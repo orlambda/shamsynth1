@@ -108,6 +108,12 @@ std::shared_ptr<ModulationOutput> Voice::getEnvelopeOutput()
     return envelope.output;
 }
 
+
+std::shared_ptr<ModulatableFloat> Voice::getLevelInput()
+{
+    return waveOsc.currentLevel;
+}
+
 std::shared_ptr<ModulatableFloat> Voice::getTuneInput()
 {
     return waveOsc.currentTune;

@@ -331,6 +331,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
     }
     // TODO: magic number
+    modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, 1.0f);
     modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, 1.0f);
     for (auto& voice : voices)
     {
@@ -342,14 +343,13 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // {effect->processBlock(buffer);}
     
     // Final volume
-    // Scale down volume to account for increase from LFO and prevent clipping
+    // Scale down volume to prevent clipping
     float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
-            float processedOutputVolume = scaledOutputVolume * (lfo1.getValue(sample) + 1);
-            float finalValue = buffer.getSample(channel, sample) * processedOutputVolume;
+            float finalValue = buffer.getSample(channel, sample) * scaledOutputVolume;
             buffer.setSample(channel, sample, finalValue);
         }
     }
@@ -546,21 +546,25 @@ void Shamsynth1AudioProcessor::populateModMatrix()
         osc1EnvOutputManager->addOutput(voice->getEnvelopeOutput());
     }
     // Mono/global OutputManagers
+    lfo1OutputManager->addOutput(lfo1.output);
     lfo2OutputManager->addOutput(lfo2->output);
     // Assign inputs to all InputManagers
         // Poly OutputManagers
     for (auto voice : voices)
     {
+        osc1LevelInputManager->addTargetModulationFloat(voice->waveOsc.currentLevel);
         osc1TuneInputManager->addTargetModulationFloat(voice->waveOsc.currentTune);
     }
     // Mono/global InputManagers
     
     // Add all OutputManagers to modMatrix
     modMatrix.addSource(ModulationSourceID::adsrEnv, osc1EnvOutputManager);
+    modMatrix.addSource(ModulationSourceID::lfo1, lfo1OutputManager);
     modMatrix.addSource(ModulationSourceID::lfo2, lfo2OutputManager);
     
     // For each OutputManager
         // Add all InputManagers
     modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
+    modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, osc1LevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
 }

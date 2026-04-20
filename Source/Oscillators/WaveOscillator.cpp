@@ -36,7 +36,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
         wavefolder.processBlock(buffer, totalNumOutputChannels);
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
-            buffer.applyGain(sample, 1, currentLevel * envelope.output->getValue(sample));
+            buffer.applyGain(sample, 1, currentLevel->getModulatedValue(sample) * envelope.output->getValue(sample));
         }
     }
 }
@@ -82,6 +82,7 @@ void WaveOscillator::setSampleRate(float sr)
 
 void WaveOscillator::reserveSpace(int samplesPerBlock)
 {
+    currentLevel->reserveSpace(samplesPerBlock);
     currentTune->reserveSpace(samplesPerBlock);
 }
 
@@ -93,5 +94,6 @@ void WaveOscillator::reset()
 
 void WaveOscillator::clearModulationSignalBlocks()
 {
+    currentLevel->clearAllModulation();
     currentTune->clearAllModulation();
 }

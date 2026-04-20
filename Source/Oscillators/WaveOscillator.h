@@ -36,7 +36,7 @@ public:
     void reserveSpace(int samplesPerBlock);
     void clearModulationSignalBlocks();
     void updateAngleDelta();
-    void updateLevel(float level) {currentLevel = level;}
+    void updateLevel(float level) {currentLevel->setValue(level);}
     void updateSineLevel(float level) {currentSineLevel = level;}
     void updateTriangleLevel(float level) {currentTriangleLevel = level;}
     void updateSquareLevel(float level) {currentSquareLevel = level;}
@@ -45,8 +45,11 @@ public:
     void updateWavefolderAmount(float amount) {wavefolder.SetAmount(amount);}
     
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
+    
+    std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues.minValue, osc1LevelValues.maxValue, osc1LevelValues.defaultValue, RangeLimits::lowerBound,
+                                                                                    [](float value, float modulation){return value * ((modulation + 1) * osc1LevelMaximumModFactor);});
     std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue, RangeLimits::bound,
-                                                                                       [](float value, float modulation){return value + (modulation * osc1TuneModMultiplicationFactor);});
+                                                                                    [](float value, float modulation){return value + (modulation * osc1TuneMaximumModFactor);});
     
     // Temporary
     float sampleRate = 0.0f;
@@ -57,7 +60,6 @@ private:
     
     float frequency = 0.0f;
     
-    float currentLevel = osc1LevelValues.defaultValue;
     float currentSineLevel = osc1SineLevelValues.defaultValue;
     float currentTriangleLevel = osc1TriangleLevelValues.defaultValue;
     float currentSquareLevel = osc1SquareLevelValues.defaultValue;

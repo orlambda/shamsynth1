@@ -8,6 +8,41 @@
   ==============================================================================
 */
 
+/*
+ ### Parameter location list ###
+ Location for all variables controlled by parameters
+ 
+ ## Osc 1 ##
+ - WaveOscillator
+    level (f)
+    sine level (f)
+    triangle level (f)
+    square level (f)
+    tune (ModulatableFloat)
+ noise level
+ bit depth
+ wavefolder threshold
+ wavefolder amount
+ 
+ ## Env 1 ##
+ a
+ d
+ s
+ r
+ 
+ ## LFO 1 ##
+ frequency
+ depth
+ 
+ ## LFO 2 ##
+ frequency depth
+ 
+ ## Synth ##
+ output volume
+ power on
+ 
+ */
+
 #pragma once
 
 #include <string>
@@ -29,6 +64,7 @@ namespace ParameterValues {
         const bool defaultValue;
     };
 
+    // Osc 1
     const ParameterFloatValues osc1LevelValues = {"osc1Level", "Osc 1 Level", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1SineLevelValues = {"osc1SineLevel", "Osc 1 Sine Level", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1TriangleLevelValues = {"osc1TriangleLevel", "Osc 1 Triangle Level", 0.0f, 1.0f, 1.0f};
@@ -39,18 +75,23 @@ namespace ParameterValues {
     const ParameterFloatValues bitcrusherBitDepthValues1 = {"bitcrusherBitDepth", "Bit Depth", 1.0f, 32.0f, 32.0f};
     const ParameterFloatValues osc1WavefolderThresholdValues = {"osc1WavefolderThreshold", "Osc 1 Wavefolder Threshold", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1WavefolderAmountValues = {"osc1WavefolderAmount", "Osc 1 Wavefolder Amount", 0.0f, 4.0f, 0.0f};
+    // Env 1
     const ParameterFloatValues env1AttackTimeValues = {"env1AttackTime", "Env 1 Attack Time", 0.0f, 5.0f, 0.0f};
     const ParameterFloatValues env1DecayTimeValues = {"env1DecayTime", "Env 1 Decay Time", 0.0f, 5.0f, 0.0f};
     const ParameterFloatValues env1SustainLevelValues = {"env1SustainLevel", "Env 1 Sustain Level", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues env1ReleaseTimeValues = {"env1ReleaseTime", "Env 1 Release Time", 0.0f, 5.0f, 0.0f};
+    // LFO 1
     const ParameterFloatValues lfo1FrequencyValues = {"lfo1Frequency", "LFO 1 Frequency", 0.0f, 40.0f, 0.0f};
     const ParameterFloatValues lfo1DepthValues = {"lfo1Depth", "LFO 1 Depth", 0.0f, 1.0f, 1.0f};
+    // LFO 2
     const ParameterFloatValues lfo2FrequencyValues = {"lfo2Frequency", "LFO 2 Frequency", 0.0f, 40.0f, 0.0f};
     const ParameterFloatValues lfo2DepthValues = {"lfo2Depth", "LFO 2 Depth", 0.0f, 1.0f, 1.0f};
+    // Synth
     const ParameterFloatValues outputVolumeValues = {"outputVolume", "Output Volume", 0.0f, 1.0f, 0.5f};
     const ParameterBoolValues powerOnValues = {"powerOn", "Power On", true};
 
-    constexpr float osc1TuneModMultiplicationFactor = 12.0f;
+    constexpr float osc1LevelMaximumModFactor = 1.0f;
+    constexpr float osc1TuneMaximumModFactor = 12.0f;
 
     constexpr float scalingMin = 0.0f;
     constexpr float scalingMax = 1.0f;

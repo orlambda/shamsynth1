@@ -100,7 +100,9 @@ public:
     
     // TODO: keep these as maps of IDs and I/O Managers>?? initalise as empty map, add them in populateMatrix()?
     std::shared_ptr<ModulationOutputManager> osc1EnvOutputManager = std::make_shared<ModulationOutputManager>(true);
+    std::shared_ptr<ModulationOutputManager> lfo1OutputManager = std::make_shared<ModulationOutputManager>(false);
     std::shared_ptr<ModulationOutputManager> lfo2OutputManager = std::make_shared<ModulationOutputManager>(false);
+    std::shared_ptr<ModulationInputManager> osc1LevelInputManager = std::make_shared<ModulationInputManager>(true);
     std::shared_ptr<ModulationInputManager> osc1TuneInputManager = std::make_shared<ModulationInputManager>(true);
 
 private:

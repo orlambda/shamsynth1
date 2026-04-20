@@ -64,6 +64,7 @@ public:
     WaveOscillator waveOsc;
     
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
+    std::shared_ptr<ModulatableFloat> getLevelInput();
     std::shared_ptr<ModulatableFloat> getTuneInput();
 
 private:
