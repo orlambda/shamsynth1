@@ -91,8 +91,8 @@ namespace ParameterValues {
     const ParameterFloatValues outputVolumeValues = {"outputVolume", "Output Volume", 0.0f, 1.0f, 0.5f};
     const ParameterBoolValues powerOnValues = {"powerOn", "Power On", true};
 
-    constexpr float osc1LevelMaximumModFactor = 1.0f;
-    constexpr float osc1TuneMaximumModFactor = 12.0f;
+    constexpr float levelMaximumModFactor = 1.0f;
+    constexpr float tuneMaximumModFactor = 12.0f;
     constexpr float noiseLevelMaximumModFactor = 1.0f;
 
     constexpr float scalingMin = 0.0f;

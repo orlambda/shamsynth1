@@ -3,7 +3,7 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.44" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.45" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
@@ -25,6 +25,10 @@
         <FILE id="bNII6u" name="wrappers.h" compile="0" resource="0" file="Source/Helpers/wrappers.h"/>
       </GROUP>
       <GROUP id="{7A8859A2-DE8F-C7B6-9EC3-1C6807EB0F7D}" name="Modulation">
+        <FILE id="JKCpDW" name="ModulationReactionFunctions.cpp" compile="1"
+              resource="0" file="Source/Modulation/ModulationReactionFunctions.cpp"/>
+        <FILE id="f3QnTa" name="ModulationReactionFunctions.h" compile="0"
+              resource="0" file="Source/Modulation/ModulationReactionFunctions.h"/>
         <FILE id="klfHID" name="ModulationInput.cpp" compile="1" resource="0"
               file="Source/Modulation/ModulationInput.cpp" skipPCH="0"/>
         <FILE id="tLFD2w" name="ModulationInput.h" compile="0" resource="0"

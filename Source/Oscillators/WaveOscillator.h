@@ -12,11 +12,13 @@
 
 #include "../Envelope/Envelope.h"
 #include "../Modulation/ModulatableFloat.h"
+#include "../Modulation/ModulationReactionFunctions.h"
 #include "../Parameters.h"
 #include "../Wavefolder/Wavefolder.h"
 
 #include <JuceHeader.h>
 
+using namespace ModulationReactionFunctions;
 using namespace ParameterValues;
 
 // Sums all Waveforms for a Voice
@@ -48,9 +50,9 @@ public:
     
 // TODO: should this lambda `return value * (modulation * osc1LevelMaximumModFactor + 1);`? - this is also reused in noise and for other levels - make a named function somewhere
     std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues.minValue, osc1LevelValues.maxValue, osc1LevelValues.defaultValue, RangeLimits::lowerBound,
-                                                                                    [](float value, float modulation){return value * (modulation + 1) * osc1LevelMaximumModFactor;});
+                                                                                    modulateLevel);
     std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue, RangeLimits::bound,
-                                                                                    [](float value, float modulation){return value + (modulation * osc1TuneMaximumModFactor);});
+                                                                                    modulateTune);
     
     float sampleRate = 0.0f;
 private:
