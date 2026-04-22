@@ -547,9 +547,9 @@ void Shamsynth1AudioProcessor::populateModMatrix()
         // Poly InputManagers
     for (auto voice : voices)
     {
-        osc1LevelInputManager->addTargetModulationFloat(voice->waveOsc.currentLevel);
+        osc1LevelInputManager->addTargetModulationFloat(voice->getLevelInput());
         osc1NoiseLevelInputManager->addTargetModulationFloat(voice->getNoiseLevelInput());
-        osc1TuneInputManager->addTargetModulationFloat(voice->waveOsc.currentTune);
+        osc1TuneInputManager->addTargetModulationFloat(voice->getTuneInput());
     }
     // Mono/global InputManagers
     

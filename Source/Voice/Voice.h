@@ -60,7 +60,6 @@ public:
     void addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier);
     // Temporarily public to access modifiers in processor
     
-    // TODO: fix and use these
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getLevelInput();
     std::shared_ptr<ModulatableFloat> getNoiseLevelInput();

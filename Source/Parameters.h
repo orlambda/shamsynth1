@@ -19,27 +19,28 @@
     triangle level (f)
     square level (f)
     tune (ModulatableFloat)
- noise level
- bit depth
- wavefolder threshold
- wavefolder amount
+ noise level (ModulatableFloat)
+ bit depth (f)
+ wavefolder threshold (f)
+ wavefolder amount (f)
  
  ## Env 1 ##
  a
  d
  s
  r
+ (all f)
  
  ## LFO 1 ##
- frequency
- depth
+ frequency (f)
+ depth (f)
  
  ## LFO 2 ##
  frequency depth
  
  ## Synth ##
- output volume
- power on
+ output volume (f)
+ power on (bool)
  
  */
 
