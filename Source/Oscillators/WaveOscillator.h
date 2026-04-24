@@ -18,8 +18,9 @@
 
 #include <JuceHeader.h>
 
-using namespace ModulationReactionFunctions;
-using namespace ParameterValues;
+using ModulationReactionFunctions::modulateLevel, ModulationReactionFunctions::modulateTune;
+using ParameterValues::osc1LevelValues, ParameterValues::osc1SineLevelValues, ParameterValues::osc1TriangleLevelValues,
+    ParameterValues::osc1SquareLevelValues, ParameterValues::osc1TuneValues;
 
 // Sums all Waveforms for a Voice
 class WaveOscillator
@@ -48,11 +49,8 @@ public:
     
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
     
-// TODO: should this lambda `return value * (modulation * osc1LevelMaximumModFactor + 1);`? - this is also reused in noise and for other levels - make a named function somewhere
-    std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues, RangeLimits::lowerBound,
-                                                                                    modulateLevel);
-    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues, RangeLimits::bound,
-                                                                                    modulateTune);
+    std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues, RangeLimits::lowerBound, modulateLevel);
+    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues, RangeLimits::bound, modulateTune);
     
     float sampleRate = 0.0f;
 private:

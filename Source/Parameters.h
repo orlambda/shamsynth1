@@ -93,7 +93,6 @@ namespace ParameterValues {
 
     constexpr float levelMaximumModFactor = 1.0f;
     constexpr float tuneMaximumModFactor = 12.0f;
-    constexpr float noiseLevelMaximumModFactor = 1.0f;
 
     constexpr float scalingMin = 0.0f;
     constexpr float scalingMax = 1.0f;

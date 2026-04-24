@@ -11,6 +11,7 @@ NoiseGenerator.h
 #pragma once
 
 #include "../Modulation/ModulatableFloat.h"
+#include "../Modulation/ModulationReactionFunctions.h"
 #include "../Oscillators/LowFreqOsc.h"
 #include "../Parameters.h"
 
@@ -18,7 +19,8 @@ NoiseGenerator.h
 
 #include <vector>
 
-using namespace ParameterValues;
+using ModulationReactionFunctions::modulateLevel;
+using ParameterValues::noiseLevelValues;
 
 class NoiseGenerator
 {
@@ -28,8 +30,7 @@ public:
     void reserveSpace(int samplesPerBlock);
     void updateLevel(float p_level);
     float sampleRate = 0.0;
-    std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues, RangeLimits::lowerBound,
-                                                                                    [](float value, float modulation){return value * (modulation + 1) * noiseLevelMaximumModFactor;});
+    std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues, RangeLimits::lowerBound, modulateLevel);
 private:
     juce::Random random;
 };

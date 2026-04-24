@@ -14,6 +14,7 @@
 
 using namespace ParameterValues;
 
+// TODO: should this `return value * (modulation * osc1LevelMaximumModFactor + 1);`
 float ModulationReactionFunctions::modulateLevel(float value, float modulation)
 {
     return value * (modulation + 1) * levelMaximumModFactor;
