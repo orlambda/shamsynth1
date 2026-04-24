@@ -115,6 +115,7 @@ private:
     int expectedSamplesPerBlock = 0;
     
     void reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels);
+    void updateSampleRate(double sampleRate);
     void populateModMatrix();
     
     // Input

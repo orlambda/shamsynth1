@@ -152,13 +152,6 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 //==============================================================================
 void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Get number of channels and samples per block
-    // For every voice, lfo, other input/output manager:
-        // Reserve block space
-        // Set sample rate
-    // Populate wavetable
-    // Power on
-    
     // TODO: check that activating/deactivating buses calls prepareToPlay() (i.e. that num of channels will always be correct)
     int totalNumChannels = getTotalNumOutputChannels();
     if (getTotalNumInputChannels() > totalNumChannels)
@@ -167,19 +160,11 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
     }
     
     expectedSamplesPerBlock = samplesPerBlock;
-    
-    // Pre-playback initialisation
-    for (auto voice : voices)
-    {
-        voice->setSampleRate(sampleRate);
-    }
-    
+        
     reserveSignalBlockSpace(samplesPerBlock, totalNumChannels);
+    updateSampleRate(sampleRate);
     
-//     Refactor repetitive code
-    lfo1.setSampleRate(sampleRate);
     lfo1.startOsc(*lfo1FrequencyParameter);
-    lfo2.setSampleRate(sampleRate);
     lfo2.startOsc(*lfo2FrequencyParameter);
     
     Waveforms::populateWavetables();
@@ -530,6 +515,16 @@ void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int samplesPerBlock, int 
     }
     lfo1.reserveSpace(samplesPerBlock);
     lfo2.reserveSpace(samplesPerBlock);
+}
+
+void Shamsynth1AudioProcessor::updateSampleRate(double sampleRate)
+{
+    for (auto voice : voices)
+    {
+        voice->setSampleRate(sampleRate);
+    }
+    lfo1.setSampleRate(sampleRate);
+    lfo2.setSampleRate(sampleRate);
 }
 
 void Shamsynth1AudioProcessor::populateModMatrix()
