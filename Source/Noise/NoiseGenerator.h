@@ -28,7 +28,7 @@ public:
     void reserveSpace(int samplesPerBlock);
     void updateLevel(float p_level);
     float sampleRate = 0.0;
-    std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues.minValue, noiseLevelValues.maxValue, noiseLevelValues.defaultValue, RangeLimits::lowerBound,
+    std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues, RangeLimits::lowerBound,
                                                                                     [](float value, float modulation){return value * (modulation + 1) * noiseLevelMaximumModFactor;});
 private:
     juce::Random random;

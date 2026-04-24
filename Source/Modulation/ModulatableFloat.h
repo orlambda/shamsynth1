@@ -12,9 +12,12 @@
 
 #include "ModulationInput.h"
 #include "ModulationOutput.h"
+#include "../Parameters.h"
 
 #include <memory>
 #include <functional>
+
+using ParameterValues::ParameterFloatValues;
 
 // How out-of-range values are treated
 enum class RangeLimits
@@ -29,7 +32,7 @@ class ModulatableFloat
 {
 public:
     // TODO: constructor parameters: ParameterFloatValues object
-    ModulatableFloat(float p_min, float p_max, float p_value, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
+    ModulatableFloat(ParameterFloatValues values, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
     void reserveSpace(int samplesPerBlock);
     void setValue(float p_value);
     void resetModulatedValue() {modulatedValue = unmodulatedValue;}

@@ -49,9 +49,9 @@ public:
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
     
 // TODO: should this lambda `return value * (modulation * osc1LevelMaximumModFactor + 1);`? - this is also reused in noise and for other levels - make a named function somewhere
-    std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues.minValue, osc1LevelValues.maxValue, osc1LevelValues.defaultValue, RangeLimits::lowerBound,
+    std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues, RangeLimits::lowerBound,
                                                                                     modulateLevel);
-    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue, RangeLimits::bound,
+    std::shared_ptr<ModulatableFloat> currentTune = std::make_shared<ModulatableFloat>(osc1TuneValues, RangeLimits::bound,
                                                                                     modulateTune);
     
     float sampleRate = 0.0f;

@@ -10,7 +10,7 @@
 
 #include "ModulatableFloat.h"
 
-ModulatableFloat::ModulatableFloat(float p_min, float p_max, float p_value, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction) : min(p_min), max(p_max), defaultValue(p_value), unmodulatedValue(p_value), modulatedValue(p_value), limitingMethod(p_limitingMethod), modulationFunction(p_modulationFunction)
+ModulatableFloat::ModulatableFloat(ParameterFloatValues values, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction) : min(values.minValue), max(values.maxValue), defaultValue(values.defaultValue), unmodulatedValue(values.defaultValue), modulatedValue(values.defaultValue), limitingMethod(p_limitingMethod), modulationFunction(p_modulationFunction)
 {
 }
 
