@@ -14,14 +14,7 @@
 
 namespace audio_maths
 {
-    float increaseHzUsingCents(float startingFrequency, float centsIncrease)
-    {
-        return startingFrequency * (pow(2.0f, (centsIncrease / 1200.0f)));
-    }
-
+    float increaseHzUsingCents(float startingFrequency, float centsIncrease);
     // Probably don't need this
-    float centsIntervalToHz(float startingFrequency, float centsIncrease)
-    {
-        return increaseHzUsingCents(startingFrequency, centsIncrease) - startingFrequency;
-    }
+    float centsIntervalToHz(float startingFrequency, float centsIncrease);
 }
