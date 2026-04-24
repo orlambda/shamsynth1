@@ -464,7 +464,6 @@ std::optional<int> Shamsynth1AudioProcessor::availableVoice()
 
 bool Shamsynth1AudioProcessor::checkOnOffState()
 {
-    // Currently on
     if (currentlyPowerOn)
     {
         // Just been told to switch off

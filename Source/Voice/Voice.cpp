@@ -99,7 +99,6 @@ void Voice::reset()
     envelope.reset();
 }
 
-
 std::shared_ptr<ModulationOutput> Voice::getEnvelopeOutput()
 {
     return envelope.output;

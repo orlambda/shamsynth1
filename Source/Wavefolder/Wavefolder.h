@@ -27,4 +27,3 @@ private:
     float threshold = 1.0f;
     float amount = 1.0f;
 };
-

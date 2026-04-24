@@ -33,4 +33,3 @@ public:
 private:
     juce::Random random;
 };
-

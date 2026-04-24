@@ -57,5 +57,4 @@ private:
     float releaseTime = 0.0f;
     float quickReleaseTime = 0.01f;
     bool timedSustain = false;
-
 };

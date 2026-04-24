@@ -60,7 +60,6 @@ void LowFreqOsc::setFrequency(float f)
     updateAngleDelta();
 }
 
-// Expect value between 0 and 1, no range checking
 void LowFreqOsc::setDepth(float d)
 {
     depth = d;

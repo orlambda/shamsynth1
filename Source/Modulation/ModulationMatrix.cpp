@@ -23,4 +23,3 @@ void ModulationMatrix::sendModulation(ModulationSourceID sourceID, ModulationDes
 {
     sources[sourceID]->sendModulation(destinationID, scaling);
 }
-

@@ -26,4 +26,3 @@ public:
 private:
     std::vector<float> values;
 };
-

@@ -102,20 +102,20 @@ namespace ParameterValues {
 
 class Routings {
 public:
-static std::string makeScalingID(std::string output, std::string input)
-{
-    if (!output.empty())
+    static std::string makeScalingID(std::string output, std::string input)
     {
-        output[0] = tolower(output[0]);
-    }
-    if (!input.empty())
+        if (!output.empty())
+        {
+            output[0] = tolower(output[0]);
+        }
+        if (!input.empty())
+        {
+            input[0] = toupper(input[0]);
+        }
+        return output + "To" + input + "Scaling";
+}
+    static std::string makeRoutingScalingName(std::string output, std::string input)
     {
-        input[0] = toupper(input[0]);
+        return output + " to " + input + "Scaling";
     }
-    return output + "To" + input + "Scaling";
-}
-static std::string makeRoutingScalingName(std::string output, std::string input)
-{
-    return output + " to " + input + "Scaling";
-}
 };
