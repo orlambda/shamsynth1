@@ -122,6 +122,10 @@ private:
     juce::Slider osc1EnvToTuneScalingSlider;
     std::unique_ptr<SliderAttachment> osc1EnvToTuneScalingAttachment;
     
+    juce::Label lfo1ToTuneScalingLabel;
+    juce::Slider lfo1ToTuneScalingSlider;
+    std::unique_ptr<SliderAttachment> lfo1ToTuneScalingAttachment;
+    
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;
     
