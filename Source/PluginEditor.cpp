@@ -203,6 +203,15 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1EnvToTuneScalingSlider.setTextValueSuffix("");
     addAndMakeVisible(&osc1EnvToTuneScalingSlider);
     
+    osc1EnvToOsc1LevelScalingLabel.setText("Osc 1 Env To Osc1Level Scaling", juce::dontSendNotification);
+    addAndMakeVisible(osc1EnvToOsc1LevelScalingLabel);
+    osc1EnvToOsc1LevelScalingAttachment.reset(new SliderAttachment (valueTreeState, "osc1EnvToOsc1LevelScaling", osc1EnvToOsc1LevelScalingSlider));
+    osc1EnvToOsc1LevelScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    osc1EnvToOsc1LevelScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    osc1EnvToOsc1LevelScalingSlider.setPopupDisplayEnabled(true, false, this);
+    osc1EnvToOsc1LevelScalingSlider.setTextValueSuffix("");
+    addAndMakeVisible(&osc1EnvToOsc1LevelScalingSlider);
+    
     lfo1ToTuneScalingLabel.setText("LFO 1 To Tune Scaling", juce::dontSendNotification);
     addAndMakeVisible(lfo1ToTuneScalingLabel);
     lfo1ToTuneScalingAttachment.reset(new SliderAttachment (valueTreeState, "lfo1ToTuneScaling", lfo1ToTuneScalingSlider));
@@ -211,6 +220,15 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1ToTuneScalingSlider.setPopupDisplayEnabled(true, false, this);
     lfo1ToTuneScalingSlider.setTextValueSuffix("");
     addAndMakeVisible(&lfo1ToTuneScalingSlider);
+    
+    lfo1ToOsc1LevelScalingLabel.setText("LFO 1 To Osc1Level Scaling", juce::dontSendNotification);
+    addAndMakeVisible(lfo1ToOsc1LevelScalingLabel);
+    lfo1ToOsc1LevelScalingAttachment.reset(new SliderAttachment (valueTreeState, "lfo1ToOsc1LevelScaling", lfo1ToOsc1LevelScalingSlider));
+    lfo1ToOsc1LevelScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
+    lfo1ToOsc1LevelScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
+    lfo1ToOsc1LevelScalingSlider.setPopupDisplayEnabled(true, false, this);
+    lfo1ToOsc1LevelScalingSlider.setTextValueSuffix("");
+    addAndMakeVisible(&lfo1ToOsc1LevelScalingSlider);
     
     // MIDI
     addAndMakeVisible(keyboardComponent);
@@ -276,10 +294,14 @@ void Shamsynth1AudioProcessorEditor::resized()
     outputVolumeSlider.setBounds(540, 440, 20, 150);
     outputVolumeLabel.setBounds(520, 580, 200, 50);
     powerOnButton.setBounds(650, 465, 100, 100);
-    osc1EnvToTuneScalingSlider.setBounds(540, 240, 20, 150);
-    osc1EnvToTuneScalingLabel.setBounds(520, 380, 200, 50);
-    lfo1ToTuneScalingSlider.setBounds(740, 240, 20, 150);
-    lfo1ToTuneScalingLabel.setBounds(720, 380, 200, 50);
+    osc1EnvToTuneScalingSlider.setBounds(540, 240, 20, 75);
+    osc1EnvToTuneScalingLabel.setBounds(540, 300, 200, 50);
+    osc1EnvToOsc1LevelScalingSlider.setBounds(740, 240, 20, 75);
+    osc1EnvToOsc1LevelScalingLabel.setBounds(740, 300, 200, 50);
+    lfo1ToTuneScalingSlider.setBounds(540, 340, 20, 75);
+    lfo1ToTuneScalingLabel.setBounds(540, 400, 200, 50);
+    lfo1ToOsc1LevelScalingSlider.setBounds(740, 340, 20, 75);
+    lfo1ToOsc1LevelScalingLabel.setBounds(740, 400, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
 }

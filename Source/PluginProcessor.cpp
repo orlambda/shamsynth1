@@ -51,7 +51,9 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID, 1), powerOnValues.name, powerOnValues.defaultValue),
         // Routings - these will need to be added dynamically as mod matrix will grow
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", scalingMin, scalingMax, scalingDefault),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToTuneScaling", 1), "LFO 1 To Tune Scaling", scalingMin, scalingMax, scalingDefault)
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToOsc1LevelScaling", 1), "Osc 1 Env To Osc 1 Level Scaling", scalingMin, scalingMax, scalingDefault),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToTuneScaling", 1), "LFO 1 To Tune Scaling", scalingMin, scalingMax, scalingDefault),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToOsc1LevelScaling", 1), "LFO 1 To Osc1Level Scaling", scalingMin, scalingMax, scalingDefault)
     })
 #endif
 {
@@ -76,8 +78,10 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
     powerOnParameter = parameters.getRawParameterValue("powerOn");
     // Routings - this will need to be done dynamically as mod matrix will grow
+    osc1EnvToOsc1LevelScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1LevelScaling");
     osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToTuneScaling");
-    lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToTuneScaling");;
+    lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
+    lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToTuneScaling");
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
@@ -264,7 +268,9 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentLfo2Depth = *lfo2DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
     float currentosc1EnvToTuneScaling = *osc1EnvToTuneScalingParameter;
+    float currentosc1EnvToOsc1LevelScaling = *osc1EnvToOsc1LevelScalingParameter;
     float currentLfo1ToTuneScaling = *lfo1ToTuneScalingParameter;
+    float currentLfo1ToOsc1LevelScaling = *lfo1ToOsc1LevelScalingParameter;
     
     // MIDI
     // processAllMidi();
@@ -317,11 +323,13 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->envelope.calculateNextBlock(totalNumSamples);
     }
     modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
+    modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Level, currentosc1EnvToOsc1LevelScaling);
     modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, currentLfo1ToTuneScaling);
+    modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, currentLfo1ToOsc1LevelScaling);
     // TODO: magic number
-    modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, 1.0f);
     modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, 1.0f);
     modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, 1.0f);
+    
     for (auto& voice : voices)
     {
         voice->processBlock(buffer, totalNumOutputChannels);
@@ -559,6 +567,7 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     // For each OutputManager
         // Add all InputManagers
     modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
+    modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Level, osc1LevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, osc1LevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, osc1NoiseLevelInputManager);

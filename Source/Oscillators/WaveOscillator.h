@@ -30,7 +30,7 @@ public:
     void endNote();
     // Abruptly end all sound
     void silence();
-    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope);
+    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
     void resetAngle() {currentAngle = 0.0f;}
     void trigger(float f);
     void reset();
@@ -60,10 +60,11 @@ private:
     
     float frequency = 0.0f;
     
+    float currentModulatedLevel = osc1LevelValues.defaultValue;
     float currentSineLevel = osc1SineLevelValues.defaultValue;
     float currentTriangleLevel = osc1TriangleLevelValues.defaultValue;
     float currentSquareLevel = osc1SquareLevelValues.defaultValue;
-    float currentAdjustedTune = osc1TuneValues.defaultValue;
+    float currentModulatedTune = osc1TuneValues.defaultValue;
     
     bool isActive = false;
     

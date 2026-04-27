@@ -84,7 +84,9 @@ public:
     atomicBool powerOnParameter{nullptr};
     // Routings - will need to be stored in a container
     std::atomic<float>* osc1EnvToTuneScalingParameter = nullptr;
+    std::atomic<float>* osc1EnvToOsc1LevelScalingParameter = nullptr;
     std::atomic<float>* lfo1ToTuneScalingParameter = nullptr;
+    std::atomic<float>* lfo1ToOsc1LevelScalingParameter = nullptr;
     
     bool currentlyPowerOn = true;
 

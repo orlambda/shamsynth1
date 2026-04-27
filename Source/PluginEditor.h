@@ -116,15 +116,23 @@ private:
     juce::ToggleButton powerOnButton;
     std::unique_ptr<ButtonAttachment> powerOnAttachment;
     
-    // Routings
+    // Routings - do this dynamically as mod matrix will grow - will need a container for sliders
     
     juce::Label osc1EnvToTuneScalingLabel;
     juce::Slider osc1EnvToTuneScalingSlider;
     std::unique_ptr<SliderAttachment> osc1EnvToTuneScalingAttachment;
     
+    juce::Label osc1EnvToOsc1LevelScalingLabel;
+    juce::Slider osc1EnvToOsc1LevelScalingSlider;
+    std::unique_ptr<SliderAttachment> osc1EnvToOsc1LevelScalingAttachment;
+    
     juce::Label lfo1ToTuneScalingLabel;
     juce::Slider lfo1ToTuneScalingSlider;
     std::unique_ptr<SliderAttachment> lfo1ToTuneScalingAttachment;
+    
+    juce::Label lfo1ToOsc1LevelScalingLabel;
+    juce::Slider lfo1ToOsc1LevelScalingSlider;
+    std::unique_ptr<SliderAttachment> lfo1ToOsc1LevelScalingAttachment;
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;

@@ -25,7 +25,7 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
             reserveSpace(totalNumSamples, totalNumChannels);
         }
         voiceBuffer.clear();
-        waveOsc.processBlock(voiceBuffer, totalNumOutputChannels, envelope);
+        waveOsc.processBlock(voiceBuffer, totalNumOutputChannels);
         whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels);
         bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels);
         for (int channel = 0; channel < buffer.getNumChannels(); ++channel)

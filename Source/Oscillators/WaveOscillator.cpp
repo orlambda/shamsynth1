@@ -12,7 +12,7 @@
 #include "Waveforms.h"
 #include "../Helpers/audio_maths.h"
 
-void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, Envelope& envelope)
+void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
 //    clearModulationSignalBlocks();
     float totalNumSamples = buffer.getNumSamples();
@@ -20,7 +20,8 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
     {
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
-            currentAdjustedTune = currentTune->getModulatedValue(sample);
+            currentModulatedTune = currentTune->getModulatedValue(sample);
+            currentModulatedLevel = currentLevel->getModulatedValue(sample);
             updateAngleDelta();
             // Update angle delta here instead of in frequency/tune setters?
             float sineSampleValue = Waveforms::sin(currentAngle) * currentSineLevel;
@@ -29,6 +30,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue);
             for (int channel = 0; channel < totalNumOutputChannels; ++channel)
             {
+//                buffer.addSample(channel, sample, sampleValue * currentModulatedLevel);
                 buffer.addSample(channel, sample, sampleValue);
             }
             currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
@@ -36,7 +38,8 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
         wavefolder.processBlock(buffer, totalNumOutputChannels);
         for (int sample = 0; sample < totalNumSamples; ++sample)
         {
-            buffer.applyGain(sample, 1, currentLevel->getModulatedValue(sample) * envelope.output->getValue(sample));
+            buffer.applyGain(sample, 1, currentLevel->getModulatedValue(sample));
+//            buffer.applyGain(sample, 1, currentLevel->getModulatedValue(sample));
         }
     }
 }
@@ -62,7 +65,7 @@ void WaveOscillator::startNote(float f)
 void WaveOscillator::updateAngleDelta()
 {
     // Tune is currently in semitones (probably change this to cents)
-    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentAdjustedTune) * 100.0f);
+    float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentModulatedTune) * 100.0f);
     angleDelta = (adjustedFrequency / sampleRate) * 2.0f * juce::MathConstants<double>::pi;
 }
 
