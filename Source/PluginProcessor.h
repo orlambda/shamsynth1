@@ -82,17 +82,14 @@ public:
     std::atomic<float>* outputVolumeParameter = nullptr;
     // TODO: try juce::AudioParameterBool*
     atomicBool powerOnParameter{nullptr};
-    // Routings
+    // Routings - will need to be stored in a container
     atomicBool adsrToTuneParameter{nullptr};
     std::atomic<float>* osc1EnvToTuneScalingParameter = nullptr;
-    bool currentlyPowerOn = true;
     
-    bool checkOnOffState();
-    void resetState();
+    bool currentlyPowerOn = true;
 
     juce::MidiKeyboardState keyboardState;
     
-    // TODO: decide whether to use shared pointers
     LowFreqOsc lfo1;
     LowFreqOsc lfo2;
     
@@ -105,6 +102,10 @@ public:
     std::shared_ptr<ModulationInputManager> osc1LevelInputManager = std::make_shared<ModulationInputManager>(true);
     std::shared_ptr<ModulationInputManager> osc1NoiseLevelInputManager = std::make_shared<ModulationInputManager>(true);
     std::shared_ptr<ModulationInputManager> osc1TuneInputManager = std::make_shared<ModulationInputManager>(true);
+    std::shared_ptr<ModulationInputManager> osc1BitDepthManager = std::make_shared<ModulationInputManager>(true);
+    
+    bool checkOnOffState();
+    void resetState();
 
 private:
     //==============================================================================

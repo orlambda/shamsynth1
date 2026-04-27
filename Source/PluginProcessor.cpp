@@ -26,8 +26,10 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
      #endif
        ),
+    // TODO: function that creates this juce::AudioProcessorValueTreeState object
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
    {
+        // TODO: define every juce::NormalisableRange<float> in Parameters.h?
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1LevelValues.ID, 1), osc1LevelValues.name, juce::NormalisableRange<float>(osc1LevelValues.minValue, osc1LevelValues.maxValue), osc1LevelValues.defaultValue),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SineLevelValues.ID, 1), osc1SineLevelValues.name, juce::NormalisableRange<float>(osc1SineLevelValues.minValue, osc1SineLevelValues.maxValue), osc1SineLevelValues.defaultValue),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TriangleLevelValues.ID, 1), osc1TriangleLevelValues.name, juce::NormalisableRange<float>(osc1TriangleLevelValues.minValue, osc1TriangleLevelValues.maxValue), osc1TriangleLevelValues.defaultValue),
@@ -47,12 +49,13 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2DepthValues.ID, 1), lfo2DepthValues.name, juce::NormalisableRange<float>(lfo2DepthValues.minValue, lfo2DepthValues.maxValue), lfo2DepthValues.defaultValue),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID, 1), outputVolumeValues.name, juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID, 1), powerOnValues.name, powerOnValues.defaultValue),
-        // Routings
+        // Routings - these will need to be added dynamically as mod matrix will grow
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID("adsrToTune", 1), "LFO1 to Tune", false),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", scalingMin, scalingMax, scalingDefault)
     })
 #endif
 {
+    // TODO: move to single function
     osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
     osc1SineLevelParameter = parameters.getRawParameterValue("osc1SineLevel");
     osc1TriangleLevelParameter = parameters.getRawParameterValue("osc1TriangleLevel");
@@ -72,7 +75,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
     powerOnParameter = parameters.getRawParameterValue("powerOn");
-    // Routings
+    // Routings - this will need to be done dynamically as mod matrix will grow
     adsrToTuneParameter = parameters.getRawParameterValue("adsrToTune");
     osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToTuneScaling");
     
@@ -282,6 +285,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->clearModulationBlocks();
     }
     // TODO: make e.g. lfo->clearModulationBlock();
+//    TODO clear lfo1 too
     lfo2.output->block->resetValues();
     
     // LFOs etc

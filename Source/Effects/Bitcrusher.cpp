@@ -12,11 +12,12 @@
 
 void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
-    float currentBitDepth = bitDepth;
     float totalNumSamples = buffer.getNumSamples();
-    float availableValues = powf(2.0f, currentBitDepth);
     for (auto sample = 0; sample < totalNumSamples; ++sample)
     {
+        float currentBitDepth = bitDepth->getModulatedValue(sample);
+        float availableValues = powf(2.0f, currentBitDepth);
+        
         for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
         {
             // Change range from [-1,1] to [0,1]
@@ -28,4 +29,9 @@ void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutp
             buffer.setSample(channel, sample, currentValue);
         }
     }
+}
+
+void Bitcrusher::clearModulationSignalBlocks()
+{
+    bitDepth->clearAllModulation();
 }

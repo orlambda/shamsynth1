@@ -23,6 +23,7 @@ enum class ModulationDestinationID
     osc1Level,
     osc1NoiseLevel,
     osc1Tune,
+    osc1BitDepth,
     lfo1Freq,
     lfo1Depth,
     lfo2Freq,

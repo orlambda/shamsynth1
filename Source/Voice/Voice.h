@@ -51,14 +51,10 @@ public:
     void updateOsc1Tune(float tune) {waveOsc.updateTune(tune);}
     void updateADSRSettings(float a, float d, float s, float r);
     void updateNoiseLevel(float level) {whiteNoise.updateLevel(level);}
-    void updateBitcrusherBitDepth(float depth) {bitcrusher.bitDepth = depth;}
+    void updateBitcrusherBitDepth(float depth) {bitcrusher.setBitDepth(depth);}
     void updateWavefolderThreshold(float threshold) {waveOsc.updateWavefolderThreshold(threshold);}
     void updateWavefolderAmount(float amount) {waveOsc.updateWavefolderAmount(amount);}
-    
-    // However a modulation matrix will probably change implementation, wait till then before refactoring
-    // Rename modifiers: modulation, lfos, signals..
     void addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier);
-    // Temporarily public to access modifiers in processor
     
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getLevelInput();

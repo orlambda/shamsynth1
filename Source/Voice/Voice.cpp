@@ -50,13 +50,16 @@ void Voice::reserveSpace(int samplesPerBlock, int totalNumChannels)
     waveOsc.reserveSpace(samplesPerBlock);
     envelope.reserveSpace(samplesPerBlock);
     whiteNoise.reserveSpace(samplesPerBlock);
+    bitcrusher.reserveSpace(samplesPerBlock);
     voiceBuffer.setSize(totalNumChannels, samplesPerBlock);
 }
 
 void Voice::clearModulationBlocks()
 {
     waveOsc.clearModulationSignalBlocks();
+    // TODO: envelope? is this cleared somewhere else?
     whiteNoise.clearModulationSignalBlocks();
+    bitcrusher.clearModulationSignalBlocks();
     voiceBuffer.clear();
 }
 
@@ -75,7 +78,6 @@ void Voice::trigger(int p_midiNoteNumber) {
 }
 
 void Voice::release() {
-//    envelope.immediatelySilence();
     envelope.release();
 }
 

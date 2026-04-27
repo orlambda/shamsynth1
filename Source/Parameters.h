@@ -73,7 +73,6 @@ namespace ParameterValues {
     const ParameterFloatValues osc1TuneValues = {"osc1Tune", "Osc 1 Tune", -24.0f, 24.0f, 0.0f};
     const ParameterFloatValues noiseLevelValues = {"noiseLevel", "Noise Level", 0.0f, 1.0f, 0.0f};
     const ParameterFloatValues bitcrusherBitDepthValues = {"bitcrusherBitDepth", "Bit Depth", 1.0f, 32.0f, 32.0f};
-    const ParameterFloatValues bitcrusherBitDepthValues1 = {"bitcrusherBitDepth", "Bit Depth", 1.0f, 32.0f, 32.0f};
     const ParameterFloatValues osc1WavefolderThresholdValues = {"osc1WavefolderThreshold", "Osc 1 Wavefolder Threshold", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1WavefolderAmountValues = {"osc1WavefolderAmount", "Osc 1 Wavefolder Amount", 0.0f, 4.0f, 0.0f};
     // Env 1
@@ -93,6 +92,8 @@ namespace ParameterValues {
 
     constexpr float levelMaximumModFactor = 1.0f;
     constexpr float tuneMaximumModFactor = 12.0f;
+    // TODO: can this (and all ParameterFloatValues) be made constexpr? may need to move struct definitions to .cpp file?
+    const float bitcrusherBitDepthMaximumModFactor = bitcrusherBitDepthValues.maxValue;
 
     constexpr float scalingMin = 0.0f;
     constexpr float scalingMax = 1.0f;
