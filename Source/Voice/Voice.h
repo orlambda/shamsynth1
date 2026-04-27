@@ -54,7 +54,6 @@ public:
     void updateBitcrusherBitDepth(float depth) {bitcrusher.setBitDepth(depth);}
     void updateWavefolderThreshold(float threshold) {waveOsc.updateWavefolderThreshold(threshold);}
     void updateWavefolderAmount(float amount) {waveOsc.updateWavefolderAmount(amount);}
-    void addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier);
     
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getLevelInput();

@@ -90,11 +90,6 @@ void Voice::queueNote(int p_midiNoteNumber)
     waveOsc.startNote(getFundamental());
 }
 
-void Voice::addOscTuneModifier(std::shared_ptr<ModulationSignalBlock> modifier)
-{
-    waveOsc.tuneModifiers.push_back(modifier);
-}
-
 void Voice::reset()
 {
     waveOsc.reset();
