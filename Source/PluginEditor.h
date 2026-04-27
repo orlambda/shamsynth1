@@ -117,8 +117,6 @@ private:
     std::unique_ptr<ButtonAttachment> powerOnAttachment;
     
     // Routings
-    juce::ToggleButton adsrToTuneButton;
-    std::unique_ptr<ButtonAttachment> adsrToTuneAttachment;
     
     juce::Label osc1EnvToTuneScalingLabel;
     juce::Slider osc1EnvToTuneScalingSlider;

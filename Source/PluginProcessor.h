@@ -83,7 +83,6 @@ public:
     // TODO: try juce::AudioParameterBool*
     atomicBool powerOnParameter{nullptr};
     // Routings - will need to be stored in a container
-    atomicBool adsrToTuneParameter{nullptr};
     std::atomic<float>* osc1EnvToTuneScalingParameter = nullptr;
     
     bool currentlyPowerOn = true;

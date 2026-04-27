@@ -50,7 +50,6 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID, 1), outputVolumeValues.name, juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID, 1), powerOnValues.name, powerOnValues.defaultValue),
         // Routings - these will need to be added dynamically as mod matrix will grow
-        std::make_unique<juce::AudioParameterBool>(juce::ParameterID("adsrToTune", 1), "LFO1 to Tune", false),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", scalingMin, scalingMax, scalingDefault)
     })
 #endif
@@ -76,7 +75,6 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
     powerOnParameter = parameters.getRawParameterValue("powerOn");
     // Routings - this will need to be done dynamically as mod matrix will grow
-    adsrToTuneParameter = parameters.getRawParameterValue("adsrToTune");
     osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToTuneScaling");
     
     for (int i = 0; i < numberOfVoices; ++i)
@@ -262,7 +260,6 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentLfo2Frequency = *lfo2FrequencyParameter;
     float currentLfo2Depth = *lfo2DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
-    bool currentlyRoutingADSRToTune = adsrToTuneParameter.isTrue();
     float currentosc1EnvToTuneScaling = *osc1EnvToTuneScalingParameter;
     
     // MIDI
@@ -315,10 +312,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         
         voice->envelope.calculateNextBlock(totalNumSamples);
     }
-    if (currentlyRoutingADSRToTune)
-    {
-        modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
-    }
+    modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
     // TODO: magic number
     modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, 1.0f);
     modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, 1.0f);
