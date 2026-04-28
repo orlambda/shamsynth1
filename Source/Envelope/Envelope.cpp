@@ -13,7 +13,6 @@
 void Envelope::calculateNextBlock(int samples)
 {
     reserveSpace(samples);
-    // TEMPORARY: ALWAYS SILENCE
     for (int i = 0; i < samples; ++i)
     {
         // TODO: best practice - uninitialised?
@@ -67,6 +66,9 @@ void Envelope::calculateNextBlock(int samples)
                 break;
             }
         }
+        // TODO: calculate this value earlier
+        // bring range from [0.0f, 1.0f] to [-1.0f, 1.0f]
+        value = value * 2.0f - 1.0f;
         output->setValue(i, value);
         progressPosition();
     }
@@ -204,6 +206,7 @@ void Envelope::queueTrigger()
 
 void Envelope::setAttackTime(float seconds)
 {
+    // TODO: function returns seconds with (float minimumSamples)
     // min ramp is 2 samples
     float lengthOfSample = 1.0f/sampleRate;
     float min = lengthOfSample * 2.0f;
