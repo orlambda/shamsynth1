@@ -95,7 +95,7 @@ namespace ParameterValues {
     // TODO: can this (and all ParameterFloatValues) be made constexpr? may need to move struct definitions to .cpp file?
     const float bitcrusherBitDepthMaximumModFactor = bitcrusherBitDepthValues.maxValue;
 
-    constexpr float scalingMin = 0.0f;
+    constexpr float scalingMin = -1.0f;
     constexpr float scalingMax = 1.0f;
     constexpr float scalingDefault = 0.0f;
 
