@@ -98,6 +98,9 @@ namespace ParameterValues {
     constexpr float scalingMin = 0.0f;
     constexpr float scalingMax = 1.0f;
     constexpr float scalingDefault = 0.0f;
+
+    // Overall synth volume
+    constexpr float outputVolumeScale = 0.05f;
 }
 
 class Routings {

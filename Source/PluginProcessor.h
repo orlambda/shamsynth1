@@ -127,14 +127,6 @@ private:
     void silenceVoice(int p_midiNote);
     std::optional<int> voiceWithNoteDown(int p_midiNote);
     std::optional<int> availableVoice();
-    
-    // Effects
-    
-    // Volume
-    const float outputVolumeScale = 0.5f;
-    
-    // Temporary pointers for modMatrix
-//    std::shared_ptr<>;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };
