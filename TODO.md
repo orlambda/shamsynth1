@@ -1,10 +1,17 @@
 # NOTES
 
 ## Next
-- Test current typical output level of synth
-- Find more suitable value
+- reduce overall level
+    - Test current typical output level of synth
+    - Find more suitable value
 
 ## Task list
+- fix how lfo modulates a level (see TODO comment - does it modulatedvalue ever reach 0.0f?)
+- rename 'osc1env' - env actually belongs to Voice
+- rename 'tune' to osc1 tune - osc2 etc will also have tune
+- Change sliders to dials
+- Make modmatrix dials layout clear (grid, labels on x and y)
+- Change mod min to -1.0f
 - Reduce overall level of synth
 - Make noise generator louder
 - Check all range-based for loops - const, value/ref
