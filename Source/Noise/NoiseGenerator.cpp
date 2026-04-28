@@ -10,6 +10,10 @@
 
 #include "NoiseGenerator.h"
 
+#include "../Parameters.h"
+
+using ParameterValues::noiseVolumeScale, ParameterValues::noiseHalfVolumeScale;
+
 void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
     float totalNumSamples = buffer.getNumSamples();
@@ -18,7 +22,7 @@ void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
     {
         // Generate noise at a level of 0.05
         float currentLevel = level->getModulatedValue(sample);
-        float sampleValue = (random.nextFloat() * 0.1 - 0.05) * currentLevel;
+        float sampleValue = (random.nextFloat() * noiseVolumeScale - noiseHalfVolumeScale) * currentLevel;
         for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
         {
             buffer.addSample(channel, sample, sampleValue);

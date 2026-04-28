@@ -99,6 +99,10 @@ namespace ParameterValues {
     constexpr float scalingMax = 1.0f;
     constexpr float scalingDefault = 0.0f;
 
+    // Noise
+    constexpr float noiseVolumeScale = 1.0f;
+    constexpr float noiseHalfVolumeScale = noiseVolumeScale / 2.0f;
+
     // Overall synth volume
     constexpr float outputVolumeScale = 0.05f;
 }
