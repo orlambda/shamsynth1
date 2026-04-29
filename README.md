@@ -1,5 +1,5 @@
 # shamsynth1
- v1.0.42
+ v1.0.61
 
 ## IMPORTANT SAFETY WARNING
 This audio plugin is in early development and may contain errors which result in extremely loud and unexpected sounds. To protect your hearing, please use at a low volume and do not listen on headphones.
@@ -48,45 +48,55 @@ I am using macOS 15 and haven't tested the plugin on other platforms. I test bot
     - Scaling parameter & slider
 - White noise generator per voice
     - Level parameter & slider
-- Modulation sources (these routings are currently fixed)
-    - ADSR Envelope
+- Modulation sources
+    - ADSR Envelope (per voice)
         - Envelope stage parameters and sliders
         - Routed to oscillator output volume
-    - LFO 1 global, currently acts as tremolo effect
+    - LFO 1 (global)
         - Frequency parameter & slider
         - Depth parameter & slider
         - Routed to osc1 level
-    - LFO 2 global, currently acts as oscillator vibrato and noise tremolo
+    - LFO 2 (global), fixed routings
         - Frequency parameter & slider
         - Depth parameter & slider
-        - Routed to noise generator volume and osc1 tune
+        - Routed to noise generator volume and osc1 tune with fixed scaling, currently acts as oscillator vibrato and noise tremolo
 - Modulation Matrix
-    - Allows ADSR Envelope to be routed to Oscillator Tune with variable scaling
+    - Outputs (signal sources)
+        - ADSR Envelope
+        - LFO 1
+    - Inputs (signal destinations)
+        - Osc 1 Level
+        - Osc 1 Tune
+    - Scaling parameters and sliders of range [-1.0,1.0]
+    - Allows outputs to be routed to inputs regardless of either being global or per-voice
 - Output volume parameter & slider
+- Parameters can be read from and written to by a host DAW
+- Power on/off parameter & toggle button
+    - Bypasses audio and MIDI processing
 - MIDI control
     - Pitch
     - Note on
     - Note off
-- Parameters can be read from and written to by a host DAW
-- Power on/off parameter & toggle button
-    - Bypasses audio and MIDI processing
+- Playable keyboard
 
 ## Future features
 - Oscillators
     - Multiple Oscillators
     - Phase offset parameter & slider
     - Waveshaping parameter & slider allowing blending waveforms with a single slider
-- LFOs
+- LFOs/HFOs
     - Global and per-voice
     - Wave shape parameter & slider
     - Phase offset parameter & slider
-- Modulation matrix
-    - Routing from signal sources (oscillators, LFOs, envelopes, key velocity) to parameters
-    - Scaling parameters and sliders of range [-1.0,1.0]
-    - Global and per-voice signal sources routable to global and per-voice parameters
 - Touch sensitivity
-    - Optional
+    - Optional/scalable
 - Parameters/sliders
     - More appropriate value ranges
     - Skew factors
     - Change appearance to dial
+    - Clearly grouped by type
+
+## Current development priorities
+- Ensure current features work correctly
+- Optimise performance
+- Choose appropriate ranges and skew factors for parameters/sliders
