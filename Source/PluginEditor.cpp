@@ -41,8 +41,9 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1LevelSlider.setPopupDisplayEnabled(true, false, this);
     osc1LevelSlider.setTextValueSuffix("");
     // TODO: Add to all sliders
-//    osc1LevelSlider.setDoubleClickReturnValue(true, valueTreeState.getParameter("osc1Level")->getDefaultValue());
+    osc1LevelSlider.setDoubleClickReturnValue(true, osc1LevelValues.defaultValue);
     addAndMakeVisible(&osc1LevelSlider);
+    
     
     osc1SineLevelLabel.setText("Sine Level", juce::dontSendNotification);
     addAndMakeVisible(osc1SineLevelLabel);
@@ -51,6 +52,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1SineLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1SineLevelSlider.setPopupDisplayEnabled(true, false, this);
     osc1SineLevelSlider.setTextValueSuffix("");
+    osc1SineLevelSlider.setDoubleClickReturnValue(true, osc1SineLevelValues.defaultValue);
     addAndMakeVisible(&osc1SineLevelSlider);
     
     osc1TriangleLevelLabel.setText("Triangle Level", juce::dontSendNotification);
@@ -60,6 +62,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1TriangleLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1TriangleLevelSlider.setPopupDisplayEnabled(true, false, this);
     osc1TriangleLevelSlider.setTextValueSuffix("");
+    osc1TriangleLevelSlider.setDoubleClickReturnValue(true, osc1TriangleLevelValues.defaultValue);
     addAndMakeVisible(&osc1TriangleLevelSlider);
     
     osc1SquareLevelLabel.setText("Square Level", juce::dontSendNotification);
@@ -69,6 +72,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1SquareLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1SquareLevelSlider.setPopupDisplayEnabled(true, false, this);
     osc1SquareLevelSlider.setTextValueSuffix("");
+    osc1SquareLevelSlider.setDoubleClickReturnValue(true, osc1SquareLevelValues.defaultValue);
     addAndMakeVisible(&osc1SquareLevelSlider);
     
     osc1TuneLabel.setText("Tune", juce::dontSendNotification);
@@ -78,6 +82,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1TuneSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1TuneSlider.setPopupDisplayEnabled(true, false, this);
     osc1TuneSlider.setTextValueSuffix(" semitones");
+    osc1TuneSlider.setDoubleClickReturnValue(true, osc1TuneValues.defaultValue);
     addAndMakeVisible(&osc1TuneSlider);
     
     noiseLevelLabel.setText(noiseLevelValues.name, juce::dontSendNotification);
@@ -87,6 +92,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     noiseLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     noiseLevelSlider.setPopupDisplayEnabled(true, false, this);
     noiseLevelSlider.setTextValueSuffix("");
+    osc1SineLevelSlider.setDoubleClickReturnValue(true, osc1SineLevelValues.defaultValue);
     addAndMakeVisible(&noiseLevelSlider);
     
     bitcrusherBitDepthLabel.setText(bitcrusherBitDepthValues.name, juce::dontSendNotification);
@@ -96,6 +102,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     bitcrusherBitDepthSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     bitcrusherBitDepthSlider.setPopupDisplayEnabled(true, false, this);
     bitcrusherBitDepthSlider.setTextValueSuffix("");
+    bitcrusherBitDepthSlider.setDoubleClickReturnValue(true, bitcrusherBitDepthValues.defaultValue);
     addAndMakeVisible(&bitcrusherBitDepthSlider);
     
     osc1WavefolderGeneralLabel.setText("Wavefolder", juce::dontSendNotification);
@@ -108,6 +115,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1WavefolderThresholdSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1WavefolderThresholdSlider.setPopupDisplayEnabled(true, false, this);
     osc1WavefolderThresholdSlider.setTextValueSuffix("");
+    osc1WavefolderThresholdSlider.setDoubleClickReturnValue(true, osc1WavefolderThresholdValues.defaultValue);
     addAndMakeVisible(&osc1WavefolderThresholdSlider);
     
     osc1WavefolderAmountLabel.setText("Amount", juce::dontSendNotification);
@@ -117,6 +125,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1WavefolderAmountSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1WavefolderAmountSlider.setPopupDisplayEnabled(true, false, this);
     osc1WavefolderAmountSlider.setTextValueSuffix("");
+    osc1WavefolderAmountSlider.setDoubleClickReturnValue(true, osc1WavefolderAmountValues.defaultValue);
     addAndMakeVisible(&osc1WavefolderAmountSlider);
     
     env1AttackTimeLabel.setText("A Time", juce::dontSendNotification);
@@ -126,6 +135,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     env1AttackTimeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     env1AttackTimeSlider.setPopupDisplayEnabled(true, false, this);
     env1AttackTimeSlider.setTextValueSuffix(" seconds");
+    env1AttackTimeSlider.setDoubleClickReturnValue(true, env1AttackTimeValues.defaultValue);
     addAndMakeVisible(&env1AttackTimeSlider);
     
     env1DecayTimeLabel.setText("D Time", juce::dontSendNotification);
@@ -135,6 +145,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     env1DecayTimeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     env1DecayTimeSlider.setPopupDisplayEnabled(true, false, this);
     env1DecayTimeSlider.setTextValueSuffix(" seconds");
+    env1DecayTimeSlider.setDoubleClickReturnValue(true, env1DecayTimeValues.defaultValue);
     addAndMakeVisible(&env1DecayTimeSlider);
     
     env1SustainLevelLabel.setText("S Level", juce::dontSendNotification);
@@ -144,6 +155,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     env1SustainLevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     env1SustainLevelSlider.setPopupDisplayEnabled(true, false, this);
     env1SustainLevelSlider.setTextValueSuffix("");
+    env1SustainLevelSlider.setDoubleClickReturnValue(true, env1SustainLevelValues.defaultValue);
     addAndMakeVisible(&env1SustainLevelSlider);
     
     env1ReleaseTimeLabel.setText("R Time", juce::dontSendNotification);
@@ -153,6 +165,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     env1ReleaseTimeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     env1ReleaseTimeSlider.setPopupDisplayEnabled(true, false, this);
     env1ReleaseTimeSlider.setTextValueSuffix(" seconds");
+    env1ReleaseTimeSlider.setDoubleClickReturnValue(true, env1ReleaseTimeValues.defaultValue);
     addAndMakeVisible(&env1ReleaseTimeSlider);
     
     lfo1FrequencyLabel.setText("LFO 1 Freq", juce::dontSendNotification);
@@ -162,6 +175,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1FrequencySlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo1FrequencySlider.setPopupDisplayEnabled(true, false, this);
     lfo1FrequencySlider.setTextValueSuffix(" Hz");
+    lfo1FrequencySlider.setDoubleClickReturnValue(true, lfo1FrequencyValues.defaultValue);
     addAndMakeVisible(&lfo1FrequencySlider);
     
     lfo1DepthLabel.setText("LFO 1 Depth", juce::dontSendNotification);
@@ -171,6 +185,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1DepthSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo1DepthSlider.setPopupDisplayEnabled(true, false, this);
     lfo1DepthSlider.setTextValueSuffix("");
+    lfo1DepthSlider.setDoubleClickReturnValue(true, lfo1DepthValues.defaultValue);
     addAndMakeVisible(&lfo1DepthSlider);
     
     lfo2FrequencyLabel.setText("LFO 2 Freq", juce::dontSendNotification);
@@ -180,6 +195,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo2FrequencySlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo2FrequencySlider.setPopupDisplayEnabled(true, false, this);
     lfo2FrequencySlider.setTextValueSuffix("");
+    lfo2FrequencySlider.setDoubleClickReturnValue(true, lfo2FrequencyValues.defaultValue);
     addAndMakeVisible(&lfo2FrequencySlider);
     
     lfo2DepthLabel.setText("LFO 2 Depth", juce::dontSendNotification);
@@ -189,6 +205,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo2DepthSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo2DepthSlider.setPopupDisplayEnabled(true, false, this);
     lfo2DepthSlider.setTextValueSuffix("");
+    lfo2DepthSlider.setDoubleClickReturnValue(true, lfo2DepthValues.defaultValue);
     addAndMakeVisible(&lfo2DepthSlider);
     
     outputVolumeLabel.setText(outputVolumeValues.name, juce::dontSendNotification);
@@ -198,6 +215,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     outputVolumeSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     outputVolumeSlider.setPopupDisplayEnabled(true, false, this);
     outputVolumeSlider.setTextValueSuffix("");
+    outputVolumeSlider.setDoubleClickReturnValue(true, outputVolumeValues.defaultValue);
     addAndMakeVisible(&outputVolumeSlider);
     
     powerOnAttachment.reset(new ButtonAttachment(valueTreeState, powerOnValues.ID, powerOnButton));
@@ -211,6 +229,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1EnvToTuneScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1EnvToTuneScalingSlider.setPopupDisplayEnabled(true, false, this);
     osc1EnvToTuneScalingSlider.setTextValueSuffix("");
+    osc1EnvToTuneScalingSlider.setDoubleClickReturnValue(true, scalingDefault);
     addAndMakeVisible(&osc1EnvToTuneScalingSlider);
     
     osc1EnvToOsc1LevelScalingLabel.setText("Osc 1 Env To Osc1Level Scaling", juce::dontSendNotification);
@@ -220,6 +239,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     osc1EnvToOsc1LevelScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1EnvToOsc1LevelScalingSlider.setPopupDisplayEnabled(true, false, this);
     osc1EnvToOsc1LevelScalingSlider.setTextValueSuffix("");
+    osc1EnvToOsc1LevelScalingSlider.setDoubleClickReturnValue(true, scalingDefault);
     addAndMakeVisible(&osc1EnvToOsc1LevelScalingSlider);
     
     lfo1ToTuneScalingLabel.setText("LFO 1 To Tune Scaling", juce::dontSendNotification);
@@ -229,6 +249,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1ToTuneScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo1ToTuneScalingSlider.setPopupDisplayEnabled(true, false, this);
     lfo1ToTuneScalingSlider.setTextValueSuffix("");
+    lfo1ToTuneScalingSlider.setDoubleClickReturnValue(true, scalingDefault);
     addAndMakeVisible(&lfo1ToTuneScalingSlider);
     
     lfo1ToOsc1LevelScalingLabel.setText("LFO 1 To Osc1Level Scaling", juce::dontSendNotification);
@@ -238,6 +259,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo1ToOsc1LevelScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo1ToOsc1LevelScalingSlider.setPopupDisplayEnabled(true, false, this);
     lfo1ToOsc1LevelScalingSlider.setTextValueSuffix("");
+    lfo1ToOsc1LevelScalingSlider.setDoubleClickReturnValue(true, scalingDefault);
     addAndMakeVisible(&lfo1ToOsc1LevelScalingSlider);
     
     // MIDI
