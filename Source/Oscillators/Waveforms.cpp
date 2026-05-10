@@ -111,10 +111,10 @@ float Waveforms::square(float angle)
     // [0, pi) = 1, [pi, 2*pi) = -1
     if (normalisedAngle >= juce::MathConstants<double>::pi)
     {
-        return 1.0f;
+        return -1.0f;
     }
     else
     {
-        return -1.0f;
+        return 1.0f;
     }
 }
