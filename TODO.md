@@ -1,14 +1,11 @@
 # TODO
 
 ## Next
-Daily todo list
+- change period to `1.0`?
 
 ## Task list
 
 ### Bug fixes
-- bug: sine wave spike, produces 0.0 instead of 1.0 or -1.0 (check if vice versa is true) - quarter-wave may wrap end to start or vice versa?
-    - is spike at end or start of a quarter or both?
-    - does it happen with all quarters?
 - bug: LFO rate 0 depth 1 affects tune and level when scaling != 0
     - could be that LFO is paused on non-0 value
     - could be that 0-value modulation wrongly affects tune
@@ -72,6 +69,7 @@ Daily todo list
         - `clear` is checked when a modulation signal is sent/applied/read
 
 ### Implementation
+- change period from `2*pi` `to 1.0`. (sin isn't be called directly but by index in a lookup table so we don't need radians)
 
 ### Code improvement, modernisation
 - find unnecessary for loops, chances to use algorithm header
