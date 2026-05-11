@@ -31,7 +31,6 @@ void Waveforms::testTriangleWave()
     for (float i = 0.0f; i <= 2.0f * juce::MathConstants<double>::pi; i = i+(0.1f * juce::MathConstants<double>::halfPi))
     {
         float a = Waveforms::triangle(i);
-        float b = a;
     }
 }
 
@@ -58,12 +57,13 @@ float Waveforms::sin(float angle)
     {
         sampleIndex = sinQuarterTableSize - (sampleIndex + 1);
     }
-    // Temporary range checking (does not correctly deal with wrapping)
-    if (sampleIndex < 0 || sampleIndex >= sinQuarterTableSize)
+    if (sampleIndex < 0)
     {
-        // TODO: delete - this is for testing
-        // This should never happen (how to handle if it does?)
         sampleIndex = 0;
+    }
+    else if (sampleIndex >= sinQuarterTableSize)
+    {
+        sampleIndex = sinQuarterTableSize - 1;
     }
     auto valueWithinQuarter = sinQuarterTable.getSample(0, sampleIndex);
     if (angle >= juce::MathConstants<double>::pi)
@@ -106,7 +106,6 @@ float Waveforms::triangle(float angle)
 float Waveforms::square(float angle)
 {
     // TODO: avoid using mod both here and in WaveOscillator?
-    // TODO: use lookup table?
     auto normalisedAngle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
     // [0, pi) = 1, [pi, 2*pi) = -1
     if (normalisedAngle >= juce::MathConstants<double>::pi)
