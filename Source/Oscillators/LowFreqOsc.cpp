@@ -32,7 +32,7 @@ void LowFreqOsc::calculateNextBlock(int samples)
         float value = 0.0f;
         if (isActive) {
             value = Waveforms::sin(currentAngle) * depth;
-            currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
+            currentAngle = fmod(currentAngle + angleDelta, 1.0f);
         }
         outputSignalBlock->setValue(i, value);
         output->setValue(i, value);
@@ -46,12 +46,12 @@ void LowFreqOsc::resetAngle()
 
 void LowFreqOsc::progressAngle()
 {
-    currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
+    currentAngle = fmod(currentAngle + angleDelta, 1.0f);
 }
 
 void LowFreqOsc::updateAngleDelta()
 {
-    angleDelta = (frequency / sampleRate) * 2.0f * juce::MathConstants<double>::pi;
+    angleDelta = frequency / sampleRate;
 }
 
 void LowFreqOsc::setFrequency(float f)

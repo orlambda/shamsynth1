@@ -10,25 +10,26 @@
 
 #include "Waveforms.h"
 
-// All Waveform functions interpret an angle in radians and return values of range [1, -1]
+// All Waveform functions interpret an angle in turns and return values of range [1, -1]
 
 void Waveforms::testWavetables()
 {
-    for (float i = 0.0f; i < juce::MathConstants<double>::pi; i = i + (0.01f * juce::MathConstants<double>::pi))
+    for (float i = 0.0f; i <= 1.0f; i = i + 0.01f)
     {
-        auto a = Waveforms::sin(i);
-        auto b = std::sin(i);
-        auto difference = a - b;
+        auto sin1 = Waveforms::sin(i);
+        auto sin2 = std::sin(i * juce::MathConstants<double>::twoPi);
+        auto difference = abs(sin1 - sin2);
         if (difference > 0.001f)
         {
-            int c = a;
+            int c = sin1;
         }
     }
+    testTriangleWave();
 }
 
 void Waveforms::testTriangleWave()
 {
-    for (float i = 0.0f; i <= 2.0f * juce::MathConstants<double>::pi; i = i+(0.1f * juce::MathConstants<double>::halfPi))
+    for (float i = 0.0f; i <= 1.0f; i = i + 0.01f)
     {
         float a = Waveforms::triangle(i);
     }
@@ -47,26 +48,35 @@ void Waveforms::populateWavetables()
 
 float Waveforms::sin(float angle)
 {
-    auto angleWithinQuarter = fmod(angle, juce::MathConstants<double>::halfPi);
-    angle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
+    auto angleWithinQuarter = fmod(angle, 0.25f);
+    angle = fmod(angle, 1.0f);
     
     // TODO: Interpolation
-    int sampleIndex = std::round((angleWithinQuarter / juce::MathConstants<double>::halfPi) * sinQuarterTableSize);
-    // for 2nd and 4th quarter
-    if ((angle >= juce::MathConstants<double>::halfPi && angle < juce::MathConstants<double>::pi) || angle >= 1.5f * juce::MathConstants<double>::pi)
+    // should sinQuarterTable cover angles of range [0.0f, 0.25f], to allow interpolation between last and second-to-last values?
+    
+    int sampleIndex = std::round((angleWithinQuarter / 0.25f) * sinQuarterTableSize);
+    
+    // for 2nd and 4th quarters
+    if ((angle >= 0.25f && angle < 0.5f) || angle >= 0.75f)
     {
         sampleIndex = sinQuarterTableSize - (sampleIndex + 1);
     }
+    
     if (sampleIndex < 0)
     {
         sampleIndex = 0;
     }
-    else if (sampleIndex >= sinQuarterTableSize)
-    {
-        sampleIndex = sinQuarterTableSize - 1;
-    }
+    
     auto valueWithinQuarter = sinQuarterTable.getSample(0, sampleIndex);
-    if (angle >= juce::MathConstants<double>::pi)
+    
+    // sinQuarterTableSize covers angles of range [0.0f, 0.25f), so if sampleIndex rounds up to sinQuarterTableSize,
+    // valueWithinQuarter should be sin(pi*0.5f) (radians) = 1.0f
+    if (sampleIndex >= sinQuarterTableSize)
+    {
+        valueWithinQuarter = 1.0f;
+    }
+    
+    if (angle >= 0.5f)
     {
         return -valueWithinQuarter;
     }
@@ -79,21 +89,21 @@ float Waveforms::sin(float angle)
 float Waveforms::triangle(float angle)
 {
     // TODO: avoid using mod both here and in WaveOscillator
-    auto normalisedAngle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
-    auto angleWithinQuarter = fmod(angle, juce::MathConstants<double>::halfPi);
+    auto normalisedAngle = fmod(angle, 1.0f);
+    auto angleWithinQuarter = fmod(angle, 0.25f);
     // Triangle wave is symmetrical - calculate value within quarter
-    // Angle within quarter is in range [0, 0.5 * pi)
-    // Value within quarter is in range [0, 1)
-    auto valueWithinQuarter = angleWithinQuarter / juce::MathConstants<double>::halfPi;
-    if (normalisedAngle >= 1.5f * juce::MathConstants<double>::pi)
+    // Angle within quarter is in range [0.0f, 0.25f)
+    // Value within quarter is in range [0.0f, 1.0f)
+    auto valueWithinQuarter = angleWithinQuarter / 0.25f;
+    if (normalisedAngle >= 0.75f)
     {
         return -1.0f + valueWithinQuarter;
     }
-    else if (normalisedAngle >= juce::MathConstants<double>::pi)
+    else if (normalisedAngle >= 0.5f)
     {
         return -valueWithinQuarter;
     }
-    else if (normalisedAngle >= juce::MathConstants<double>::halfPi)
+    else if (normalisedAngle >= 0.25f)
     {
         return 1.0f - valueWithinQuarter;
     }
@@ -106,9 +116,9 @@ float Waveforms::triangle(float angle)
 float Waveforms::square(float angle)
 {
     // TODO: avoid using mod both here and in WaveOscillator?
-    auto normalisedAngle = fmod(angle, 2.0f * juce::MathConstants<double>::pi);
-    // [0, pi) = 1, [pi, 2*pi) = -1
-    if (normalisedAngle >= juce::MathConstants<double>::pi)
+    auto normalisedAngle = fmod(angle, 1.0f);
+    // [0, 0.5f) = 1.0f, [0.5f, 1.0f) = -1.0f
+    if (normalisedAngle >= 0.5f)
     {
         return -1.0f;
     }

@@ -33,7 +33,7 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
 //                buffer.addSample(channel, sample, sampleValue * currentModulatedLevel);
                 buffer.addSample(channel, sample, sampleValue);
             }
-            currentAngle = fmod(currentAngle + angleDelta, 2.0f * juce::MathConstants<double>::pi);
+            currentAngle = fmod(currentAngle + angleDelta, 1.0f);
         }
         wavefolder.processBlock(buffer, totalNumOutputChannels);
         for (int sample = 0; sample < totalNumSamples; ++sample)
@@ -66,7 +66,7 @@ void WaveOscillator::updateAngleDelta()
 {
     // Tune is currently in semitones (probably change this to cents)
     float adjustedFrequency = audio_maths::increaseHzUsingCents(frequency, (currentModulatedTune) * 100.0f);
-    angleDelta = (adjustedFrequency / sampleRate) * 2.0f * juce::MathConstants<double>::pi;
+    angleDelta = adjustedFrequency / sampleRate;
 }
 
 void WaveOscillator::setFrequency(float f)
