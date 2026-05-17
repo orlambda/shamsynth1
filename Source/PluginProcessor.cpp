@@ -27,34 +27,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
      #endif
        ),
     // TODO: function that creates this juce::AudioProcessorValueTreeState object
-    parameters(*this, nullptr, juce::Identifier{JucePlugin_Name},
-   {
-        // TODO: define every juce::NormalisableRange<float> in Parameters.h?
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1LevelValues.ID, 1), osc1LevelValues.name, juce::NormalisableRange<float>(osc1LevelValues.minValue, osc1LevelValues.maxValue), osc1LevelValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SineLevelValues.ID, 1), osc1SineLevelValues.name, juce::NormalisableRange<float>(osc1SineLevelValues.minValue, osc1SineLevelValues.maxValue), osc1SineLevelValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TriangleLevelValues.ID, 1), osc1TriangleLevelValues.name, juce::NormalisableRange<float>(osc1TriangleLevelValues.minValue, osc1TriangleLevelValues.maxValue), osc1TriangleLevelValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SquareLevelValues.ID, 1), osc1SquareLevelValues.name, juce::NormalisableRange<float>(osc1SquareLevelValues.minValue, osc1SquareLevelValues.maxValue), osc1SquareLevelValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TuneValues.ID, 1), osc1TuneValues.name, osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(noiseLevelValues.ID, 1), noiseLevelValues.name, juce::NormalisableRange<float>(noiseLevelValues.minValue, noiseLevelValues.maxValue), noiseLevelValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bitcrusherBitDepthValues.ID, 1), bitcrusherBitDepthValues.name, bitcrusherBitDepthValues.minValue, bitcrusherBitDepthValues.maxValue, bitcrusherBitDepthValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderThresholdValues.ID, 1), osc1WavefolderThresholdValues.name, osc1WavefolderThresholdValues.minValue, osc1WavefolderThresholdValues.maxValue, osc1WavefolderThresholdValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderAmountValues.ID, 1), osc1WavefolderAmountValues.name, osc1WavefolderAmountValues.minValue, osc1WavefolderAmountValues.maxValue, osc1WavefolderAmountValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1AttackTimeValues.ID, 1), env1AttackTimeValues.name, juce::NormalisableRange<float>(env1AttackTimeValues.minValue, env1AttackTimeValues.maxValue), env1AttackTimeValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1DecayTimeValues.ID, 1), env1DecayTimeValues.name, juce::NormalisableRange<float>(env1DecayTimeValues.minValue, env1DecayTimeValues.maxValue), env1DecayTimeValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1SustainLevelValues.ID, 1), env1SustainLevelValues.name, juce::NormalisableRange<float>(env1SustainLevelValues.minValue, env1SustainLevelValues.maxValue), env1SustainLevelValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1ReleaseTimeValues.ID, 1), env1ReleaseTimeValues.name, juce::NormalisableRange<float>(env1ReleaseTimeValues.minValue, env1ReleaseTimeValues.maxValue), env1ReleaseTimeValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1FrequencyValues.ID, 1), lfo1FrequencyValues.name, juce::NormalisableRange<float>(lfo1FrequencyValues.minValue, lfo1FrequencyValues.maxValue), lfo1FrequencyValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1DepthValues.ID, 1), lfo1DepthValues.name, juce::NormalisableRange<float>(lfo1DepthValues.minValue, lfo1DepthValues.maxValue), lfo1DepthValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2FrequencyValues.ID, 1), lfo2FrequencyValues.name, juce::NormalisableRange<float>(lfo2FrequencyValues.minValue, lfo2FrequencyValues.maxValue), lfo2FrequencyValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2DepthValues.ID, 1), lfo2DepthValues.name, juce::NormalisableRange<float>(lfo2DepthValues.minValue, lfo2DepthValues.maxValue), lfo2DepthValues.defaultValue),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID, 1), outputVolumeValues.name, juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
-        std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID, 1), powerOnValues.name, powerOnValues.defaultValue),
-        // Routings - these will need to be added dynamically as mod matrix will grow
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", scalingMin, scalingMax, scalingDefault),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToOsc1LevelScaling", 1), "Osc 1 Env To Osc 1 Level Scaling", scalingMin, scalingMax, scalingDefault),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToTuneScaling", 1), "LFO 1 To Tune Scaling", scalingMin, scalingMax, scalingDefault),
-        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToOsc1LevelScaling", 1), "LFO 1 To Osc1Level Scaling", scalingMin, scalingMax, scalingDefault)
-    })
+    parameters(*this, nullptr, juce::Identifier{JucePlugin_Name}, makeParameterLayout())
 #endif
 {
     // TODO: move to single function
@@ -572,4 +545,34 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, osc1NoiseLevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::makeParameterLayout() {
+    return {
+         // TODO: define every juce::NormalisableRange<float> in Parameters.h?
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1LevelValues.ID, 1), osc1LevelValues.name, juce::NormalisableRange<float>(osc1LevelValues.minValue, osc1LevelValues.maxValue), osc1LevelValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SineLevelValues.ID, 1), osc1SineLevelValues.name, juce::NormalisableRange<float>(osc1SineLevelValues.minValue, osc1SineLevelValues.maxValue), osc1SineLevelValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TriangleLevelValues.ID, 1), osc1TriangleLevelValues.name, juce::NormalisableRange<float>(osc1TriangleLevelValues.minValue, osc1TriangleLevelValues.maxValue), osc1TriangleLevelValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SquareLevelValues.ID, 1), osc1SquareLevelValues.name, juce::NormalisableRange<float>(osc1SquareLevelValues.minValue, osc1SquareLevelValues.maxValue), osc1SquareLevelValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TuneValues.ID, 1), osc1TuneValues.name, osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(noiseLevelValues.ID, 1), noiseLevelValues.name, juce::NormalisableRange<float>(noiseLevelValues.minValue, noiseLevelValues.maxValue), noiseLevelValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bitcrusherBitDepthValues.ID, 1), bitcrusherBitDepthValues.name, bitcrusherBitDepthValues.minValue, bitcrusherBitDepthValues.maxValue, bitcrusherBitDepthValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderThresholdValues.ID, 1), osc1WavefolderThresholdValues.name, osc1WavefolderThresholdValues.minValue, osc1WavefolderThresholdValues.maxValue, osc1WavefolderThresholdValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderAmountValues.ID, 1), osc1WavefolderAmountValues.name, osc1WavefolderAmountValues.minValue, osc1WavefolderAmountValues.maxValue, osc1WavefolderAmountValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1AttackTimeValues.ID, 1), env1AttackTimeValues.name, juce::NormalisableRange<float>(env1AttackTimeValues.minValue, env1AttackTimeValues.maxValue), env1AttackTimeValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1DecayTimeValues.ID, 1), env1DecayTimeValues.name, juce::NormalisableRange<float>(env1DecayTimeValues.minValue, env1DecayTimeValues.maxValue), env1DecayTimeValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1SustainLevelValues.ID, 1), env1SustainLevelValues.name, juce::NormalisableRange<float>(env1SustainLevelValues.minValue, env1SustainLevelValues.maxValue), env1SustainLevelValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1ReleaseTimeValues.ID, 1), env1ReleaseTimeValues.name, juce::NormalisableRange<float>(env1ReleaseTimeValues.minValue, env1ReleaseTimeValues.maxValue), env1ReleaseTimeValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1FrequencyValues.ID, 1), lfo1FrequencyValues.name, juce::NormalisableRange<float>(lfo1FrequencyValues.minValue, lfo1FrequencyValues.maxValue), lfo1FrequencyValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1DepthValues.ID, 1), lfo1DepthValues.name, juce::NormalisableRange<float>(lfo1DepthValues.minValue, lfo1DepthValues.maxValue), lfo1DepthValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2FrequencyValues.ID, 1), lfo2FrequencyValues.name, juce::NormalisableRange<float>(lfo2FrequencyValues.minValue, lfo2FrequencyValues.maxValue), lfo2FrequencyValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2DepthValues.ID, 1), lfo2DepthValues.name, juce::NormalisableRange<float>(lfo2DepthValues.minValue, lfo2DepthValues.maxValue), lfo2DepthValues.defaultValue),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID, 1), outputVolumeValues.name, juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
+         std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID, 1), powerOnValues.name, powerOnValues.defaultValue),
+         // Routings - these will need to be added dynamically as mod matrix will grow
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", scalingMin, scalingMax, scalingDefault),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToOsc1LevelScaling", 1), "Osc 1 Env To Osc 1 Level Scaling", scalingMin, scalingMax, scalingDefault),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToTuneScaling", 1), "LFO 1 To Tune Scaling", scalingMin, scalingMax, scalingDefault),
+         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToOsc1LevelScaling", 1), "LFO 1 To Osc1Level Scaling", scalingMin, scalingMax, scalingDefault)
+    };
 }

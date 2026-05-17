@@ -127,6 +127,8 @@ private:
     void silenceVoice(int p_midiNote);
     std::optional<int> voiceWithNoteDown(int p_midiNote);
     std::optional<int> availableVoice();
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout makeParameterLayout();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };
