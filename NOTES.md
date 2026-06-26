@@ -1,39 +1,62 @@
 # NOTES
 
-## Adding a new parameter
-(this won't all be necessary when I refactor editor constructor & resized())
-for a parameter named MyParam:
+## Mod Matrix
 
-processor h: private:
-    std::atomic<float>* MyParam = nullptr;
+## env to tune
+Processor::Processor()
+    populatemodmatrix()
 
-processor cpp: constructor parameters initialiser:
-    std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("MyParamID", 1), "MyParam", 0.0f, 1.0f, 1.0f)
-processor cpp: constructor:
-    MyParam = parameters.getRawParameterValue("MyParamID");
+Processor::prepareToPlay()
+    get expected number of samples
+        reserve space - all inputManagers and outputManagers
+            CLEAR (if using sampleBuffer and not std::vector)
 
-editor h: private:
-    juce::Label MyParamLabel;
-    juce::Slider MyParamSlider;
-    std::unique_ptr<SliderAttachment> MyParamAttachment;
+Processor::processBlock()
+    reserve space if needed - all inputManagers and outputManagers
+    get current scaling values
+    (clear all blocks?)
+    calculate all outputManager blocks
+    send all modulations with current scaling
+    all inputManagers applyModulation
+    voice processblock
 
-editor cpp: constructor:
-    MyParamLabel.setText("MyParam", juce::dontSendNotification);
-    addAndMakeVisible(MyParamLabel);
-    
-    MyParamAttachment.reset(new SliderAttachment (valueTreeState, "MyParamID", MyParamSlider));
-    
-    MyParamSlider.setSliderStyle(juce::Slider::LinearBarVertical);
-    MyParamSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
-    MyParamSlider.setPopupDisplayEnabled(true, false, this);
-    MyParamSlider.setTextValueSuffix(" MyParam");
-    addAndMakeVisible(&MyParamSlider);
 
-editor cpp: resized():
-    MyParamSlider.setBounds(40, 40, 20, 150);
-    MyParamLabel.setBounds(20, 180, 200, 50);
+## types of io manager
 
-processor cpp: processBlock():
-    add parameter buffer and read from atomic
+mono to mono
+    o to i
 
-use the parameter for something..
+mono to poly
+for i in size
+    o to i[i]
+
+poly to mono?
+get average value? or use last value
+
+
+poly to poly
+for i in size
+    o[i] to i[i]
+
+
+
+### ModulationSignalBlock
+
+### ModulationSource
+LFO1
+LFO2
+Envelope (PER VOICE)
+(wave osc) (PER VOICE)
+
+They all write to a ModulationSignalBlock
+
+### ModulationDestinations
+Osc1 level
+Osc1 tune
+
+They all read from a ModulationSignalBlock
+
+## ModulationRouting
+Modulation source
+Modulation destination
+Scaling
