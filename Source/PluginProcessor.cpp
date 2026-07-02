@@ -11,9 +11,6 @@
 
 #include "Modulation/ModulationIOList.h"
 #include "Oscillators/Waveforms.h"
-#include "Parameters.h"
-
-using namespace ParameterValues;
 
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
@@ -30,6 +27,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #endif
 {
     // TODO: move to single function
+    // TODO: use variable names from Parameters.h instead of string literals
     osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
     osc1SineLevelParameter = parameters.getRawParameterValue("osc1SineLevel");
     osc1TriangleLevelParameter = parameters.getRawParameterValue("osc1TriangleLevel");
@@ -49,6 +47,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
     outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
     powerOnParameter = parameters.getRawParameterValue("powerOn");
+    
     // Routings - this will need to be done dynamically as mod matrix will grow
     osc1EnvToOsc1LevelScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1LevelScaling");
     osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToTuneScaling");
@@ -528,6 +527,7 @@ void Shamsynth1AudioProcessor::populateModMatrix()
         osc1NoiseLevelInputManager->addTargetModulationFloat(voice->getNoiseLevelInput());
         osc1TuneInputManager->addTargetModulationFloat(voice->getTuneInput());
     }
+    
     // Mono/global InputManagers
     
     // Add all OutputManagers to modMatrix

@@ -12,10 +12,13 @@
 #include "Helpers/wrappers.h"
 #include "Oscillators/LowFreqOsc.h"
 #include "Modulation/ModulationMatrix.h"
+#include "Parameters.h"
 
 #include <JuceHeader.h>
 
 #include <memory>
+
+using namespace ParameterValues;
 
 //==============================================================================
 /**
@@ -98,13 +101,13 @@ public:
     ModulationMatrix modMatrix;
     
     // TODO: keep these as maps of IDs and I/O Managers>?? initalise as empty map, add them in populateMatrix()?
-    std::shared_ptr<ModulationOutputManager> osc1EnvOutputManager = std::make_shared<ModulationOutputManager>(true);
-    std::shared_ptr<ModulationOutputManager> lfo1OutputManager = std::make_shared<ModulationOutputManager>(false);
-    std::shared_ptr<ModulationOutputManager> lfo2OutputManager = std::make_shared<ModulationOutputManager>(false);
-    std::shared_ptr<ModulationInputManager> osc1LevelInputManager = std::make_shared<ModulationInputManager>(true);
-    std::shared_ptr<ModulationInputManager> osc1NoiseLevelInputManager = std::make_shared<ModulationInputManager>(true);
-    std::shared_ptr<ModulationInputManager> osc1TuneInputManager = std::make_shared<ModulationInputManager>(true);
-    std::shared_ptr<ModulationInputManager> osc1BitDepthManager = std::make_shared<ModulationInputManager>(true);
+    std::shared_ptr<ModulationOutputManager> osc1EnvOutputManager = std::make_shared<ModulationOutputManager>(true, osc1EnvOutputSubstrings);
+    std::shared_ptr<ModulationOutputManager> lfo1OutputManager = std::make_shared<ModulationOutputManager>(false, lfo1OutputSubstrings);
+    std::shared_ptr<ModulationOutputManager> lfo2OutputManager = std::make_shared<ModulationOutputManager>(false, lfo2OutputSubstrings);
+    std::shared_ptr<ModulationInputManager> osc1LevelInputManager = std::make_shared<ModulationInputManager>(true, osc1LevelValues.ID, osc1LevelValues.name);
+    std::shared_ptr<ModulationInputManager> osc1NoiseLevelInputManager = std::make_shared<ModulationInputManager>(true, noiseLevelValues.ID, noiseLevelValues.name);
+    std::shared_ptr<ModulationInputManager> osc1TuneInputManager = std::make_shared<ModulationInputManager>(true, osc1TuneValues.ID, osc1TuneValues.name);
+    std::shared_ptr<ModulationInputManager> osc1BitDepthManager = std::make_shared<ModulationInputManager>(true, bitcrusherBitDepthValues.ID, bitcrusherBitDepthValues.name);
     
     bool checkOnOffState();
     void resetState();

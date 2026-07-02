@@ -49,6 +49,9 @@
 #include <string>
 
 namespace ParameterValues {
+
+    // TODO: make struct containing const std::string ID and const std::string name
+
     struct ParameterFloatValues
     {
         const std::string ID;
@@ -64,7 +67,14 @@ namespace ParameterValues {
         const std::string name;
         const bool defaultValue;
     };
+    
+    struct modulationOutputScalingParameterSubstrings
+    {
+        const std::string ID;
+        const std::string name;
+    };
 
+    // TODO: consider using modulationScalingParameterSubstrings, or defining the substrings elsewhere, as they are repeated here
     // Osc 1
     const ParameterFloatValues osc1LevelValues = {"osc1Level", "Osc 1 Level", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1SineLevelValues = {"osc1SineLevel", "Osc 1 Sine Level", 0.0f, 1.0f, 1.0f};
@@ -89,6 +99,14 @@ namespace ParameterValues {
     // Synth
     const ParameterFloatValues outputVolumeValues = {"outputVolume", "Output Volume", 0.0f, 1.0f, 0.5f};
     const ParameterBoolValues powerOnValues = {"powerOn", "Power On", true};
+
+    // Scaling ids and names
+    // these are used to form the full ids and names of modulation scaling parameters
+    
+    // modulationOutputs
+    const modulationOutputScalingParameterSubstrings osc1EnvOutputSubstrings = {"osc1", "Osc 1"};
+    const modulationOutputScalingParameterSubstrings lfo1OutputSubstrings = {"lfo1", "LFO 1"};
+    const modulationOutputScalingParameterSubstrings lfo2OutputSubstrings = {"lfo2", "LFO 2"};
 
     constexpr float levelMaximumModFactor = 1.0f;
     constexpr float tuneMaximumModFactor = 12.0f;

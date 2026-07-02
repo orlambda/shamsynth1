@@ -17,13 +17,17 @@
 #include "ModulationInputManager.h"
 #include "ModulationIOList.h"
 #include "ModulationOutput.h"
+#include "../Parameters.h"
 
 #include <map>
+#include <string>
+
+using namespace ParameterValues;
 
 class ModulationOutputManager
 {
 public:
-    ModulationOutputManager(bool p_perVoice);
+    ModulationOutputManager(bool p_perVoice, modulationOutputScalingParameterSubstrings substrings);
     void addOutput(std::shared_ptr<ModulationOutput> source) {sources.push_back(source);}
     void addModulationTarget(ModulationDestinationID ID, std::shared_ptr<ModulationInputManager> inputDestination);
     void sendModulation(ModulationDestinationID ID, float scaling);
@@ -32,4 +36,6 @@ public:
 private:
     std::map<ModulationDestinationID, std::shared_ptr<ModulationInputManager>> routings;
     bool perVoice;
+    std::string scaling_id;
+    std::string scaling_name;
 };
