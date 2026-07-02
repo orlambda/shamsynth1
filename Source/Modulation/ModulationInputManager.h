@@ -26,10 +26,12 @@ public:
     // Is this ever used?
     bool isPerVoice() {return perVoice;}
     void reserveSpace(int totalNumSamples);
+    std::string get_scaling_id() {return scaling_id;}
+    std::string get_scaling_name() {return scaling_name;}
 protected:
 private:
     std::vector<std::shared_ptr<ModulatableFloat>> inputs;
     bool perVoice;
-    std::string scaling_id;
-    std::string scaling_name;
+    const std::string scaling_id;
+    const std::string scaling_name;
 };

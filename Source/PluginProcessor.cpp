@@ -34,7 +34,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     osc1SquareLevelParameter = parameters.getRawParameterValue("osc1SquareLevel");
     osc1TuneParameter = parameters.getRawParameterValue("osc1Tune");
     noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
-    bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitcrusherBitDepth");
+    bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitDepth");
     osc1WavefolderThresholdParameter = parameters.getRawParameterValue("osc1WavefolderThreshold");
     osc1WavefolderAmountParameter = parameters.getRawParameterValue("osc1WavefolderAmount");
     env1AttackTimeParameter = parameters.getRawParameterValue("env1AttackTime");
@@ -50,9 +50,9 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     
     // Routings - this will need to be done dynamically as mod matrix will grow
     osc1EnvToOsc1LevelScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1LevelScaling");
-    osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToTuneScaling");
+    osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1TuneScaling");
     lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
-    lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToTuneScaling");
+    lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
@@ -263,7 +263,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->clearModulationBlocks();
     }
     // TODO: make e.g. lfo->clearModulationBlock();
-//    TODO clear lfo1 too
+    // TODO: clear lfo1 too
     lfo2.output->block->resetValues();
     
     // LFOs etc
@@ -444,6 +444,7 @@ std::optional<int> Shamsynth1AudioProcessor::availableVoice()
     return {};
 }
 
+// TODO: rename or refactor - this does more than checking the state
 bool Shamsynth1AudioProcessor::checkOnOffState()
 {
     if (currentlyPowerOn)
@@ -478,12 +479,10 @@ bool Shamsynth1AudioProcessor::checkOnOffState()
 
 void Shamsynth1AudioProcessor::resetState()
 {
-    // Reset Oscs
     for (auto voice : voices)
     {
         voice->reset();
     }
-    // Reset LFOs
     lfo1.resetLFO();
     lfo2.resetLFO();
 }
@@ -549,6 +548,7 @@ void Shamsynth1AudioProcessor::populateModMatrix()
 juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::makeParameterLayout() {
     juce::AudioProcessorValueTreeState::ParameterLayout layout {
          // TODO: define every juce::NormalisableRange<float> in Parameters.h?
+         // TODO: use hints so parameters appear in order in Logic Pro (start at 1)
          std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1LevelValues.ID, 1), osc1LevelValues.name, juce::NormalisableRange<float>(osc1LevelValues.minValue, osc1LevelValues.maxValue), osc1LevelValues.defaultValue),
          std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SineLevelValues.ID, 1), osc1SineLevelValues.name, juce::NormalisableRange<float>(osc1SineLevelValues.minValue, osc1SineLevelValues.maxValue), osc1SineLevelValues.defaultValue),
          std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TriangleLevelValues.ID, 1), osc1TriangleLevelValues.name, juce::NormalisableRange<float>(osc1TriangleLevelValues.minValue, osc1TriangleLevelValues.maxValue), osc1TriangleLevelValues.defaultValue),
@@ -570,19 +570,32 @@ juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::ma
          std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID, 1), powerOnValues.name, powerOnValues.defaultValue),
     };
     
-    // Routings - these will need to be added dynamically as mod matrix will grow
-    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToTuneScaling", 1), "Osc 1 Env To Tune Scaling", scalingMin, scalingMax, scalingDefault));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("osc1EnvToOsc1LevelScaling", 1), "Osc 1 Env To Osc 1 Level Scaling", scalingMin, scalingMax, scalingDefault));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToTuneScaling", 1), "LFO 1 To Tune Scaling", scalingMin, scalingMax, scalingDefault));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID("lfo1ToOsc1LevelScaling", 1), "LFO 1 To Osc1Level Scaling", scalingMin, scalingMax, scalingDefault));
+    // Routings
     
-    /*
-    for every ModulationOutputManager
-        for every ModulationInputManager
+    auto outputManagers = {
+        osc1EnvOutputSubstrings,
+        lfo1OutputSubstrings,
+        lfo2OutputSubstrings
+    };
+    
+    auto inputManagers = {
+        osc1LevelValues,
+        noiseLevelValues,
+        osc1TuneValues,
+        bitcrusherBitDepthValues
+    };
+    
+    // TODO: this will need to change when all parameters are given unique hints
+    int hint = 2;
+    
+    for (auto output : outputManagers)
+    {
+        for (auto input : inputManagers)
         {
-            layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(getModulationScalingParameterID(Output, Input), 1), getModulationScalingParameterName(Output, Input), scalingMin, scalingMax, scalingDefault));
+            layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(Routings::makeScalingID(output.ID, input.ID), hint), Routings::makeRoutingScalingName(output.name, input.name), scalingMin, scalingMax, scalingDefault));
+            ++hint;
         }
-     */
+    }
     
     return layout;
 }

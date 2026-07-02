@@ -224,7 +224,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     
     osc1EnvToTuneScalingLabel.setText("Osc 1 Env To Tune Scaling", juce::dontSendNotification);
     addAndMakeVisible(osc1EnvToTuneScalingLabel);
-    osc1EnvToTuneScalingAttachment.reset(new SliderAttachment (valueTreeState, "osc1EnvToTuneScaling", osc1EnvToTuneScalingSlider));
+    osc1EnvToTuneScalingAttachment.reset(new SliderAttachment (valueTreeState, "osc1EnvToOsc1TuneScaling", osc1EnvToTuneScalingSlider));
     osc1EnvToTuneScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     osc1EnvToTuneScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     osc1EnvToTuneScalingSlider.setPopupDisplayEnabled(true, false, this);
@@ -244,7 +244,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     
     lfo1ToTuneScalingLabel.setText("LFO 1 To Tune Scaling", juce::dontSendNotification);
     addAndMakeVisible(lfo1ToTuneScalingLabel);
-    lfo1ToTuneScalingAttachment.reset(new SliderAttachment (valueTreeState, "lfo1ToTuneScaling", lfo1ToTuneScalingSlider));
+    lfo1ToTuneScalingAttachment.reset(new SliderAttachment (valueTreeState, "lfo1ToOsc1TuneScaling", lfo1ToTuneScalingSlider));
     lfo1ToTuneScalingSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     lfo1ToTuneScalingSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo1ToTuneScalingSlider.setPopupDisplayEnabled(true, false, this);

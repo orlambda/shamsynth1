@@ -82,7 +82,7 @@ namespace ParameterValues {
     const ParameterFloatValues osc1SquareLevelValues = {"osc1SquareLevel", "Osc 1 Square Level", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1TuneValues = {"osc1Tune", "Osc 1 Tune", -24.0f, 24.0f, 0.0f};
     const ParameterFloatValues noiseLevelValues = {"noiseLevel", "Noise Level", 0.0f, 1.0f, 0.0f};
-    const ParameterFloatValues bitcrusherBitDepthValues = {"bitcrusherBitDepth", "Bit Depth", 1.0f, 32.0f, 32.0f};
+    const ParameterFloatValues bitcrusherBitDepthValues = {"bitDepth", "Bit Depth", 1.0f, 32.0f, 32.0f};
     const ParameterFloatValues osc1WavefolderThresholdValues = {"osc1WavefolderThreshold", "Osc 1 Wavefolder Threshold", 0.0f, 1.0f, 1.0f};
     const ParameterFloatValues osc1WavefolderAmountValues = {"osc1WavefolderAmount", "Osc 1 Wavefolder Amount", 0.0f, 4.0f, 0.0f};
     // Env 1
@@ -103,8 +103,8 @@ namespace ParameterValues {
     // Scaling ids and names
     // these are used to form the full ids and names of modulation scaling parameters
     
-    // modulationOutputs
-    const modulationOutputScalingParameterSubstrings osc1EnvOutputSubstrings = {"osc1", "Osc 1"};
+    // ModulationOutputs
+    const modulationOutputScalingParameterSubstrings osc1EnvOutputSubstrings = {"osc1Env", "Osc 1 Env"};
     const modulationOutputScalingParameterSubstrings lfo1OutputSubstrings = {"lfo1", "LFO 1"};
     const modulationOutputScalingParameterSubstrings lfo2OutputSubstrings = {"lfo2", "LFO 2"};
 
@@ -141,6 +141,6 @@ public:
 }
     static std::string makeRoutingScalingName(std::string output, std::string input)
     {
-        return output + " to " + input + "Scaling";
+        return output + " to " + input + " Scaling";
     }
 };
