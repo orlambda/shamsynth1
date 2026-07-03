@@ -10,7 +10,7 @@
 
 #include "ModulationOutputManager.h"
 
-ModulationOutputManager::ModulationOutputManager(bool p_perVoice, modulationOutputScalingParameterSubstrings substrings) : perVoice(p_perVoice), scaling_id(substrings.ID), scaling_name(substrings.name)
+ModulationOutputManager::ModulationOutputManager(bool p_perVoice, ParameterNames names) : perVoice(p_perVoice), scaling_id(names.ID), scaling_name(names.name)
 {}
 
 void ModulationOutputManager::addModulationTarget(ModulationDestinationID ID, std::shared_ptr<ModulationInputManager> inputDestination)

@@ -27,7 +27,7 @@ using namespace ParameterValues;
 class ModulationOutputManager
 {
 public:
-    ModulationOutputManager(bool p_perVoice, modulationOutputScalingParameterSubstrings substrings);
+    ModulationOutputManager(bool p_perVoice, ParameterNames names);
     void addOutput(std::shared_ptr<ModulationOutput> source) {sources.push_back(source);}
     void addModulationTarget(ModulationDestinationID ID, std::shared_ptr<ModulationInputManager> inputDestination);
     void sendModulation(ModulationDestinationID ID, float scaling);

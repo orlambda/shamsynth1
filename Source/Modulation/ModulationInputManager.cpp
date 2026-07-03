@@ -10,7 +10,7 @@
 
 #include "ModulationInputManager.h"
 
-ModulationInputManager::ModulationInputManager(bool perVoice, std::string p_scaling_id, std::string p_scaling_name) : perVoice(perVoice), scaling_id(p_scaling_id), scaling_name(p_scaling_name)
+ModulationInputManager::ModulationInputManager(bool perVoice, const std::string p_scaling_id, const std::string p_scaling_name) : perVoice(perVoice), scaling_id(p_scaling_id), scaling_name(p_scaling_name)
 {}
 
 void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<ModulationOutput>> outputs, float scaling, bool outputIsPerVoice)
