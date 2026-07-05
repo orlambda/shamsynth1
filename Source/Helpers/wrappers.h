@@ -13,10 +13,10 @@
 #include <memory>
 
 // Temporary wrapper
-class atomicBool
+class AtomicBool
 {
 public:
-    atomicBool(std::atomic<float>* p_p){p = p_p;}
+    AtomicBool(std::atomic<float>* p_p){p = p_p;}
     void setParam(std::atomic<float>* p_p){p = p_p;}
     std::atomic<float>* getParam(){return p;}
     std::atomic<float>* operator=(std::atomic<float>* p_p){return p = p_p;}

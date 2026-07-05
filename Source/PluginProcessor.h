@@ -84,7 +84,7 @@ public:
     std::atomic<float>* lfo2DepthParameter = nullptr;
     std::atomic<float>* outputVolumeParameter = nullptr;
     // TODO: try juce::AudioParameterBool*
-    atomicBool powerOnParameter{nullptr};
+    AtomicBool powerOnParameter{nullptr};
     // Routings - will need to be stored in a container
     std::atomic<float>* osc1EnvToTuneScalingParameter = nullptr;
     std::atomic<float>* osc1EnvToOsc1LevelScalingParameter = nullptr;
