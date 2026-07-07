@@ -27,34 +27,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #endif
 {
     addModulationScalingParameters();
-    
-    // TODO: assignParameters();
-    // TODO: use variable names from Parameters.h instead of string literals
-    osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
-    osc1SineLevelParameter = parameters.getRawParameterValue("osc1SineLevel");
-    osc1TriangleLevelParameter = parameters.getRawParameterValue("osc1TriangleLevel");
-    osc1SquareLevelParameter = parameters.getRawParameterValue("osc1SquareLevel");
-    osc1TuneParameter = parameters.getRawParameterValue("osc1Tune");
-    noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
-    bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitDepth");
-    osc1WavefolderThresholdParameter = parameters.getRawParameterValue("osc1WavefolderThreshold");
-    osc1WavefolderAmountParameter = parameters.getRawParameterValue("osc1WavefolderAmount");
-    env1AttackTimeParameter = parameters.getRawParameterValue("env1AttackTime");
-    env1DecayTimeParameter = parameters.getRawParameterValue("env1DecayTime");
-    env1SustainLevelParameter = parameters.getRawParameterValue("env1SustainLevel");
-    env1ReleaseTimeParameter = parameters.getRawParameterValue("env1ReleaseTime");
-    lfo1FrequencyParameter = parameters.getRawParameterValue("lfo1Frequency");
-    lfo1DepthParameter = parameters.getRawParameterValue("lfo1Depth");
-    lfo2FrequencyParameter = parameters.getRawParameterValue("lfo2Frequency");
-    lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
-    outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
-    powerOnParameter = parameters.getRawParameterValue("powerOn");
-    
-    // Routings - this will need to be done dynamically as mod matrix will grow
-    osc1EnvToOsc1LevelScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1LevelScaling");
-    osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1TuneScaling");
-    lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
-    lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
+    assignParameters();
     
     for (int i = 0; i < numberOfVoices; ++i)
     {
@@ -622,8 +595,32 @@ void Shamsynth1AudioProcessor::addModulationScalingParameters()
     }
 }
 
-
 void Shamsynth1AudioProcessor::assignParameters()
 {
+    // TODO: use variable names from Parameters.h instead of string literals
+    osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
+    osc1SineLevelParameter = parameters.getRawParameterValue("osc1SineLevel");
+    osc1TriangleLevelParameter = parameters.getRawParameterValue("osc1TriangleLevel");
+    osc1SquareLevelParameter = parameters.getRawParameterValue("osc1SquareLevel");
+    osc1TuneParameter = parameters.getRawParameterValue("osc1Tune");
+    noiseLevelParameter = parameters.getRawParameterValue("noiseLevel");
+    bitcrusherBitDepthParameter = parameters.getRawParameterValue("bitDepth");
+    osc1WavefolderThresholdParameter = parameters.getRawParameterValue("osc1WavefolderThreshold");
+    osc1WavefolderAmountParameter = parameters.getRawParameterValue("osc1WavefolderAmount");
+    env1AttackTimeParameter = parameters.getRawParameterValue("env1AttackTime");
+    env1DecayTimeParameter = parameters.getRawParameterValue("env1DecayTime");
+    env1SustainLevelParameter = parameters.getRawParameterValue("env1SustainLevel");
+    env1ReleaseTimeParameter = parameters.getRawParameterValue("env1ReleaseTime");
+    lfo1FrequencyParameter = parameters.getRawParameterValue("lfo1Frequency");
+    lfo1DepthParameter = parameters.getRawParameterValue("lfo1Depth");
+    lfo2FrequencyParameter = parameters.getRawParameterValue("lfo2Frequency");
+    lfo2DepthParameter = parameters.getRawParameterValue("lfo2Depth");
+    outputVolumeParameter = parameters.getRawParameterValue("outputVolume");
+    powerOnParameter = parameters.getRawParameterValue("powerOn");
     
+    // Routings - this will need to be done dynamically as mod matrix will grow
+    osc1EnvToOsc1LevelScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1LevelScaling");
+    osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1TuneScaling");
+    lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
+    lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
 }
