@@ -26,7 +26,9 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name}, makeParameterLayout())
 #endif
 {
-    // TODO: move to single function
+    addModulationScalingParameters();
+    
+    // TODO: assignParameters();
     // TODO: use variable names from Parameters.h instead of string literals
     osc1LevelParameter = parameters.getRawParameterValue("osc1Level");
     osc1SineLevelParameter = parameters.getRawParameterValue("osc1SineLevel");
@@ -54,12 +56,11 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
     lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
     
-    addModulationScalingParameters();
-    
     for (int i = 0; i < numberOfVoices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
     }
+    
     populateModMatrix();
 }
 
@@ -619,4 +620,10 @@ void Shamsynth1AudioProcessor::addModulationScalingParameters()
     {
         modulationScalingParameters.push_back(ModulationScalingParameter(parameters.getRawParameterValue(routingInfo.names.ID), routingInfo.sourceID, routingInfo.destinationID));
     }
+}
+
+
+void Shamsynth1AudioProcessor::assignParameters()
+{
+    
 }
