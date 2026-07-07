@@ -13,7 +13,7 @@
 #include "../Parameters.h"
 #include "../Modulation/ModulatableFloat.h"
 
-using ParameterValues::bitcrusherBitDepthValues, ParameterValues::bitcrusherBitDepthMaximumModFactor;
+using ParameterInfo::bitcrusherBitDepthValues, ParameterInfo::bitcrusherBitDepthMaximumModFactor;
 
 #include <JuceHeader.h>
 

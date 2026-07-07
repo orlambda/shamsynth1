@@ -19,8 +19,8 @@
 #include <JuceHeader.h>
 
 using ModulationReactionFunctions::modulateLevel, ModulationReactionFunctions::modulateTune;
-using ParameterValues::osc1LevelValues, ParameterValues::osc1SineLevelValues, ParameterValues::osc1TriangleLevelValues,
-    ParameterValues::osc1SquareLevelValues, ParameterValues::osc1TuneValues;
+using ParameterInfo::osc1LevelValues, ParameterInfo::osc1SineLevelValues, ParameterInfo::osc1TriangleLevelValues,
+    ParameterInfo::osc1SquareLevelValues, ParameterInfo::osc1TuneValues;
 
 // Sums all Waveforms for a Voice
 class WaveOscillator

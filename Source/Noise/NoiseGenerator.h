@@ -20,7 +20,7 @@ NoiseGenerator.h
 #include <vector>
 
 using ModulationReactionFunctions::modulateLevel;
-using ParameterValues::noiseLevelValues;
+using ParameterInfo::noiseLevelValues;
 
 class NoiseGenerator
 {

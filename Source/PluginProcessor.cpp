@@ -54,6 +54,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
     lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
     
+    addModulationScalingParameters();
+    
     for (int i = 0; i < numberOfVoices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
@@ -293,6 +295,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         
         voice->envelope.calculateNextBlock(totalNumSamples);
     }
+    
     modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
     modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Level, currentosc1EnvToOsc1LevelScaling);
     modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, currentLfo1ToTuneScaling);
@@ -508,18 +511,20 @@ void Shamsynth1AudioProcessor::updateSampleRate(double sampleRate)
 }
 
 void Shamsynth1AudioProcessor::populateModMatrix()
-{    
+{
     // Assign outputs to all OutputManagers
-        // Poly OutputManagers
+    // Poly OutputManagers
     for (auto voice : voices)
     {
         osc1EnvOutputManager->addOutput(voice->getEnvelopeOutput());
     }
+    
     // Mono/global OutputManagers
     lfo1OutputManager->addOutput(lfo1.output);
     lfo2OutputManager->addOutput(lfo2.output);
+    
     // Assign inputs to all InputManagers
-        // Poly InputManagers
+    // Poly InputManagers
     for (auto voice : voices)
     {
         osc1LevelInputManager->addTargetModulationFloat(voice->getLevelInput());
@@ -534,15 +539,29 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     modMatrix.addSource(ModulationSourceID::lfo1, lfo1OutputManager);
     modMatrix.addSource(ModulationSourceID::lfo2, lfo2OutputManager);
     
+    // TODO: move this info somewhere else e.g. an abstraction - wait till I know if I ever need it elsewhere before refactoring
+    std::map<ModulationDestinationID, std::shared_ptr<ModulationInputManager>> destinationsInfo;
+    destinationsInfo.insert({ModulationDestinationID::osc1Tune, osc1TuneInputManager});
+    destinationsInfo.insert({ModulationDestinationID::osc1Level, osc1LevelInputManager});
+    
+    // TODO: the same pairs of destinationIDs and InputManagers are assigned to each routing - add an abstraction that pairs them?
     // Routings
     // For each OutputManager
-        // Add all InputManagers
+    // Add all InputManagers
     modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
     modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Level, osc1LevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, osc1LevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, osc1NoiseLevelInputManager);
     modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
+    
+    /*
+    for (auto routing : routings)
+    {
+        modMatrix.addRouting(routing.getSourceID(), routing.getDestinationID(), destinationsInfo[routing.getDestinationID()]);
+    }
+    */
+    
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::makeParameterLayout() {
@@ -570,32 +589,34 @@ juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::ma
          std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID(), 1), powerOnValues.name(), powerOnValues.defaultValue),
     };
     
+    // TODO: refactor this to Routing or Routings class? then
+        // for (auto routing : routings)
+        // {layout.add(...routing.outputID, routing.inputID, ... routing.outputName, routing.inputName, ...)}
+    
+    /*
+     I can go through all the places that set up anything to do with a routing. List where these places are and what info they all need.
+     
+     Then I can think where to construct and keep that information.
+     */
+    
     // Routings
-    
-    auto outputManagers = {
-        osc1EnvOutputSubstrings,
-        lfo1OutputSubstrings,
-        lfo2OutputSubstrings
-    };
-    
-    auto inputManagers = {
-        osc1LevelValues,
-        noiseLevelValues,
-        osc1TuneValues,
-        bitcrusherBitDepthValues
-    };
     
     // TODO: this will need to change when all parameters are given unique hints
     int hint = 2;
     
-    for (auto output : outputManagers)
+    for (auto routingInfo : modulationRoutingInfoList)
     {
-        for (auto input : inputManagers)
-        {
-            layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(Routings::makeScalingID(output.ID, input.ID()), hint), Routings::makeRoutingScalingName(output.name, input.name()), scalingMin, scalingMax, scalingDefault));
-            ++hint;
-        }
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(routingInfo.names.ID, hint), routingInfo.names.name, scalingMin, scalingMax, scalingDefault));
+        ++hint;
     }
     
     return layout;
+}
+
+void Shamsynth1AudioProcessor::addModulationScalingParameters()
+{
+    for (auto routingInfo : modulationRoutingInfoList)
+    {
+        modulationScalingParameters.push_back(ModulationScalingParameter(parameters.getRawParameterValue(routingInfo.names.ID), routingInfo.sourceID, routingInfo.destinationID));
+    }
 }

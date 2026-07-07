@@ -22,6 +22,7 @@ public:
     void setScaling(float s){scaling = s;}
     // Optimisation: can check source for info e.g. if it has non-0 values / has been cleared
     bool isActive(){return !juce::exactlyEqual(scaling, 0.0f);}
+    // TODO: make these private with getter functions
     std::shared_ptr<ModulationSignalBlock> getSource() {return source;}
     std::shared_ptr<ModulationSignalBlock> getDestination() {return destination;}
 private:

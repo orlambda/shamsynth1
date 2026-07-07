@@ -10,10 +10,12 @@
 
 #pragma once
 
+// TODO: rename these because ID is also used for parameter strings?
 enum class ModulationSourceID
 {
     lfo1,
     lfo2,
+    // TODO: rename e.g. osc1 env?
     adsrEnv,
     osc1Waveform
 };

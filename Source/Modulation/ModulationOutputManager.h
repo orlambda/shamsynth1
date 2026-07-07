@@ -22,7 +22,7 @@
 #include <map>
 #include <string>
 
-using namespace ParameterValues;
+using namespace ParameterInfo;
 
 class ModulationOutputManager
 {

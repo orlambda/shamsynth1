@@ -8,6 +8,9 @@
   ==============================================================================
 */
 
+// TODO: rename file to class name? not all wrappers belong in one file?
+// What folder would this belong in - a Parameter folder?
+
 #pragma once
 
 #include <memory>

@@ -10,11 +10,11 @@
 
 #include "ModulationMatrix.h"
 
-
 void ModulationMatrix::addSource(ModulationSourceID sourceID, std::shared_ptr<ModulationOutputManager> source)
 {
     sources.insert({sourceID, source});
 }
+
 void ModulationMatrix::addRouting(ModulationSourceID sourceID, ModulationDestinationID destinationID, std::shared_ptr<ModulationInputManager> destination)
 {
     sources[sourceID]->addModulationTarget(destinationID, destination);

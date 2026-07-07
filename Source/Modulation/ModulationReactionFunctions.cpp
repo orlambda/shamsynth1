@@ -12,7 +12,7 @@
 
 #include "../Parameters.h"
 
-using namespace ParameterValues;
+using namespace ParameterInfo;
 
 float ModulationReactionFunctions::modulateLevel(float value, float modulation)
 {

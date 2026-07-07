@@ -12,7 +12,7 @@
 
 #include "Parameters.h"
 
-using namespace ParameterValues;
+using namespace ParameterInfo;
 
 //==============================================================================
 Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor& p)

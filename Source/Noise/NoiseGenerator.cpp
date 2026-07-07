@@ -12,7 +12,7 @@
 
 #include "../Parameters.h"
 
-using ParameterValues::noiseVolumeScale, ParameterValues::noiseHalfVolumeScale;
+using ParameterInfo::noiseVolumeScale, ParameterInfo::noiseHalfVolumeScale;
 
 void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {

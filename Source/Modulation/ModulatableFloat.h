@@ -17,7 +17,7 @@
 #include <memory>
 #include <functional>
 
-using ParameterValues::ParameterFloatValues;
+using ParameterInfo::ParameterFloatInfo;
 
 // How out-of-range values are treated
 enum class RangeLimits
@@ -32,7 +32,7 @@ class ModulatableFloat
 {
 public:
     // TODO: constructor parameters: ParameterFloatValues object
-    ModulatableFloat(ParameterFloatValues values, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
+    ModulatableFloat(ParameterFloatInfo info, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
     void reserveSpace(int samplesPerBlock);
     void setValue(float p_value);
     void resetModulatedValue() {modulatedValue = unmodulatedValue;}

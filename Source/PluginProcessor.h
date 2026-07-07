@@ -12,13 +12,14 @@
 #include "Helpers/wrappers.h"
 #include "Oscillators/LowFreqOsc.h"
 #include "Modulation/ModulationMatrix.h"
+#include "Modulation/ModulationScalingParameter.h"
 #include "Parameters.h"
 
 #include <JuceHeader.h>
 
 #include <memory>
 
-using namespace ParameterValues;
+using namespace ParameterInfo;
 
 //==============================================================================
 /**
@@ -85,11 +86,14 @@ public:
     std::atomic<float>* outputVolumeParameter = nullptr;
     // TODO: try juce::AudioParameterBool*
     AtomicBool powerOnParameter{nullptr};
+    
     // Routings - will need to be stored in a container
     std::atomic<float>* osc1EnvToTuneScalingParameter = nullptr;
     std::atomic<float>* osc1EnvToOsc1LevelScalingParameter = nullptr;
     std::atomic<float>* lfo1ToTuneScalingParameter = nullptr;
     std::atomic<float>* lfo1ToOsc1LevelScalingParameter = nullptr;
+    
+    std::vector<ModulationScalingParameter> modulationScalingParameters;
     
     bool currentlyPowerOn = true;
 
@@ -132,6 +136,7 @@ private:
     std::optional<int> availableVoice();
     
     juce::AudioProcessorValueTreeState::ParameterLayout makeParameterLayout();
+    void addModulationScalingParameters();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };
