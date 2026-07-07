@@ -480,6 +480,23 @@ void Shamsynth1AudioProcessor::updateSampleRate(double sampleRate)
 
 void Shamsynth1AudioProcessor::populateModMatrix()
 {
+    
+    /*
+     std::vector<std::pair<ParameterNames, ModulationSourceID>> outputInfoList = {
+         {osc1EnvOutputSubstrings, ModulationSourceID::adsrEnv},
+         {lfo1OutputSubstrings, ModulationSourceID::lfo1},
+         {lfo2OutputSubstrings, ModulationSourceID::lfo2}
+     };
+     
+     std::vector<std::pair<ParameterFloatInfo, ModulationDestinationID>> inputInfoList = {
+         {osc1LevelValues, ModulationDestinationID::osc1Level},
+         {noiseLevelValues, ModulationDestinationID::osc1NoiseLevel},
+         {osc1TuneValues, ModulationDestinationID::osc1Tune},
+         {bitcrusherBitDepthValues, ModulationDestinationID::osc1BitDepth}
+     };
+     */
+    
+    
     // Assign outputs to all OutputManagers
     // Poly OutputManagers
     for (auto voice : voices)
@@ -498,6 +515,7 @@ void Shamsynth1AudioProcessor::populateModMatrix()
         osc1LevelInputManager->addTargetModulationFloat(voice->getLevelInput());
         osc1NoiseLevelInputManager->addTargetModulationFloat(voice->getNoiseLevelInput());
         osc1TuneInputManager->addTargetModulationFloat(voice->getTuneInput());
+        osc1BitDepthManager->addTargetModulationFloat(voice->getBitDepthInput());
     }
     
     // Mono/global InputManagers
@@ -509,9 +527,11 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     
     // TODO: move this info somewhere else e.g. an abstraction - wait till I know if I ever need it elsewhere before refactoring
     std::map<ModulationDestinationID, std::shared_ptr<ModulationInputManager>> destinationsInfo;
-    destinationsInfo.insert({ModulationDestinationID::osc1Tune, osc1TuneInputManager});
     destinationsInfo.insert({ModulationDestinationID::osc1Level, osc1LevelInputManager});
-    
+    destinationsInfo.insert({ModulationDestinationID::osc1NoiseLevel, osc1NoiseLevelInputManager});
+    destinationsInfo.insert({ModulationDestinationID::osc1Tune, osc1TuneInputManager});
+    destinationsInfo.insert({ModulationDestinationID::osc1BitDepth, osc1BitDepthManager});
+
     for (auto routingInfo : modulationRoutingInfoList)
     {
         modMatrix.addRouting(routingInfo.sourceID, routingInfo.destinationID, destinationsInfo[routingInfo.destinationID]);

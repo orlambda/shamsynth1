@@ -115,3 +115,9 @@ std::shared_ptr<ModulatableFloat> Voice::getTuneInput()
 {
     return waveOsc.currentTune;
 }
+
+
+std::shared_ptr<ModulatableFloat> Voice::getBitDepthInput()
+{
+    return bitcrusher.getBitDepthInput();
+}

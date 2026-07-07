@@ -59,6 +59,7 @@ public:
     std::shared_ptr<ModulatableFloat> getLevelInput();
     std::shared_ptr<ModulatableFloat> getNoiseLevelInput();
     std::shared_ptr<ModulatableFloat> getTuneInput();
+    std::shared_ptr<ModulatableFloat> getBitDepthInput();
     
     // White Noise Generator
     NoiseGenerator whiteNoise{};
