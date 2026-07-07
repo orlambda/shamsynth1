@@ -208,10 +208,8 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float currentLfo2Frequency = *lfo2FrequencyParameter;
     float currentLfo2Depth = *lfo2DepthParameter;
     float currentOutputVolume = *outputVolumeParameter;
-    float currentosc1EnvToTuneScaling = *osc1EnvToTuneScalingParameter;
-    float currentosc1EnvToOsc1LevelScaling = *osc1EnvToOsc1LevelScalingParameter;
-    float currentLfo1ToTuneScaling = *lfo1ToTuneScalingParameter;
-    float currentLfo1ToOsc1LevelScaling = *lfo1ToOsc1LevelScalingParameter;
+    
+    // TODO: make container of buffer values of scaling parameters? Currently values are read while sending to modMatrix
     
     // MIDI
     // processAllMidi();
@@ -264,13 +262,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->envelope.calculateNextBlock(totalNumSamples);
     }
     
-    modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, currentosc1EnvToTuneScaling);
-    modMatrix.sendModulation(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Level, currentosc1EnvToOsc1LevelScaling);
-    modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, currentLfo1ToTuneScaling);
-    modMatrix.sendModulation(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, currentLfo1ToOsc1LevelScaling);
-    // TODO: magic number
-    modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, 1.0f);
-    modMatrix.sendModulation(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, 1.0f);
+    sendModulations();
     
     for (auto& voice : voices)
     {
@@ -620,5 +612,13 @@ void Shamsynth1AudioProcessor::addVoices()
     for (int i = 0; i < numberOfVoices; ++i)
     {
         voices.push_back(std::make_unique<Voice>());
+    }
+}
+
+void Shamsynth1AudioProcessor::sendModulations()
+{
+    for (auto scalingParameter : modulationScalingParameters)
+    {
+        modMatrix.sendModulation(scalingParameter.getSourceID(), scalingParameter.getDestinationID(), scalingParameter.getValue());
     }
 }

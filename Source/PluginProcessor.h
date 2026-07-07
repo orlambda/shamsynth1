@@ -127,6 +127,7 @@ private:
     void reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels);
     void updateSampleRate(double sampleRate);
     void populateModMatrix();
+    void sendModulations();
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);
