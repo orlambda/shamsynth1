@@ -20,6 +20,8 @@ void ModulationOutputManager::addModulationTarget(ModulationDestinationID ID, st
 
 void ModulationOutputManager::sendModulation(ModulationDestinationID ID, float scaling)
 {
+    // TODO: TEMP while some mod io are unused
+    if (routings[ID] != nullptr)
     routings[ID]->applyModulation(sources, scaling, perVoice);
 }
 
@@ -27,6 +29,8 @@ void ModulationOutputManager::reserveSpace(int totalNumSamples)
 {
     for (auto routing : routings)
     {
+        // TODO: TEMP while some mod io are unused
+        if (routing.second != nullptr)
         routing.second->reserveSpace(totalNumSamples);
     }
 }

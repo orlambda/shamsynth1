@@ -512,24 +512,10 @@ void Shamsynth1AudioProcessor::populateModMatrix()
     destinationsInfo.insert({ModulationDestinationID::osc1Tune, osc1TuneInputManager});
     destinationsInfo.insert({ModulationDestinationID::osc1Level, osc1LevelInputManager});
     
-    // TODO: the same pairs of destinationIDs and InputManagers are assigned to each routing - add an abstraction that pairs them?
-    // Routings
-    // For each OutputManager
-    // Add all InputManagers
-    modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
-    modMatrix.addRouting(ModulationSourceID::adsrEnv, ModulationDestinationID::osc1Level, osc1LevelInputManager);
-    modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Level, osc1LevelInputManager);
-    modMatrix.addRouting(ModulationSourceID::lfo1, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
-    modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1NoiseLevel, osc1NoiseLevelInputManager);
-    modMatrix.addRouting(ModulationSourceID::lfo2, ModulationDestinationID::osc1Tune, osc1TuneInputManager);
-    
-    /*
-    for (auto routing : routings)
+    for (auto routingInfo : modulationRoutingInfoList)
     {
-        modMatrix.addRouting(routing.getSourceID(), routing.getDestinationID(), destinationsInfo[routing.getDestinationID()]);
+        modMatrix.addRouting(routingInfo.sourceID, routingInfo.destinationID, destinationsInfo[routingInfo.destinationID]);
     }
-    */
-    
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::makeParameterLayout() {
@@ -556,22 +542,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::ma
          std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID(), 1), outputVolumeValues.name(), juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
          std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID(), 1), powerOnValues.name(), powerOnValues.defaultValue),
     };
-    
-    // TODO: refactor this to Routing or Routings class? then
-        // for (auto routing : routings)
-        // {layout.add(...routing.outputID, routing.inputID, ... routing.outputName, routing.inputName, ...)}
-    
-    /*
-     I can go through all the places that set up anything to do with a routing. List where these places are and what info they all need.
-     
-     Then I can think where to construct and keep that information.
-     */
-    
+        
     // Routings
-    
     // TODO: this will need to change when all parameters are given unique hints
     int hint = 2;
-    
     for (auto routingInfo : modulationRoutingInfoList)
     {
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(routingInfo.names.ID, hint), routingInfo.names.name, scalingMin, scalingMax, scalingDefault));
