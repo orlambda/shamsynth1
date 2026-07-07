@@ -26,10 +26,8 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
     parameters(*this, nullptr, juce::Identifier{JucePlugin_Name}, makeParameterLayout())
 #endif
 {
-    addModulationScalingParameters();
     assignParameters();
     addVoices();
-    
     populateModMatrix();
 }
 
@@ -437,7 +435,7 @@ bool Shamsynth1AudioProcessor::checkOnOffState()
     // Currently off
     else
     {
-        // Just been told to turn on
+        // Just been told to switch on
         if (powerOnParameter.isTrue())
         {
             currentlyPowerOn = true;
@@ -583,7 +581,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::ma
     return layout;
 }
 
-void Shamsynth1AudioProcessor::addModulationScalingParameters()
+void Shamsynth1AudioProcessor::assignModulationScalingParameters()
 {
     for (auto routingInfo : modulationRoutingInfoList)
     {
@@ -619,6 +617,8 @@ void Shamsynth1AudioProcessor::assignParameters()
     osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1TuneScaling");
     lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
     lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
+    
+    assignModulationScalingParameters();
 }
 
 void Shamsynth1AudioProcessor::addVoices()

@@ -136,7 +136,7 @@ private:
     std::optional<int> availableVoice();
     
     juce::AudioProcessorValueTreeState::ParameterLayout makeParameterLayout();
-    void addModulationScalingParameters();
+    void assignModulationScalingParameters();
     void assignParameters();
     void addVoices();
 
