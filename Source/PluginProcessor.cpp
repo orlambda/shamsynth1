@@ -28,11 +28,7 @@ Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 {
     addModulationScalingParameters();
     assignParameters();
-    
-    for (int i = 0; i < numberOfVoices; ++i)
-    {
-        voices.push_back(std::make_unique<Voice>());
-    }
+    addVoices();
     
     populateModMatrix();
 }
@@ -623,4 +619,12 @@ void Shamsynth1AudioProcessor::assignParameters()
     osc1EnvToTuneScalingParameter = parameters.getRawParameterValue("osc1EnvToOsc1TuneScaling");
     lfo1ToOsc1LevelScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1LevelScaling");
     lfo1ToTuneScalingParameter = parameters.getRawParameterValue("lfo1ToOsc1TuneScaling");
+}
+
+void Shamsynth1AudioProcessor::addVoices()
+{
+    for (int i = 0; i < numberOfVoices; ++i)
+    {
+        voices.push_back(std::make_unique<Voice>());
+    }
 }

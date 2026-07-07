@@ -138,6 +138,7 @@ private:
     juce::AudioProcessorValueTreeState::ParameterLayout makeParameterLayout();
     void addModulationScalingParameters();
     void assignParameters();
+    void addVoices();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };
