@@ -8,9 +8,10 @@
 
 #pragma once
 
+#include "Editor/StandardSlider.h"
+
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-
 
 //==============================================================================
 /**
@@ -40,78 +41,60 @@ private:
     juce::AudioProcessorValueTreeState& valueTreeState;
     
     juce::Label osc1LevelLabel;
-    juce::Slider osc1LevelSlider;
-    std::unique_ptr<SliderAttachment> osc1LevelAttachment;
+    StandardSlider osc1LevelSlider;
     
     juce::Label osc1SineLevelLabel;
-    juce::Slider osc1SineLevelSlider;
-    std::unique_ptr<SliderAttachment> osc1SineLevelAttachment;
+    StandardSlider osc1SineLevelSlider;
     
     juce::Label osc1TriangleLevelLabel;
-    juce::Slider osc1TriangleLevelSlider;
-    std::unique_ptr<SliderAttachment> osc1TriangleLevelAttachment;
+    StandardSlider osc1TriangleLevelSlider;
     
     juce::Label osc1SquareLevelLabel;
-    juce::Slider osc1SquareLevelSlider;
-    std::unique_ptr<SliderAttachment> osc1SquareLevelAttachment;
+    StandardSlider osc1SquareLevelSlider;
     
     juce::Label osc1TuneLabel;
-    juce::Slider osc1TuneSlider;
-    std::unique_ptr<SliderAttachment> osc1TuneAttachment;
+    StandardSlider osc1TuneSlider;
    
     juce::Label noiseLevelLabel;
-    juce::Slider noiseLevelSlider;
-    std::unique_ptr<SliderAttachment> noiseLevelAttachment;
+    StandardSlider noiseLevelSlider;
     
     juce::Label bitcrusherBitDepthLabel;
-    juce::Slider bitcrusherBitDepthSlider;
-    std::unique_ptr<SliderAttachment> bitcrusherBitDepthAttachment;
+    StandardSlider bitcrusherBitDepthSlider;
     
     juce::Label osc1WavefolderGeneralLabel;
     
     juce::Label osc1WavefolderThresholdLabel;
-    juce::Slider osc1WavefolderThresholdSlider;
-    std::unique_ptr<SliderAttachment> osc1WavefolderThresholdAttachment;
+    StandardSlider osc1WavefolderThresholdSlider;
     
     juce::Label osc1WavefolderAmountLabel;
-    juce::Slider osc1WavefolderAmountSlider;
-    std::unique_ptr<SliderAttachment> osc1WavefolderAmountAttachment;
+    StandardSlider osc1WavefolderAmountSlider;
     
     juce::Label env1AttackTimeLabel;
-    juce::Slider env1AttackTimeSlider;
-    std::unique_ptr<SliderAttachment> env1AttackTimeAttachment;
+    StandardSlider env1AttackTimeSlider;
     
     juce::Label env1DecayTimeLabel;
-    juce::Slider env1DecayTimeSlider;
-    std::unique_ptr<SliderAttachment> env1DecayTimeAttachment;
+    StandardSlider env1DecayTimeSlider;
     
     juce::Label env1SustainLevelLabel;
-    juce::Slider env1SustainLevelSlider;
-    std::unique_ptr<SliderAttachment> env1SustainLevelAttachment;
+    StandardSlider env1SustainLevelSlider;
     
     juce::Label env1ReleaseTimeLabel;
-    juce::Slider env1ReleaseTimeSlider;
-    std::unique_ptr<SliderAttachment> env1ReleaseTimeAttachment;
+    StandardSlider env1ReleaseTimeSlider;
     
     juce::Label lfo1FrequencyLabel;
-    juce::Slider lfo1FrequencySlider;
-    std::unique_ptr<SliderAttachment> lfo1FrequencyAttachment;
+    StandardSlider lfo1FrequencySlider;
     
     juce::Label lfo1DepthLabel;
-    juce::Slider lfo1DepthSlider;
-    std::unique_ptr<SliderAttachment> lfo1DepthAttachment;
+    StandardSlider lfo1DepthSlider;
     
     juce::Label lfo2FrequencyLabel;
-    juce::Slider lfo2FrequencySlider;
-    std::unique_ptr<SliderAttachment> lfo2FrequencyAttachment;
+    StandardSlider lfo2FrequencySlider;
     
     juce::Label lfo2DepthLabel;
-    juce::Slider lfo2DepthSlider;
-    std::unique_ptr<SliderAttachment> lfo2DepthAttachment;
+    StandardSlider lfo2DepthSlider;
     
     juce::Label outputVolumeLabel;
-    juce::Slider outputVolumeSlider;
-    std::unique_ptr<SliderAttachment> outputVolumeAttachment;
+    StandardSlider outputVolumeSlider;
     
     juce::ToggleButton powerOnButton;
     std::unique_ptr<ButtonAttachment> powerOnAttachment;

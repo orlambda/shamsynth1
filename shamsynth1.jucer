@@ -3,13 +3,17 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.81" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.82" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
     <GROUP id="{CABB3CB8-7DF3-A8CC-10BE-ACA7E822C919}" name="Source">
-      <FILE id="ifU0k4" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
-      <FILE id="feojhS" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
+      <GROUP id="{C9A9F47B-B9FF-AD64-06EB-AB60641B57F8}" name="Editor">
+        <FILE id="TSn3Nk" name="StandardSlider.cpp" compile="1" resource="0"
+              file="Source/Editor/StandardSlider.cpp"/>
+        <FILE id="Gm7OoK" name="StandardSlider.h" compile="0" resource="0"
+              file="Source/Editor/StandardSlider.h"/>
+      </GROUP>
       <GROUP id="{A788A923-C392-CD5A-B8C4-6C048A13CC71}" name="Effects">
         <FILE id="LTSqgh" name="Bitcrusher.cpp" compile="1" resource="0" file="Source/Effects/Bitcrusher.cpp"/>
         <FILE id="pAmQhS" name="Bitcrusher.h" compile="0" resource="0" file="Source/Effects/Bitcrusher.h"/>
@@ -94,6 +98,8 @@
         <FILE id="mWTnap" name="Wavefolder.cpp" compile="1" resource="0" file="Source/Wavefolder/Wavefolder.cpp"/>
         <FILE id="rfCUhQ" name="Wavefolder.h" compile="0" resource="0" file="Source/Wavefolder/Wavefolder.h"/>
       </GROUP>
+      <FILE id="ifU0k4" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
+      <FILE id="feojhS" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
       <FILE id="KFhz27" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="bLLsrz" name="PluginProcessor.h" compile="0" resource="0"
