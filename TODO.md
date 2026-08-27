@@ -2,6 +2,25 @@
 
 ## Next
 
+- add `processAudioSubBlock()`
+
+- change testWavetables / other hackish testing to use `jassert()`
+
+- set up unit tests
+    - try boost one last time! JSON?
+    - JUCE's own unit test class
+- set up cmake JUCE project for shamsynth2
+
+- Can I get Boost to work in shamsynth1?
+    - yes:
+        - make a note of what I did
+        - remove boost
+        - finish bitcrusher and commit
+    - no:
+        - remove boost
+        - try CMake
+        - finish bitcrush and commit
+
 ## Task list
 
 ### Bug fixes
@@ -34,9 +53,15 @@
             jassertfalse;
         }
     }
-- SignalBlocks (and anything which contains a signal block)
-    - What happens if one block is larger than usual, then the next is the usual size? Is the larger size still passed around?
-    - Should reserve space change to setSize()?
+- Buffers/SignalBlocks (and anything which contains a signal block)
+    - Rename samples per block to frames per block
+    - Check current frames per block every `processBlock()`
+    - Loop through buffer `currentFramesPerBlock` times
+    - Allocate extra space in buffers
+    - What happens if `currentFramesPerBlock` is higher than allocated space?
+        - Refactor so `processBlock()` calls another function that processes subblocks
+    - Should I clear buffers in `releaseResources()`? (set size to 0)
+    - (what does this mean? rename?) Should reserve space change to setSize()?
 
 ### Features to add
 - Oscillators
@@ -108,11 +133,19 @@
 ### Implementation
 (could merge this and ### refactoring? or is this more structure/architecture?)
 - Can I change shared_ptr<ModulationSignalBlock> to something else e.g. ModulationSignalBlock& in function calls?
+- switch to CMake
 
 ### Refactoring, modernisation
+- add `processAudioSubBlock()`
 - processor constructor: move ParameterLayout in apvts initialiser to function
 - find unnecessary for loops, chances to use algorithm header
 - Check all range-based for loops - const, value/ref
+- Do i Have any code that moves unique or shared ptrs? 
+    transferring ownership
+    https://www.youtube.com/watch?v=YokY6HzLkXs
+    just before 19:06
+    find equivalent for shared_ptr
+    by VALUE - check if I do it by reference
 
 ### Naming
 - rename 'osc1env' - env actually belongs to Voice
