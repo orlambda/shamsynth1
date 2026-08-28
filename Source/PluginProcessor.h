@@ -64,6 +64,8 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    // TODO: make private
+    
     // State
     juce::AudioProcessorValueTreeState parameters;
     std::atomic<float>* osc1LevelParameter = nullptr;

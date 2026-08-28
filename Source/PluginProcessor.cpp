@@ -531,37 +531,39 @@ void Shamsynth1AudioProcessor::populateModMatrix()
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::makeParameterLayout() {
+    
+    constexpr int versionHint = 1;
+    
     juce::AudioProcessorValueTreeState::ParameterLayout layout {
          // TODO: define every juce::NormalisableRange<float> in Parameters.h?
          // TODO: magic numbers, use hint variable
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1LevelValues.ID(), 1), osc1LevelValues.name(), juce::NormalisableRange<float>(osc1LevelValues.minValue, osc1LevelValues.maxValue), osc1LevelValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SineLevelValues.ID(), 2), osc1SineLevelValues.name(), juce::NormalisableRange<float>(osc1SineLevelValues.minValue, osc1SineLevelValues.maxValue), osc1SineLevelValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TriangleLevelValues.ID(), 3), osc1TriangleLevelValues.name(), juce::NormalisableRange<float>(osc1TriangleLevelValues.minValue, osc1TriangleLevelValues.maxValue), osc1TriangleLevelValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SquareLevelValues.ID(), 4), osc1SquareLevelValues.name(), juce::NormalisableRange<float>(osc1SquareLevelValues.minValue, osc1SquareLevelValues.maxValue), osc1SquareLevelValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TuneValues.ID(), 5), osc1TuneValues.name(), osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(noiseLevelValues.ID(), 6), noiseLevelValues.name(), juce::NormalisableRange<float>(noiseLevelValues.minValue, noiseLevelValues.maxValue), noiseLevelValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bitcrusherBitDepthValues.ID(), 7), bitcrusherBitDepthValues.name(), bitcrusherBitDepthValues.minValue, bitcrusherBitDepthValues.maxValue, bitcrusherBitDepthValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderThresholdValues.ID(), 8), osc1WavefolderThresholdValues.name(), osc1WavefolderThresholdValues.minValue, osc1WavefolderThresholdValues.maxValue, osc1WavefolderThresholdValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderAmountValues.ID(), 9), osc1WavefolderAmountValues.name(), osc1WavefolderAmountValues.minValue, osc1WavefolderAmountValues.maxValue, osc1WavefolderAmountValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1AttackTimeValues.ID(), 10), env1AttackTimeValues.name(), juce::NormalisableRange<float>(env1AttackTimeValues.minValue, env1AttackTimeValues.maxValue), env1AttackTimeValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1DecayTimeValues.ID(), 11), env1DecayTimeValues.name(), juce::NormalisableRange<float>(env1DecayTimeValues.minValue, env1DecayTimeValues.maxValue), env1DecayTimeValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1SustainLevelValues.ID(), 12), env1SustainLevelValues.name(), juce::NormalisableRange<float>(env1SustainLevelValues.minValue, env1SustainLevelValues.maxValue), env1SustainLevelValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1ReleaseTimeValues.ID(), 13), env1ReleaseTimeValues.name(), juce::NormalisableRange<float>(env1ReleaseTimeValues.minValue, env1ReleaseTimeValues.maxValue), env1ReleaseTimeValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1FrequencyValues.ID(), 14), lfo1FrequencyValues.name(), juce::NormalisableRange<float>(lfo1FrequencyValues.minValue, lfo1FrequencyValues.maxValue), lfo1FrequencyValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1DepthValues.ID(), 15), lfo1DepthValues.name(), juce::NormalisableRange<float>(lfo1DepthValues.minValue, lfo1DepthValues.maxValue), lfo1DepthValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2FrequencyValues.ID(), 16), lfo2FrequencyValues.name(), juce::NormalisableRange<float>(lfo2FrequencyValues.minValue, lfo2FrequencyValues.maxValue), lfo2FrequencyValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2DepthValues.ID(), 17), lfo2DepthValues.name(), juce::NormalisableRange<float>(lfo2DepthValues.minValue, lfo2DepthValues.maxValue), lfo2DepthValues.defaultValue),
-         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID(), 18), outputVolumeValues.name(), juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
-         std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID(), 19), powerOnValues.name(), powerOnValues.defaultValue),
+        
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1LevelValues.ID(), versionHint), osc1LevelValues.name(), juce::NormalisableRange<float>(osc1LevelValues.minValue, osc1LevelValues.maxValue), osc1LevelValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SineLevelValues.ID(), versionHint), osc1SineLevelValues.name(), juce::NormalisableRange<float>(osc1SineLevelValues.minValue, osc1SineLevelValues.maxValue), osc1SineLevelValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TriangleLevelValues.ID(), versionHint), osc1TriangleLevelValues.name(), juce::NormalisableRange<float>(osc1TriangleLevelValues.minValue, osc1TriangleLevelValues.maxValue), osc1TriangleLevelValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1SquareLevelValues.ID(), versionHint), osc1SquareLevelValues.name(), juce::NormalisableRange<float>(osc1SquareLevelValues.minValue, osc1SquareLevelValues.maxValue), osc1SquareLevelValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1TuneValues.ID(), versionHint), osc1TuneValues.name(), osc1TuneValues.minValue, osc1TuneValues.maxValue, osc1TuneValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(noiseLevelValues.ID(), versionHint), noiseLevelValues.name(), juce::NormalisableRange<float>(noiseLevelValues.minValue, noiseLevelValues.maxValue), noiseLevelValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(bitcrusherBitDepthValues.ID(), versionHint), bitcrusherBitDepthValues.name(), bitcrusherBitDepthValues.minValue, bitcrusherBitDepthValues.maxValue, bitcrusherBitDepthValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderThresholdValues.ID(), versionHint), osc1WavefolderThresholdValues.name(), osc1WavefolderThresholdValues.minValue, osc1WavefolderThresholdValues.maxValue, osc1WavefolderThresholdValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(osc1WavefolderAmountValues.ID(), versionHint), osc1WavefolderAmountValues.name(), osc1WavefolderAmountValues.minValue, osc1WavefolderAmountValues.maxValue, osc1WavefolderAmountValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1AttackTimeValues.ID(), versionHint), env1AttackTimeValues.name(), juce::NormalisableRange<float>(env1AttackTimeValues.minValue, env1AttackTimeValues.maxValue), env1AttackTimeValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1DecayTimeValues.ID(), versionHint), env1DecayTimeValues.name(), juce::NormalisableRange<float>(env1DecayTimeValues.minValue, env1DecayTimeValues.maxValue), env1DecayTimeValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1SustainLevelValues.ID(), versionHint), env1SustainLevelValues.name(), juce::NormalisableRange<float>(env1SustainLevelValues.minValue, env1SustainLevelValues.maxValue), env1SustainLevelValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(env1ReleaseTimeValues.ID(), versionHint), env1ReleaseTimeValues.name(), juce::NormalisableRange<float>(env1ReleaseTimeValues.minValue, env1ReleaseTimeValues.maxValue), env1ReleaseTimeValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1FrequencyValues.ID(), versionHint), lfo1FrequencyValues.name(), juce::NormalisableRange<float>(lfo1FrequencyValues.minValue, lfo1FrequencyValues.maxValue), lfo1FrequencyValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo1DepthValues.ID(), versionHint), lfo1DepthValues.name(), juce::NormalisableRange<float>(lfo1DepthValues.minValue, lfo1DepthValues.maxValue), lfo1DepthValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2FrequencyValues.ID(), versionHint), lfo2FrequencyValues.name(), juce::NormalisableRange<float>(lfo2FrequencyValues.minValue, lfo2FrequencyValues.maxValue), lfo2FrequencyValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2DepthValues.ID(), versionHint), lfo2DepthValues.name(), juce::NormalisableRange<float>(lfo2DepthValues.minValue, lfo2DepthValues.maxValue), lfo2DepthValues.defaultValue),
+        std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID(), versionHint), outputVolumeValues.name(), juce::NormalisableRange<float>(outputVolumeValues.minValue, outputVolumeValues.maxValue), outputVolumeValues.defaultValue),
+        std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID(), versionHint), powerOnValues.name(), powerOnValues.defaultValue),
     };
         
     // Routings
     // TODO: this will need to change when all parameters are given unique hints
-    int hint = 20;
     for (auto routingInfo : modulationRoutingInfoList)
     {
-        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(routingInfo.names.ID, hint), routingInfo.names.name, scalingMin, scalingMax, scalingDefault));
-        ++hint;
+        layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(routingInfo.names.ID, versionHint), routingInfo.names.name, scalingMin, scalingMax, scalingDefault));
     }
     
     return layout;
