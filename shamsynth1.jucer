@@ -3,7 +3,7 @@
 <JUCERPROJECT id="MFLexZ" name="shamsynth1" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
               cppLanguageStandard="20" pluginManufacturer="orlambda" pluginManufacturerCode="Orlm"
-              pluginCode="Shs1" version="1.0.83" companyName="orlambda" companyCopyright="Orlando Shamlou"
+              pluginCode="Shs1" version="1.0.84" companyName="orlambda" companyCopyright="Orlando Shamlou"
               companyWebsite="https://github.com/orlambda/" pluginName="shamsynth1"
               pluginDesc="shamsynth1">
   <MAINGROUP id="feZJZJ" name="shamsynth1">
@@ -127,7 +127,8 @@
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
   </MODULES>
-  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"
+               JUCE_FORCE_USE_LEGACY_PARAM_IDS="1"/>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
