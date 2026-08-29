@@ -32,7 +32,7 @@ public:
     ~Shamsynth1AudioProcessor() override;
 
     //==============================================================================
-    void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+    void prepareToPlay (double sampleRate, int framesPerBlock) override;
     void releaseResources() override;
 
    #ifndef JucePlugin_PreferredChannelConfigurations
@@ -124,9 +124,9 @@ private:
     std::vector<std::shared_ptr<Voice>> voices;
     const int numberOfVoices = 16;
     
-    int expectedSamplesPerBlock = 0;
+    int expectedMaxFramesPerBlock = 0;
     
-    void reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels);
+    void reserveSignalBlockSpace(int framesPerBlock, int totalNumChannels);
     void updateSampleRate(double sampleRate);
     void populateModMatrix();
     void sendModulations();

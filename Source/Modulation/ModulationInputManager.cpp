@@ -41,10 +41,10 @@ void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<Modulat
     }
 }
 
-void ModulationInputManager::reserveSpace(int totalNumSamples)
+void ModulationInputManager::reserveSpace(int framesPerBlock)
 {
     for (auto input : inputs)
     {
-        input->reserveSpace(totalNumSamples);
+        input->reserveSpace(framesPerBlock);
     }
 }

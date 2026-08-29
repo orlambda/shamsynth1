@@ -14,14 +14,13 @@
 
 void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
-//    clearModulationSignalBlocks();
-    float totalNumSamples = buffer.getNumSamples();
+    float framesPerBlock = buffer.getNumSamples();
     if (isActive)
     {
-        for (int sample = 0; sample < totalNumSamples; ++sample)
+        for (int frame = 0; frame < framesPerBlock; ++frame)
         {
-            currentModulatedTune = currentTune->getModulatedValue(sample);
-            currentModulatedLevel = currentLevel->getModulatedValue(sample);
+            currentModulatedTune = currentTune->getModulatedValue(frame);
+            currentModulatedLevel = currentLevel->getModulatedValue(frame);
             updateAngleDelta();
             // Update angle delta here instead of in frequency/tune setters?
             float sineSampleValue = Waveforms::sin(currentAngle) * currentSineLevel;
@@ -30,16 +29,15 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             float sampleValue = (sineSampleValue + triangleSampleValue + squareSampleValue);
             for (int channel = 0; channel < totalNumOutputChannels; ++channel)
             {
-//                buffer.addSample(channel, sample, sampleValue * currentModulatedLevel);
-                buffer.addSample(channel, sample, sampleValue);
+                buffer.addSample(channel, frame, sampleValue);
             }
             currentAngle = fmod(currentAngle + angleDelta, 1.0f);
         }
         wavefolder.processBlock(buffer, totalNumOutputChannels);
-        for (int sample = 0; sample < totalNumSamples; ++sample)
+        
+        for (int frame = 0; frame < framesPerBlock; ++frame)
         {
-            buffer.applyGain(sample, 1, currentLevel->getModulatedValue(sample));
-//            buffer.applyGain(sample, 1, currentLevel->getModulatedValue(sample));
+            buffer.applyGain(frame, 1, currentLevel->getModulatedValue(frame));
         }
     }
 }
@@ -83,10 +81,10 @@ void WaveOscillator::setSampleRate(float sr)
     updateAngleDelta();
 }
 
-void WaveOscillator::reserveSpace(int samplesPerBlock)
+void WaveOscillator::reserveSpace(int framesPerBlock)
 {
-    currentLevel->reserveSpace(samplesPerBlock);
-    currentTune->reserveSpace(samplesPerBlock);
+    currentLevel->reserveSpace(framesPerBlock);
+    currentTune->reserveSpace(framesPerBlock);
 }
 
 void WaveOscillator::reset()

@@ -65,10 +65,10 @@ void LowFreqOsc::setDepth(float d)
     depth = d;
 }
 
-void LowFreqOsc::reserveSpace(int sampleCount)
+void LowFreqOsc::reserveSpace(int framesPerBlock)
 {
-    outputSignalBlock->reserveSpace(sampleCount);
-    output->reserveBlockSpace(sampleCount);
+    outputSignalBlock->reserveSpace(framesPerBlock);
+    output->reserveBlockSpace(framesPerBlock);
 }
 
 void LowFreqOsc::setSampleRate(float sr)

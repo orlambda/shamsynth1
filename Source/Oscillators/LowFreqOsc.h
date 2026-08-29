@@ -23,7 +23,7 @@ class LowFreqOsc
 public:
     void startOsc(float f);
     void stopOsc();
-    void calculateNextBlock(int samples);
+    void calculateNextBlock(int framesPerBlock);
     void resetLFO();
     void resetAngle();
     void progressAngle();
@@ -31,7 +31,7 @@ public:
     void setSampleRate(float sr);
     void setDepth(float d);
     void updateAngleDelta();
-    void reserveSpace(int sampleCount);
+    void reserveSpace(int framesPerBlock);
     void setValue(int position, float value);
     float getValue(int position);
     // TODO: replace with output

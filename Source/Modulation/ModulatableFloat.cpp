@@ -14,9 +14,9 @@ ModulatableFloat::ModulatableFloat(ParameterFloatInfo info, RangeLimits p_limiti
 {
 }
 
-void ModulatableFloat::reserveSpace(int samplesPerBlock)
+void ModulatableFloat::reserveSpace(int framesPerBlock)
 {
-    input->reserveBlockSpace(samplesPerBlock);
+    input->reserveBlockSpace(framesPerBlock);
 }
 
 void ModulatableFloat::setValue(float p_value)

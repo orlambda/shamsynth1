@@ -12,21 +12,21 @@
 
 void Wavefolder::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
-    float totalNumSamples = buffer.getNumSamples();
-    for (auto sample = 0; sample < totalNumSamples; ++sample)
+    float framesPerBlock = buffer.getNumSamples();
+    for (auto frame = 0; frame < framesPerBlock; ++frame)
     {
         for (auto channel = 0; channel < totalNumOutputChannels; ++channel)
         {
-            float currentValue = (buffer.getSample(channel, sample));
+            float currentValue = (buffer.getSample(channel, frame));
             if (currentValue > threshold)
             {
                 float difference = currentValue - threshold;
-                buffer.setSample(channel, sample, currentValue - (difference * amount));
+                buffer.setSample(channel, frame, currentValue - (difference * amount));
             }
             else if (currentValue < -threshold)
             {
                 float difference = threshold - currentValue;
-                buffer.setSample(channel, sample, currentValue + (difference * amount));
+                buffer.setSample(channel, frame, currentValue + (difference * amount));
             }
         }
     }

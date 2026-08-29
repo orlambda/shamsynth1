@@ -33,15 +33,15 @@ float Waveforms::sin(float angle)
     
     // TODO: Interpolation
     
-    int sampleIndex = std::round((angleWithinQuarter / 0.25f) * (sinQuarterTableSize - 1));
+    int frameIndex = std::round((angleWithinQuarter / 0.25f) * (sinQuarterTableSize - 1));
     
     // for 2nd and 4th quarters
     if ((angle >= 0.25f && angle < 0.5f) || angle >= 0.75f)
     {
-        sampleIndex = sinQuarterTableSize - (sampleIndex + 1);
+        frameIndex = sinQuarterTableSize - (frameIndex + 1);
     }
     
-    auto valueWithinQuarter = sinQuarterTable.getSample(0, sampleIndex);
+    auto valueWithinQuarter = sinQuarterTable.getSample(0, frameIndex);
     
     if (angle >= 0.5f)
     {

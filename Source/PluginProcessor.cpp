@@ -98,7 +98,7 @@ void Shamsynth1AudioProcessor::changeProgramName (int index, const juce::String&
 }
 
 //==============================================================================
-void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedMaxFramesPerBlock)
 {
     // TODO: check that activating/deactivating buses calls prepareToPlay() (i.e. that num of channels will always be correct)
     int totalNumChannels = getTotalNumOutputChannels();
@@ -107,9 +107,9 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
         int totalNumChannels = getTotalNumInputChannels();
     }
     
-    expectedSamplesPerBlock = samplesPerBlock;
+    expectedMaxFramesPerBlock = p_expectedMaxFramesPerBlock;
         
-    reserveSignalBlockSpace(samplesPerBlock, totalNumChannels);
+    reserveSignalBlockSpace(p_expectedMaxFramesPerBlock, totalNumChannels);
     updateSampleRate(sampleRate);
     
     lfo1.startOsc(*lfo1FrequencyParameter);
@@ -158,10 +158,10 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-    auto totalNumSamples = buffer.getNumSamples();
-    if (totalNumSamples != expectedSamplesPerBlock)
+    auto framesPerBlock = buffer.getNumSamples();
+    if (framesPerBlock != expectedMaxFramesPerBlock)
     {
-        reserveSignalBlockSpace(totalNumSamples, buffer.getNumChannels());
+        reserveSignalBlockSpace(framesPerBlock, buffer.getNumChannels());
     }
     
     // In case we have more outputs than inputs, this code clears any output
@@ -174,7 +174,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     //        {buffer.clear (i, 0, buffer.getNumSamples());}
     // I am doing the above but for all channels - I need to check if this is correct
     for (auto i = 0; i < totalNumOutputChannels; ++i)
-        {buffer.clear(i, 0, totalNumSamples);}
+        {buffer.clear(i, 0, framesPerBlock);}
 
     if (!checkOnOffState())
     {
@@ -219,7 +219,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         // check the size of midibuffer - is it per message or per sample
     juce::MidiBuffer midiBuffer = midiMessages;
     // Add messages from plugin window keyboard component
-    keyboardState.processNextMidiBuffer(midiBuffer, 0, totalNumSamples, true);
+    keyboardState.processNextMidiBuffer(midiBuffer, 0, framesPerBlock, true);
     // Trigger or silence voices
     // TODO: consider if silencing voices here affects modulation i/o
     processMidi(midiBuffer);
@@ -237,13 +237,13 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // LFOs etc
     lfo1.setFrequency(currentLfo1Frequency);
     lfo1.setDepth(currentLfo1Depth);
-    lfo1.calculateNextBlock(totalNumSamples);
+    lfo1.calculateNextBlock(framesPerBlock);
     lfo2.setFrequency(currentLfo2Frequency);
     lfo2.setDepth(currentLfo2Depth);
-    lfo2.calculateNextBlock(totalNumSamples);
+    lfo2.calculateNextBlock(framesPerBlock);
     
-    osc1EnvOutputManager->reserveSpace(totalNumSamples);
-    osc1TuneInputManager->reserveSpace(totalNumSamples);
+    osc1EnvOutputManager->reserveSpace(framesPerBlock);
+    osc1TuneInputManager->reserveSpace(framesPerBlock);
     
     // Synthesis & routing
     for (auto& voice : voices)
@@ -259,7 +259,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
         voice->updateWavefolderAmount(currentOsc1WavefolderAmount);
         voice->updateADSRSettings(currentEnv1AttackTime, currentEnv1DecayTime, currentEnv1SustainLevel, currentEnv1ReleaseTime);
         
-        voice->envelope.calculateNextBlock(totalNumSamples);
+        voice->envelope.calculateNextBlock(framesPerBlock);
     }
     
     sendModulations();
@@ -278,10 +278,10 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
     for (int channel = 0; channel < totalNumOutputChannels; ++channel)
     {
-        for (int sample = 0; sample < totalNumSamples; ++sample)
+        for (int frame = 0; frame < framesPerBlock; ++frame)
         {
-            float finalValue = buffer.getSample(channel, sample) * scaledOutputVolume;
-            buffer.setSample(channel, sample, finalValue);
+            float finalValue = buffer.getSample(channel, frame) * scaledOutputVolume;
+            buffer.setSample(channel, frame, finalValue);
         }
     }
 }
@@ -450,14 +450,14 @@ void Shamsynth1AudioProcessor::resetState()
     lfo2.resetLFO();
 }
 
-void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int samplesPerBlock, int totalNumChannels)
+void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int framesPerBlock, int totalNumChannels)
 {
     for (auto voice : voices)
     {
-        voice->reserveSpace(samplesPerBlock, totalNumChannels);
+        voice->reserveSpace(framesPerBlock, totalNumChannels);
     }
-    lfo1.reserveSpace(samplesPerBlock);
-    lfo2.reserveSpace(samplesPerBlock);
+    lfo1.reserveSpace(framesPerBlock);
+    lfo2.reserveSpace(framesPerBlock);
 }
 
 void Shamsynth1AudioProcessor::updateSampleRate(double sampleRate)

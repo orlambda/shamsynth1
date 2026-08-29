@@ -16,7 +16,7 @@
 class ModulationOutput
 {
 public:
-    void reserveBlockSpace(float sampleCount) {block->reserveSpace(sampleCount);}
+    void reserveBlockSpace(float framesPerBlock) {block->reserveSpace(framesPerBlock);}
     float getValue(int position) {return block->getValue(position);}
     void setValue(int position, float value) {block->setValue(position, value);}
     void resetOutputBlockValues() {block->resetValues();}

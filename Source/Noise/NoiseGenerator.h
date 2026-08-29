@@ -27,7 +27,7 @@ class NoiseGenerator
 public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
     void clearModulationSignalBlocks();
-    void reserveSpace(int samplesPerBlock);
+    void reserveSpace(int framesPerBlock);
     void updateLevel(float p_level);
     float sampleRate = 0.0;
     std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues, RangeLimits::lowerBound, modulateLevel);

@@ -40,10 +40,10 @@
 
 void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
 {
-    int totalNumSamples = buffer.getNumSamples();
-    for (auto sample = 0; sample < totalNumSamples; ++sample)
+    int framesPerBlock = buffer.getNumSamples();
+    for (auto frame = 0; frame < framesPerBlock; ++frame)
     {
-        auto currentBitDepth = bitDepth->getModulatedValue(sample);
+        auto currentBitDepth = bitDepth->getModulatedValue(frame);
         
         // Actual number of available values is 1 higher than this, e.g. 2^1 == 2, but gives us 3 values. This allows silence to remain silent, and is consistent with Logic Pro bitcrusher (see above)
         // Could rename to sampleDepth or resolution?
@@ -55,7 +55,7 @@ void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutp
             // float finalValue = bitcrush(currentValue, currentBitDepth);
             // float bitcrush(float sampleValue, float bitDepth);
             
-            float currentValue = (buffer.getSample(channel, sample));
+            float currentValue = (buffer.getSample(channel, frame));
             
             // Change range from [-1,1] to [0,1]
             currentValue = (currentValue + 1.0f) * 0.5f;
@@ -67,7 +67,7 @@ void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutp
             // Change range from [0,1] to [-1,1]
             currentValue = (currentValue * 2.0f) - 1.0f;
             
-            buffer.setSample(channel, sample, currentValue);
+            buffer.setSample(channel, frame, currentValue);
         }
     }
 }

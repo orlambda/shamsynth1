@@ -32,7 +32,7 @@ public:
     void addModulationTarget(ModulationDestinationID ID, std::shared_ptr<ModulationInputManager> inputDestination);
     void sendModulation(ModulationDestinationID ID, float scaling);
     std::vector<std::shared_ptr<ModulationOutput>> sources;
-    void reserveSpace(int totalNumSamples);
+    void reserveSpace(int framesPerBlock);
     std::string get_scaling_id() {return scaling_id;}
     std::string get_scaling_name() {return scaling_name;}
 private:

@@ -16,10 +16,11 @@
 #include <algorithm>
 
 // Erases data
-void ModulationSignalBlock::reserveSpace(float sampleCount)
+void ModulationSignalBlock::reserveSpace(float framesPerBlock)
 {
-    if (sampleCount > values.size())
+    // TODO: check here when changing to process subblocks
+    if (framesPerBlock > values.size())
     {
-        values = std::vector<float>(sampleCount);
+        values = std::vector<float>(framesPerBlock);
     }
 }

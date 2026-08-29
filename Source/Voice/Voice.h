@@ -43,7 +43,7 @@ public:
     // TODO: make static - sampleRate the same for every Voice
     void setSampleRate(float rate);
     void clearModulationBlocks();
-    void reserveSpace(int samplesPerBlock, int totalNumChannels);
+    void reserveSpace(int framesPerBlock, int totalNumChannels);
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateOsc1SineLevel(float level) {waveOsc.updateSineLevel(level);}
     void updateOsc1TriangleLevel(float level) {waveOsc.updateTriangleLevel(level);}

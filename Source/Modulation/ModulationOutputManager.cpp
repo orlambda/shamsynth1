@@ -25,12 +25,12 @@ void ModulationOutputManager::sendModulation(ModulationDestinationID ID, float s
     routings[ID]->applyModulation(sources, scaling, perVoice);
 }
 
-void ModulationOutputManager::reserveSpace(int totalNumSamples)
+void ModulationOutputManager::reserveSpace(int framesPerBlock)
 {
     for (auto routing : routings)
     {
         // TODO: TEMP while some mod io are unused
         if (routing.second != nullptr)
-        routing.second->reserveSpace(totalNumSamples);
+        routing.second->reserveSpace(framesPerBlock);
     }
 }

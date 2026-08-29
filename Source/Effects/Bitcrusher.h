@@ -20,7 +20,7 @@ using ParameterInfo::bitcrusherBitDepthValues, ParameterInfo::bitcrusherBitDepth
 class Bitcrusher {
 public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
-    void reserveSpace(int samplesPerBlock){bitDepth->reserveSpace(samplesPerBlock);}
+    void reserveSpace(int framesPerBlock){bitDepth->reserveSpace(framesPerBlock);}
     void clearModulationSignalBlocks();
     void setBitDepth(float p_depth){bitDepth->setValue(p_depth);}
     std::shared_ptr<ModulatableFloat> getBitDepthInput() {return bitDepth;}

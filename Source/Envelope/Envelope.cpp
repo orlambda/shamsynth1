@@ -10,10 +10,10 @@
 
 #include "Envelope.h"
 
-void Envelope::calculateNextBlock(int samples)
+void Envelope::calculateNextBlock(int framesPerBlock)
 {
-    reserveSpace(samples);
-    for (int i = 0; i < samples; ++i)
+    reserveSpace(framesPerBlock);
+    for (int i = 0; i < framesPerBlock; ++i)
     {
         // TODO: best practice - uninitialised?
         float value;
@@ -74,9 +74,9 @@ void Envelope::calculateNextBlock(int samples)
     }
 }
 
-void Envelope::reserveSpace(float sampleCount)
+void Envelope::reserveSpace(float framesPerBlock)
 {
-    output->reserveBlockSpace(sampleCount);
+    output->reserveBlockSpace(framesPerBlock);
 }
 
 void Envelope::progressPosition()

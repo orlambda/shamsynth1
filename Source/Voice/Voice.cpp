@@ -19,10 +19,10 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
     if (isActive())
     {
         float totalNumChannels = buffer.getNumChannels();
-        float totalNumSamples = buffer.getNumSamples();
-        if (totalNumSamples != voiceBuffer.getNumSamples() || totalNumChannels != voiceBuffer.getNumChannels())
+        float totalNumFrames = buffer.getNumSamples();
+        if (totalNumFrames != voiceBuffer.getNumSamples() || totalNumChannels != voiceBuffer.getNumChannels())
         {
-            reserveSpace(totalNumSamples, totalNumChannels);
+            reserveSpace(totalNumFrames, totalNumChannels);
         }
         voiceBuffer.clear();
         waveOsc.processBlock(voiceBuffer, totalNumOutputChannels);
@@ -30,9 +30,9 @@ void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputCha
         bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels);
         for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
         {
-            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+            for (int frame = 0; frame < buffer.getNumSamples(); ++frame)
             {
-                buffer.addSample(channel, sample, voiceBuffer.getSample(channel, sample));
+                buffer.addSample(channel, frame, voiceBuffer.getSample(channel, frame));
             }
         }
     }
@@ -45,13 +45,13 @@ void Voice::setSampleRate(float rate)
     envelope.setSampleRate(rate);
 }
 
-void Voice::reserveSpace(int samplesPerBlock, int totalNumChannels)
+void Voice::reserveSpace(int framesPerBlock, int totalNumChannels)
 {
-    waveOsc.reserveSpace(samplesPerBlock);
-    envelope.reserveSpace(samplesPerBlock);
-    whiteNoise.reserveSpace(samplesPerBlock);
-    bitcrusher.reserveSpace(samplesPerBlock);
-    voiceBuffer.setSize(totalNumChannels, samplesPerBlock);
+    waveOsc.reserveSpace(framesPerBlock);
+    envelope.reserveSpace(framesPerBlock);
+    whiteNoise.reserveSpace(framesPerBlock);
+    bitcrusher.reserveSpace(framesPerBlock);
+    voiceBuffer.setSize(totalNumChannels, framesPerBlock);
 }
 
 void Voice::clearModulationBlocks()

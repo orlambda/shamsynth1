@@ -15,10 +15,11 @@
 
 #include <vector>
 
+// TODO: rename to make clear this is single-channel?
 class ModulationSignalBlock
 {
 public:
-    void reserveSpace(float sampleCount);
+    void reserveSpace(float framesPerBlock);
     float getValue(int position) {return values[position];}
     void setValue(int position, float value) {values[position] = value;}
     void resetValues() {std::fill(values.begin(), values.end(), 0.0f);}

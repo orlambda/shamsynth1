@@ -32,8 +32,8 @@ public:
     void setSampleRate(float rate){sampleRate = rate;}
     void progressPosition();
     void progressState();
-    void calculateNextBlock(int samples);
-    void reserveSpace(float sampleCount);
+    void calculateNextBlock(int framesPerBlock);
+    void reserveSpace(float framesPerBlock);
     void setAttackTime(float seconds);
     void setDecayTime(float seconds);
     void setSustainLevel(float level);

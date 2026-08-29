@@ -33,7 +33,7 @@ class ModulatableFloat
 public:
     // TODO: constructor parameters: ParameterFloatValues object
     ModulatableFloat(ParameterFloatInfo info, RangeLimits p_limitingMethod, std::function<float (float, float)> p_modulationFunction);
-    void reserveSpace(int samplesPerBlock);
+    void reserveSpace(int framesPerBlock);
     void setValue(float p_value);
     void resetModulatedValue() {modulatedValue = unmodulatedValue;}
     void clearAllModulation();

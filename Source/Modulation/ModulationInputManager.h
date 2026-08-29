@@ -26,7 +26,7 @@ public:
     void applyModulation(std::vector<std::shared_ptr<ModulationOutput>> blocks, float scaling, bool outputIsPerVoice);
     // Is this ever used?
     bool isPerVoice() {return perVoice;}
-    void reserveSpace(int totalNumSamples);
+    void reserveSpace(int framesPerBlock);
     std::string get_scaling_id() {return scaling_id;}
     std::string get_scaling_name() {return scaling_name;}
 protected:
