@@ -204,7 +204,7 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     lfo2FrequencySlider.setSliderStyle(juce::Slider::LinearBarVertical);
     lfo2FrequencySlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
     lfo2FrequencySlider.setPopupDisplayEnabled(true, false, this);
-    lfo2FrequencySlider.setTextValueSuffix("");
+    lfo2FrequencySlider.setTextValueSuffix(" Hz");
     lfo2FrequencySlider.setDoubleClickReturnValue(true, lfo2FrequencyValues.defaultValue);
     addAndMakeVisible(&lfo2FrequencySlider);
     
