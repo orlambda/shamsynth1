@@ -1,7 +1,7 @@
 # TODO
 
 ## Next
-- add `processAudioSubBlock()`
+- add filtergraph to .gitignore
 
 - change testWavetables / other hackish testing to use `jassert()`
 
@@ -54,13 +54,7 @@
     }
 - check for double deletion when adding parameters (see [https://www.wolfsoundacademy.com/products/official-juce-audio-plugin-development-course/categories/2158693821/posts/2192014493] 9:20)
 - Buffers/SignalBlocks (and anything which contains a signal block)
-    - Rename samples per block to frames per block
-    - Check current frames per block every `processBlock()`
-    - Loop through buffer `currentFramesPerBlock` times
-    - Allocate extra space in buffers
-    - What happens if `currentFramesPerBlock` is higher than allocated space?
-        - Refactor so `processBlock()` calls another function that processes subblocks
-    - Should I clear buffers in `releaseResources()`? (set size to 0)
+    - Clear buffers in `releaseResources()`? (set size to 0)
     - (what does this mean? rename?) Should reserve space change to setSize()?
 
 ### Features to add
@@ -75,9 +69,6 @@
     - Wave shape parameter & slider
     - Phase offset parameter & slider
 - Mod Matrix
-    - Full matrix
-        - Make 2x2 matrix dynamic
-        - Add all signal inputs and outputs to mod matrix
     - Parameter Consistency
         - parameter order in modulation functions (e.g. sourceID, shared_ptr<source>?) (what did I mean by this?)
                         
@@ -85,18 +76,10 @@
 - Parameters/sliders
     - More appropriate value ranges
 - Envelope - do I want it to make level louder? Do I want negative scaling to decrease level and positive scaling not to - i.e. positive scaling is the same as 0 value when sustain is at highest value?
-- Bitcrusher
-    - compare bitcrusher side by side with bitcrush plugin
-        - make version of synth that doesn't scale volume down (so osc volume is final volume) - make this enableable for debugging
-    - check how changes in v.1.0.21, v.1.0.22, and v1.0.31 affected behaviour
-    - check if it processes values outside of [-1, 1]
-    - check if other bitcrushers ever result in silence at low resolutions (probably not..)
-    - improve/fix
 
 ### UI
 - Make modmatrix dials layout clear (grid, labels on x and y)
 - Parameters/sliders
-    - Skew factors
     - Change appearance to dial
     - Clearly grouped by type
 
@@ -136,8 +119,6 @@
 - switch to CMake
 
 ### Refactoring, modernisation
-- add `processAudioSubBlock()`
-- processor constructor: move ParameterLayout in apvts initialiser to function
 - find unnecessary for loops, chances to use algorithm header
 - Check all range-based for loops - const, value/ref
 - Do i Have any code that moves unique or shared ptrs? 
