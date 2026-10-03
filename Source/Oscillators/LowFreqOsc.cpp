@@ -34,6 +34,7 @@ void LowFreqOsc::calculateNextBlock(int samples)
             value = Waveforms::sin(currentAngle) * depth;
             currentAngle = fmod(currentAngle + angleDelta, 1.0f);
         }
+        // TODO: delete one
         outputSignalBlock->setValue(i, value);
         output->setValue(i, value);
     }

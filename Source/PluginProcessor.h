@@ -121,15 +121,23 @@ public:
 private:
     //==============================================================================
     
+    // This is the absolute maximum size we are willing to allocate to a subblock buffer
+    // I chose 8192 for now as 4096 is the maximum frame size in Reaper for a stereo block
+    // Max buffer size will probably equal max subblock size but we don't worry about that here.
+    constexpr static int maxFramesPerAudioBuffer = 8192;
+    
+    // This only changes in prepareToPlay()
+    int maxFramesPerSubblock = 0;
+    int expectedMaxFramesPerBlock = 0;
+    
     std::vector<std::shared_ptr<Voice>> voices;
     const int numberOfVoices = 16;
     
-    int expectedMaxFramesPerBlock = 0;
-    
+    int calculateMaxFramesPerSubblock(int expectedMaxFramesPerBlock);
     void reserveSignalBlockSpace(int framesPerBlock, int totalNumChannels);
     void updateSampleRate(double sampleRate);
     void populateModMatrix();
-    void sendModulations();
+    void sendModulations(int frames);
     
     // Input
     void processMidi(juce::MidiBuffer& midiBuffer);
@@ -142,6 +150,8 @@ private:
     void assignModulationScalingParameters();
     void assignParameters();
     void addVoices();
+    
+    void processSubblock(juce::AudioBuffer<float>& buffer, const int subblockIndex, const int numFramesInSubblock);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Shamsynth1AudioProcessor)
 };

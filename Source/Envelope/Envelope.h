@@ -43,6 +43,7 @@ public:
     void release();
     void queueTrigger();
     void reset();
+    // TODO: make private
     std::shared_ptr<ModulationOutput> output = std::make_shared<ModulationOutput>();
 private:
     float sampleRate = 0.0f;

@@ -30,7 +30,7 @@ public:
     void endNote();
     // Abruptly end all sound
     void silence();
-    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
+    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int frames);
     void resetAngle() {currentAngle = 0.0f;}
     void trigger(float f);
     void reset();

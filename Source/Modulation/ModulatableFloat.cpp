@@ -25,9 +25,9 @@ void ModulatableFloat::setValue(float p_value)
     resetModulatedValue();
 }
 
-void ModulatableFloat::applyModulationSignal(std::shared_ptr<ModulationOutput> output, float scaling)
+void ModulatableFloat::applyModulationSignal(std::shared_ptr<ModulationOutput> output, float scaling, int frames)
 {
-    input->applyModulation(output, scaling);
+    input->applyModulation(output, scaling, frames);
 }
 
 float ModulatableFloat::getModulatedValue(int blockIndex)

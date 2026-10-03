@@ -25,7 +25,7 @@ using ParameterInfo::noiseLevelValues;
 class NoiseGenerator
 {
 public:
-    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
+    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int frames);
     void clearModulationSignalBlocks();
     void reserveSpace(int framesPerBlock);
     void updateLevel(float p_level);

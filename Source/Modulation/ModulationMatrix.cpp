@@ -19,7 +19,8 @@ void ModulationMatrix::addRouting(ModulationSourceID sourceID, ModulationDestina
 {
     sources[sourceID]->addModulationTarget(destinationID, destination);
 }
-void ModulationMatrix::sendModulation(ModulationSourceID sourceID, ModulationDestinationID destinationID, float scaling)
+
+void ModulationMatrix::sendModulation(ModulationSourceID sourceID, ModulationDestinationID destinationID, float scaling, int frames)
 {
-    sources[sourceID]->sendModulation(destinationID, scaling);
+    sources[sourceID]->sendModulation(destinationID, scaling, frames);
 }

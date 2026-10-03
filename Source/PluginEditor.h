@@ -122,5 +122,8 @@ private:
     
     void timerCallback() override;
     
+    // TODO:
+//    void setToDefault(StandardSlider& slider);
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Shamsynth1AudioProcessorEditor)
 };

@@ -13,7 +13,7 @@
 ModulationInputManager::ModulationInputManager(bool perVoice, const std::string p_scaling_id, const std::string p_scaling_name) : perVoice(perVoice), scaling_id(p_scaling_id), scaling_name(p_scaling_name)
 {}
 
-void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<ModulationOutput>> outputs, float scaling, bool outputIsPerVoice)
+void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<ModulationOutput>> outputs, float scaling, bool outputIsPerVoice, int frames)
 {
     if (perVoice)
     {
@@ -21,14 +21,14 @@ void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<Modulat
         {
             for (int i = 0; i < inputs.size() && i < outputs.size(); ++i)
             {
-                inputs[i]->applyModulationSignal(outputs[i], scaling);
+                inputs[i]->applyModulationSignal(outputs[i], scaling, frames);
             }
         }
         else
         {
             for (auto input : inputs)
             {
-                input->applyModulationSignal(outputs[0], scaling);
+                input->applyModulationSignal(outputs[0], scaling, frames);
             }
         }
     }
@@ -36,7 +36,7 @@ void ModulationInputManager::applyModulation(std::vector<std::shared_ptr<Modulat
     {
         for (auto output : outputs)
         {
-            inputs[0]->applyModulationSignal(output, scaling);
+            inputs[0]->applyModulationSignal(output, scaling, frames);
         }
     }
 }

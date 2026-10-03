@@ -12,12 +12,11 @@
 #include "Waveforms.h"
 #include "../Helpers/audio_maths.h"
 
-void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
+void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int frames)
 {
-    float framesPerBlock = buffer.getNumSamples();
     if (isActive)
     {
-        for (int frame = 0; frame < framesPerBlock; ++frame)
+        for (int frame = 0; frame < frames; ++frame)
         {
             currentModulatedTune = currentTune->getModulatedValue(frame);
             currentModulatedLevel = currentLevel->getModulatedValue(frame);
@@ -33,9 +32,10 @@ void WaveOscillator::processBlock(juce::AudioBuffer<float>& buffer, int totalNum
             }
             currentAngle = fmod(currentAngle + angleDelta, 1.0f);
         }
+        
         wavefolder.processBlock(buffer, totalNumOutputChannels);
         
-        for (int frame = 0; frame < framesPerBlock; ++frame)
+        for (int frame = 0; frame < frames; ++frame)
         {
             buffer.applyGain(frame, 1, currentLevel->getModulatedValue(frame));
         }

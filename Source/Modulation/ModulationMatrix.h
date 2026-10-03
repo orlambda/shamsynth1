@@ -26,7 +26,7 @@ class ModulationMatrix
 public:
     void addSource(ModulationSourceID sourceID, std::shared_ptr<ModulationOutputManager> source);
     void addRouting(ModulationSourceID sourceID, ModulationDestinationID destinationID, std::shared_ptr<ModulationInputManager> destination);
-    void sendModulation(ModulationSourceID sourceID, ModulationDestinationID destinationID, float scaling);
+    void sendModulation(ModulationSourceID sourceID, ModulationDestinationID destinationID, float scaling, int frames);
 private:
     std::map<ModulationSourceID, std::shared_ptr<ModulationOutputManager>> sources;
 };

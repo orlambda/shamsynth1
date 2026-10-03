@@ -30,7 +30,7 @@ public:
     ModulationOutputManager(bool p_perVoice, ParameterNames names);
     void addOutput(std::shared_ptr<ModulationOutput> source) {sources.push_back(source);}
     void addModulationTarget(ModulationDestinationID ID, std::shared_ptr<ModulationInputManager> inputDestination);
-    void sendModulation(ModulationDestinationID ID, float scaling);
+    void sendModulation(ModulationDestinationID ID, float scaling, int frames);
     std::vector<std::shared_ptr<ModulationOutput>> sources;
     void reserveSpace(int framesPerBlock);
     std::string get_scaling_id() {return scaling_id;}

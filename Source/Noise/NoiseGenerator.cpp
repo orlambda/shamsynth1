@@ -14,11 +14,9 @@
 
 using ParameterInfo::noiseVolumeScale, ParameterInfo::noiseHalfVolumeScale;
 
-void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
+void NoiseGenerator::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int frames)
 {
-    float framesPerBlock = buffer.getNumSamples();
-
-    for (auto frame = 0; frame < framesPerBlock; ++frame)
+    for (auto frame = 0; frame < frames; ++frame)
     {
         // Generate noise at a level of 0.05
         float currentLevel = level->getModulatedValue(frame);

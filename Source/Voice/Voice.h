@@ -24,6 +24,7 @@ class Voice
 {
 public:
     Voice();
+    // TODO: make private
     Envelope envelope;
     // Check state
     bool isActive() {return envelope.isActive();}
@@ -38,7 +39,7 @@ public:
     
     // Check input/output channels, are they combined, etc.
         // Could see if I can change both manually, and print number of channels in buffer, etc.
-    void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels);
+    void processSubblock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int startingFrame, int numFrames);
     
     // TODO: make static - sampleRate the same for every Voice
     void setSampleRate(float rate);
@@ -55,13 +56,14 @@ public:
     void updateWavefolderThreshold(float threshold) {waveOsc.updateWavefolderThreshold(threshold);}
     void updateWavefolderAmount(float amount) {waveOsc.updateWavefolderAmount(amount);}
     
+    // TODO: make private
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getLevelInput();
     std::shared_ptr<ModulatableFloat> getNoiseLevelInput();
     std::shared_ptr<ModulatableFloat> getTuneInput();
     std::shared_ptr<ModulatableFloat> getBitDepthInput();
     
-    // White Noise Generator
+    // TODO: make private
     NoiseGenerator whiteNoise{};
 
 private:

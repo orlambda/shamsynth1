@@ -14,23 +14,19 @@ Voice::Voice()
 {
 }
 
-void Voice::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
+void Voice::processSubblock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int startingFrame, int numFrames)
 {
     if (isActive())
     {
         float totalNumChannels = buffer.getNumChannels();
-        float totalNumFrames = buffer.getNumSamples();
-        if (totalNumFrames != voiceBuffer.getNumSamples() || totalNumChannels != voiceBuffer.getNumChannels())
+        
+        waveOsc.processBlock(voiceBuffer, totalNumOutputChannels, numFrames);
+        whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels, numFrames);
+        bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels, numFrames);
+        
+        for (int channel = 0; channel < totalNumChannels; ++channel)
         {
-            reserveSpace(totalNumFrames, totalNumChannels);
-        }
-        voiceBuffer.clear();
-        waveOsc.processBlock(voiceBuffer, totalNumOutputChannels);
-        whiteNoise.processBlock(voiceBuffer, totalNumOutputChannels);
-        bitcrusher.processBlock(voiceBuffer, totalNumOutputChannels);
-        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
-        {
-            for (int frame = 0; frame < buffer.getNumSamples(); ++frame)
+            for (int frame = startingFrame; frame < startingFrame + numFrames; ++frame)
             {
                 buffer.addSample(channel, frame, voiceBuffer.getSample(channel, frame));
             }

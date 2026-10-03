@@ -23,7 +23,7 @@ public:
     // TODO: use parameter ParameterNames names?
     ModulationInputManager(bool p_perVoice, const std::string p_scaling_id, const std::string p_scaling_name);
     void addTargetModulationFloat(std::shared_ptr<ModulatableFloat> f) {inputs.push_back(f);}
-    void applyModulation(std::vector<std::shared_ptr<ModulationOutput>> blocks, float scaling, bool outputIsPerVoice);
+    void applyModulation(std::vector<std::shared_ptr<ModulationOutput>> blocks, float scaling, bool outputIsPerVoice, int frames);
     // Is this ever used?
     bool isPerVoice() {return perVoice;}
     void reserveSpace(int framesPerBlock);

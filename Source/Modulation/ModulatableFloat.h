@@ -37,7 +37,7 @@ public:
     void setValue(float p_value);
     void resetModulatedValue() {modulatedValue = unmodulatedValue;}
     void clearAllModulation();
-    void applyModulationSignal(std::shared_ptr<ModulationOutput> output, float scaling);
+    void applyModulationSignal(std::shared_ptr<ModulationOutput> output, float scaling, int frames);
     float getUnmodulatedValue() {return unmodulatedValue;}
     float getModulatedValue(int blockIndex);
     std::shared_ptr<ModulationInput> input = std::make_shared<ModulationInput>();

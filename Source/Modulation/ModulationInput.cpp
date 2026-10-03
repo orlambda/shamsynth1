@@ -10,9 +10,9 @@
 
 #include "ModulationInput.h"
 
-void ModulationInput::applyModulation(std::shared_ptr<ModulationOutput> output, float scaling)
+void ModulationInput::applyModulation(std::shared_ptr<ModulationOutput> output, float scaling, int frames)
 {
-    for (int i = 0; i < output->block->size(); ++i)
+    for (int i = 0; i < frames; ++i)
     {
         addValue(i, output->block->getValue(i) * scaling);
     }

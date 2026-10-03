@@ -12,6 +12,8 @@
 #include "Modulation/ModulationIOList.h"
 #include "Oscillators/Waveforms.h"
 
+#include <algorithm>
+
 //==============================================================================
 Shamsynth1AudioProcessor::Shamsynth1AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -107,9 +109,12 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedM
         int totalNumChannels = getTotalNumInputChannels();
     }
     
+    // TODO: remove member from class, make local to this function?
     expectedMaxFramesPerBlock = p_expectedMaxFramesPerBlock;
+    
+    maxFramesPerSubblock = calculateMaxFramesPerSubblock(expectedMaxFramesPerBlock);
         
-    reserveSignalBlockSpace(p_expectedMaxFramesPerBlock, totalNumChannels);
+    reserveSignalBlockSpace(maxFramesPerSubblock, totalNumChannels);
     updateSampleRate(sampleRate);
     
     lfo1.startOsc(*lfo1FrequencyParameter);
@@ -158,12 +163,9 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
 
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-    auto framesPerBlock = buffer.getNumSamples();
-    if (framesPerBlock != expectedMaxFramesPerBlock)
-    {
-        reserveSignalBlockSpace(framesPerBlock, buffer.getNumChannels());
-    }
+    auto totalFrames = buffer.getNumSamples();
     
+    // TODO: refactor to function
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -174,115 +176,36 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     //        {buffer.clear (i, 0, buffer.getNumSamples());}
     // I am doing the above but for all channels - I need to check if this is correct
     for (auto i = 0; i < totalNumOutputChannels; ++i)
-        {buffer.clear(i, 0, framesPerBlock);}
-
-    if (!checkOnOffState())
     {
-        return;
+        buffer.clear(i, 0, totalFrames);
     }
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    
-    // TODO: Keep in object, move this to function?
-    // Parameter buffers
-    float currentOsc1Level = *osc1LevelParameter;
-    float currentOsc1SineLevel = *osc1SineLevelParameter;
-    float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
-    float currentOsc1SquareLevel = *osc1SquareLevelParameter;
-    float currentOsc1Tune = *osc1TuneParameter;
-    float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
-    float currentOsc1WavefolderThreshold = *osc1WavefolderThresholdParameter;
-    float currentOsc1WavefolderAmount = *osc1WavefolderAmountParameter;
-    float currentNoiseLevel = *noiseLevelParameter;
-    float currentEnv1AttackTime = *env1AttackTimeParameter;
-    float currentEnv1DecayTime = *env1DecayTimeParameter;
-    float currentEnv1SustainLevel = *env1SustainLevelParameter;
-    float currentEnv1ReleaseTime = *env1ReleaseTimeParameter;
-    float currentLfo1Frequency = *lfo1FrequencyParameter;
-    float currentLfo1Depth = *lfo1DepthParameter;
-    float currentLfo2Frequency = *lfo2FrequencyParameter;
-    float currentLfo2Depth = *lfo2DepthParameter;
-    float currentOutputVolume = *outputVolumeParameter;
-    
-    // TODO: make container of buffer values of scaling parameters? Currently values are read while sending to modMatrix
-    
     // MIDI
-    // processAllMidi();
+    // processAllMidi();?
+    
+    // TODO: I currently ignore sample position of midi messages
+    // Allocate space for midiBuffer in prepareToPlay()
+    // Should midi processing be incorporated into processSubblock()?
     
     // Avoid changing midiMessages
-    // TODO: Optimisation - should midiBuffer have space allocated in prepareToPlay()?
-        // check the size of midibuffer - is it per message or per sample
     juce::MidiBuffer midiBuffer = midiMessages;
     // Add messages from plugin window keyboard component
-    keyboardState.processNextMidiBuffer(midiBuffer, 0, framesPerBlock, true);
+    // TODO: process in subblocks
+    keyboardState.processNextMidiBuffer(midiBuffer, 0, totalFrames, true);
     // Trigger or silence voices
     // TODO: consider if silencing voices here affects modulation i/o
     processMidi(midiBuffer);
     
-    // TEMPORARY
-    // move to function e.g. clearAllModulationBlocks();
-    for (auto voice : voices)
+    // TODO:
+    // Process all audio in subblocks
+    // Index of first frame of the subblock
+    int subblockIndex = 0;
+    while (subblockIndex < totalFrames)
     {
-        voice->clearModulationBlocks();
-    }
-    // TODO: make e.g. lfo->clearModulationBlock();
-    // TODO: clear lfo1 too
-    lfo2.output->block->resetValues();
-    
-    // LFOs etc
-    lfo1.setFrequency(currentLfo1Frequency);
-    lfo1.setDepth(currentLfo1Depth);
-    lfo1.calculateNextBlock(framesPerBlock);
-    lfo2.setFrequency(currentLfo2Frequency);
-    lfo2.setDepth(currentLfo2Depth);
-    lfo2.calculateNextBlock(framesPerBlock);
-    
-    osc1EnvOutputManager->reserveSpace(framesPerBlock);
-    osc1TuneInputManager->reserveSpace(framesPerBlock);
-    
-    // Synthesis & routing
-    for (auto& voice : voices)
-    {
-        voice->updateOsc1Level(currentOsc1Level);
-        voice->updateOsc1SineLevel(currentOsc1SineLevel);
-        voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
-        voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
-        voice->updateOsc1Tune(currentOsc1Tune);
-        voice->updateNoiseLevel(currentNoiseLevel);
-        voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
-        voice->updateWavefolderThreshold(currentOsc1WavefolderThreshold);
-        voice->updateWavefolderAmount(currentOsc1WavefolderAmount);
-        voice->updateADSRSettings(currentEnv1AttackTime, currentEnv1DecayTime, currentEnv1SustainLevel, currentEnv1ReleaseTime);
-        
-        voice->envelope.calculateNextBlock(framesPerBlock);
-    }
-    
-    sendModulations();
-    
-    for (auto& voice : voices)
-    {
-        voice->processBlock(buffer, totalNumOutputChannels);
-    }
-    
-    // Effects
-    // for (auto& effect : effects)
-    // {effect->processBlock(buffer);}
-    
-    // Final volume
-    // Scale down volume to prevent clipping
-    float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
-    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
-    {
-        for (int frame = 0; frame < framesPerBlock; ++frame)
-        {
-            float finalValue = buffer.getSample(channel, frame) * scaledOutputVolume;
-            buffer.setSample(channel, frame, finalValue);
-        }
+        // TODO: compare std::min() vs conditional operator for performance
+        int subblockFrameSize = std::min(totalFrames - subblockIndex, maxFramesPerSubblock);
+        processSubblock(buffer, subblockIndex, subblockFrameSize);
+        subblockIndex += subblockFrameSize;
     }
 }
 
@@ -408,6 +331,7 @@ std::optional<int> Shamsynth1AudioProcessor::availableVoice()
 }
 
 // TODO: rename or refactor - this does more than checking the state
+// updateAndReturnOnOffState()?
 bool Shamsynth1AudioProcessor::checkOnOffState()
 {
     if (currentlyPowerOn)
@@ -460,6 +384,11 @@ void Shamsynth1AudioProcessor::reserveSignalBlockSpace(int framesPerBlock, int t
     lfo2.reserveSpace(framesPerBlock);
 }
 
+int Shamsynth1AudioProcessor::calculateMaxFramesPerSubblock(int expectedMaxFramesPerBlock)
+{
+    return std::min(maxFramesPerAudioBuffer, expectedMaxFramesPerBlock);
+}
+
 void Shamsynth1AudioProcessor::updateSampleRate(double sampleRate)
 {
     for (auto voice : voices)
@@ -472,7 +401,6 @@ void Shamsynth1AudioProcessor::updateSampleRate(double sampleRate)
 
 void Shamsynth1AudioProcessor::populateModMatrix()
 {
-    
     /*
      std::vector<std::pair<ParameterNames, ModulationSourceID>> outputInfoList = {
          {osc1EnvOutputSubstrings, ModulationSourceID::adsrEnv},
@@ -487,7 +415,6 @@ void Shamsynth1AudioProcessor::populateModMatrix()
          {bitcrusherBitDepthValues, ModulationDestinationID::osc1BitDepth}
      };
      */
-    
     
     // Assign outputs to all OutputManagers
     // Poly OutputManagers
@@ -560,12 +487,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::ma
     };
         
     // Routings
-    // TODO: this will need to change when all parameters are given unique hints
     for (auto routingInfo : modulationRoutingInfoList)
     {
         layout.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(routingInfo.names.ID, versionHint), routingInfo.names.name, scalingMin, scalingMax, scalingDefault));
     }
-    
     return layout;
 }
 
@@ -617,10 +542,102 @@ void Shamsynth1AudioProcessor::addVoices()
     }
 }
 
-void Shamsynth1AudioProcessor::sendModulations()
+void Shamsynth1AudioProcessor::sendModulations(int frames)
 {
     for (auto scalingParameter : modulationScalingParameters)
     {
-        modMatrix.sendModulation(scalingParameter.getSourceID(), scalingParameter.getDestinationID(), scalingParameter.getValue());
+        modMatrix.sendModulation(scalingParameter.getSourceID(), scalingParameter.getDestinationID(), scalingParameter.getValue(), frames);
+    }
+}
+
+void Shamsynth1AudioProcessor::processSubblock(juce::AudioBuffer<float>& buffer, const int subblockIndex, const int numFramesInSubblock)
+{
+    if (!checkOnOffState())
+    {
+        return;
+    }
+    
+    // TODO: Keep in object, move this to function?
+    // Parameter buffers
+    float currentOsc1Level = *osc1LevelParameter;
+    float currentOsc1SineLevel = *osc1SineLevelParameter;
+    float currentOsc1TriangleLevel = *osc1TriangleLevelParameter;
+    float currentOsc1SquareLevel = *osc1SquareLevelParameter;
+    float currentOsc1Tune = *osc1TuneParameter;
+    float currentBitcrusherBitDepth = *bitcrusherBitDepthParameter;
+    float currentOsc1WavefolderThreshold = *osc1WavefolderThresholdParameter;
+    float currentOsc1WavefolderAmount = *osc1WavefolderAmountParameter;
+    float currentNoiseLevel = *noiseLevelParameter;
+    float currentEnv1AttackTime = *env1AttackTimeParameter;
+    float currentEnv1DecayTime = *env1DecayTimeParameter;
+    float currentEnv1SustainLevel = *env1SustainLevelParameter;
+    float currentEnv1ReleaseTime = *env1ReleaseTimeParameter;
+    float currentLfo1Frequency = *lfo1FrequencyParameter;
+    float currentLfo1Depth = *lfo1DepthParameter;
+    float currentLfo2Frequency = *lfo2FrequencyParameter;
+    float currentLfo2Depth = *lfo2DepthParameter;
+    float currentOutputVolume = *outputVolumeParameter;
+    
+    // TODO: make container of buffer values of scaling parameters? Currently values are read while sending to modMatrix
+    
+    // TODO: is this necessary?
+    // move to function e.g. clearAllModulationBlocks();
+    for (auto voice : voices)
+    {
+        voice->clearModulationBlocks();
+    }
+    // TODO: make e.g. lfo.clearModulationBlock();
+    // TODO: clear lfo1 too
+    // TODO: check if clearing is necessary / if this is the place to do it
+    // lfo1.output->block->resetValues();
+    lfo2.output->block->resetValues();
+    
+    lfo1.setFrequency(currentLfo1Frequency);
+    lfo1.setDepth(currentLfo1Depth);
+    lfo1.calculateNextBlock(numFramesInSubblock);
+    lfo2.setFrequency(currentLfo2Frequency);
+    lfo2.setDepth(currentLfo2Depth);
+    lfo2.calculateNextBlock(numFramesInSubblock);
+    
+    // TODO: delete this - check it is called in prepareToPlay()
+    osc1EnvOutputManager->reserveSpace(numFramesInSubblock);
+    osc1TuneInputManager->reserveSpace(numFramesInSubblock);
+    
+    // Synthesis & routing
+    for (auto& voice : voices)
+    {
+        voice->updateOsc1Level(currentOsc1Level);
+        voice->updateOsc1SineLevel(currentOsc1SineLevel);
+        voice->updateOsc1TriangleLevel(currentOsc1TriangleLevel);
+        voice->updateOsc1SquareLevel(currentOsc1SquareLevel);
+        voice->updateOsc1Tune(currentOsc1Tune);
+        voice->updateNoiseLevel(currentNoiseLevel);
+        voice->updateBitcrusherBitDepth(currentBitcrusherBitDepth);
+        voice->updateWavefolderThreshold(currentOsc1WavefolderThreshold);
+        voice->updateWavefolderAmount(currentOsc1WavefolderAmount);
+        voice->updateADSRSettings(currentEnv1AttackTime, currentEnv1DecayTime, currentEnv1SustainLevel, currentEnv1ReleaseTime);
+        
+        voice->envelope.calculateNextBlock(numFramesInSubblock);
+    }
+    
+    sendModulations(numFramesInSubblock);
+    
+    int totalNumOutputChannels = getTotalNumOutputChannels();
+    for (auto& voice : voices)
+    {
+        voice->processSubblock(buffer, totalNumOutputChannels, subblockIndex, numFramesInSubblock);
+    }
+    
+    // Final volume
+    // Scale down volume to prevent clipping
+    float scaledOutputVolume = currentOutputVolume * outputVolumeScale;
+    for (int channel = 0; channel < totalNumOutputChannels; ++channel)
+    {
+        
+        for (int frame = subblockIndex; frame < subblockIndex + numFramesInSubblock; ++frame)
+        {
+            float finalValue = buffer.getSample(channel, frame) * scaledOutputVolume;
+            buffer.setSample(channel, frame, finalValue);
+        }
     }
 }

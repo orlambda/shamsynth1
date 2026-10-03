@@ -45,6 +45,8 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     
     osc1LevelLabel.setText(osc1LevelValues.name(), juce::dontSendNotification);
     addAndMakeVisible(osc1LevelLabel);
+    // TODO:
+//    setToDefault(osc1LevelSlider);
     osc1LevelSlider.attach(valueTreeState, osc1LevelValues.ID());
     osc1LevelSlider.setSliderStyle(juce::Slider::LinearBarVertical);
     osc1LevelSlider.setTextBoxStyle(juce::Slider::NoTextBox, false, 90, 0);
@@ -352,3 +354,8 @@ void Shamsynth1AudioProcessorEditor::timerCallback()
     keyboardComponent.grabKeyboardFocus();
     stopTimer();
 }
+
+// TODO:
+//void Shamsynth1AudioProcessorEditor::setToDefault(StandardSlider& slider)
+//{
+//}

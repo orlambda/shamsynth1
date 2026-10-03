@@ -12,7 +12,6 @@
 
 void Envelope::calculateNextBlock(int framesPerBlock)
 {
-    reserveSpace(framesPerBlock);
     for (int i = 0; i < framesPerBlock; ++i)
     {
         // TODO: best practice - uninitialised?

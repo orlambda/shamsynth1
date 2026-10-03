@@ -38,10 +38,9 @@
 
 #include "Bitcrusher.h"
 
-void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels)
+void Bitcrusher::processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int frames)
 {
-    int framesPerBlock = buffer.getNumSamples();
-    for (auto frame = 0; frame < framesPerBlock; ++frame)
+    for (auto frame = 0; frame < frames; ++frame)
     {
         auto currentBitDepth = bitDepth->getModulatedValue(frame);
         
