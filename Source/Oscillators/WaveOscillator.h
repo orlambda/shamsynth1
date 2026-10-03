@@ -47,6 +47,7 @@ public:
     void updateWavefolderThreshold(float threshold) {wavefolder.setThreshold(threshold);}
     void updateWavefolderAmount(float amount) {wavefolder.SetAmount(amount);}
     
+    // TODO: this is unused
     std::vector<std::shared_ptr<ModulationSignalBlock>> tuneModifiers;
     
     std::shared_ptr<ModulatableFloat> currentLevel = std::make_shared<ModulatableFloat>(osc1LevelValues, RangeLimits::lowerBound, modulateLevel);

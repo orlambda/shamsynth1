@@ -24,8 +24,7 @@ class Voice
 {
 public:
     Voice();
-    // TODO: make private
-    Envelope envelope;
+
     // Check state
     bool isActive() {return envelope.isActive();}
     int getMidiNoteNumber(){return midiNoteNumber;}
@@ -56,7 +55,6 @@ public:
     void updateWavefolderThreshold(float threshold) {waveOsc.updateWavefolderThreshold(threshold);}
     void updateWavefolderAmount(float amount) {waveOsc.updateWavefolderAmount(amount);}
     
-    // TODO: make private
     std::shared_ptr<ModulationOutput> getEnvelopeOutput();
     std::shared_ptr<ModulatableFloat> getLevelInput();
     std::shared_ptr<ModulatableFloat> getNoiseLevelInput();
@@ -65,6 +63,7 @@ public:
     
     // TODO: make private
     NoiseGenerator whiteNoise{};
+    Envelope envelope;
 
 private:
     // State

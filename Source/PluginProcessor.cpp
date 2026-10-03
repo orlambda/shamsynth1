@@ -113,7 +113,7 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedM
     expectedMaxFramesPerBlock = p_expectedMaxFramesPerBlock;
     
     maxFramesPerSubblock = calculateMaxFramesPerSubblock(expectedMaxFramesPerBlock);
-        
+
     reserveSignalBlockSpace(maxFramesPerSubblock, totalNumChannels);
     updateSampleRate(sampleRate);
     
@@ -481,6 +481,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Shamsynth1AudioProcessor::ma
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2FrequencyValues.ID(), versionHint), lfo2FrequencyValues.name(), lfo2FrequencyValues.getRange(), lfo2FrequencyValues.defaultValue),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(lfo2DepthValues.ID(), versionHint), lfo2DepthValues.name(), lfo2DepthValues.getRange(), lfo2DepthValues.defaultValue),
         std::make_unique<juce::AudioParameterFloat>(juce::ParameterID(outputVolumeValues.ID(), versionHint), outputVolumeValues.name(), outputVolumeValues.getRange(), outputVolumeValues.defaultValue),
+        
         std::make_unique<juce::AudioParameterBool>(juce::ParameterID(powerOnValues.ID(), versionHint), powerOnValues.name(), powerOnValues.defaultValue)
     };
         

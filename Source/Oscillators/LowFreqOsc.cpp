@@ -34,8 +34,6 @@ void LowFreqOsc::calculateNextBlock(int samples)
             value = Waveforms::sin(currentAngle) * depth;
             currentAngle = fmod(currentAngle + angleDelta, 1.0f);
         }
-        // TODO: delete one
-        outputSignalBlock->setValue(i, value);
         output->setValue(i, value);
     }
 }
@@ -68,7 +66,6 @@ void LowFreqOsc::setDepth(float d)
 
 void LowFreqOsc::reserveSpace(int framesPerBlock)
 {
-    outputSignalBlock->reserveSpace(framesPerBlock);
     output->reserveBlockSpace(framesPerBlock);
 }
 
@@ -80,15 +77,15 @@ void LowFreqOsc::setSampleRate(float sr)
 
 void LowFreqOsc::setValue(int position, float value)
 {
-    if (position < outputSignalBlock->size())
+    if (position < output->outputBlockSize())
     {
-        outputSignalBlock->setValue(position, value);
+        output->setValue(position, value);
     }
 }
 
 float LowFreqOsc::getValue(int position)
 {
-    return outputSignalBlock->getValue(position);
+    return output->getValue(position);
 }
 
 void LowFreqOsc::resetLFO()

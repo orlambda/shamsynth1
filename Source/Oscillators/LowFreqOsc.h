@@ -34,8 +34,7 @@ public:
     void reserveSpace(int framesPerBlock);
     void setValue(int position, float value);
     float getValue(int position);
-    // TODO: replace with output
-    std::shared_ptr<ModulationSignalBlock> outputSignalBlock = std::make_shared<ModulationSignalBlock>();
+
     std::shared_ptr<ModulationOutput> output = std::make_shared<ModulationOutput>();
 private:
     float sampleRate = 0.0f;
