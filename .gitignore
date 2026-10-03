@@ -5,6 +5,9 @@ JuceLibraryCode/
 
 ### Other ###
 
+# audiopluginhost files
+*.filtergraph
+
 daw\ testing/
 
 ### Notes ###
