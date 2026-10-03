@@ -63,3 +63,7 @@ static std::string ParameterInfo::makeRoutingScalingName(std::string output, std
 {
     return output + " to " + input + " Scaling";
 }
+
+juce::NormalisableRange<float> ParameterInfo::ParameterFloatInfo::getRange() const {
+    return juce::NormalisableRange<float>(rangeValues.min, rangeValues.max, rangeValues.interval, rangeValues.skewFactor, rangeValues.useSymmetricSkew);
+}
