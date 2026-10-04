@@ -37,6 +37,7 @@ public:
     void setFrequency(float f);
     void setSampleRate(float sr);
     void reserveSpace(int framesPerBlock);
+    void releaseResources();
     void clearModulationSignalBlocks();
     void updateAngleDelta();
     void updateLevel(float level) {currentLevel->setValue(level);}

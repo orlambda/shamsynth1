@@ -38,6 +38,11 @@ void NoiseGenerator::reserveSpace(int framesPerBlock)
     level->reserveSpace(framesPerBlock);
 }
 
+void NoiseGenerator::releaseResources()
+{
+    level->releaseResources();
+}
+
 void NoiseGenerator::clearModulationSignalBlocks()
 {
     level->clearAllModulation();

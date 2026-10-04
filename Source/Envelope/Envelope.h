@@ -34,6 +34,7 @@ public:
     void progressState();
     void calculateNextBlock(int framesPerBlock);
     void reserveSpace(float framesPerBlock);
+    void releaseResources();
     void setAttackTime(float seconds);
     void setDecayTime(float seconds);
     void setSustainLevel(float level);

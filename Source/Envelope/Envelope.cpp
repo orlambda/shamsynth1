@@ -78,6 +78,11 @@ void Envelope::reserveSpace(float framesPerBlock)
     output->reserveBlockSpace(framesPerBlock);
 }
 
+void Envelope::releaseResources()
+{
+    output->releaseResources();
+}
+
 void Envelope::progressPosition()
 {
     if (currentState != State::inactive)

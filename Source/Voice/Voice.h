@@ -44,6 +44,7 @@ public:
     void setSampleRate(float rate);
     void clearModulationBlocks();
     void reserveSpace(int framesPerBlock, int totalNumChannels);
+    void releaseResources();
     void updateOsc1Level(float level) {waveOsc.updateLevel(level);}
     void updateOsc1SineLevel(float level) {waveOsc.updateSineLevel(level);}
     void updateOsc1TriangleLevel(float level) {waveOsc.updateTriangleLevel(level);}

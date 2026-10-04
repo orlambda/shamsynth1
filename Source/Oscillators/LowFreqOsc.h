@@ -32,6 +32,7 @@ public:
     void setDepth(float d);
     void updateAngleDelta();
     void reserveSpace(int framesPerBlock);
+    void releaseResources();
     void setValue(int position, float value);
     float getValue(int position);
 

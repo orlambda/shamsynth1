@@ -50,6 +50,15 @@ void Voice::reserveSpace(int framesPerBlock, int totalNumChannels)
     voiceBuffer.setSize(totalNumChannels, framesPerBlock);
 }
 
+void Voice::releaseResources()
+{
+    waveOsc.releaseResources();
+    envelope.releaseResources();
+    whiteNoise.releaseResources();
+    bitcrusher.releaseResources();
+    voiceBuffer = {};
+}
+
 void Voice::clearModulationBlocks()
 {
     waveOsc.clearModulationSignalBlocks();

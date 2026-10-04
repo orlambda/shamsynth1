@@ -87,6 +87,12 @@ void WaveOscillator::reserveSpace(int framesPerBlock)
     currentTune->reserveSpace(framesPerBlock);
 }
 
+void WaveOscillator::releaseResources()
+{
+    currentLevel->releaseResources();
+    currentTune->releaseResources();
+}
+
 void WaveOscillator::reset()
 {
     resetAngle();

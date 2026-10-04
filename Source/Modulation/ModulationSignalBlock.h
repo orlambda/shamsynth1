@@ -22,6 +22,7 @@ public:
     void reserveSpace(float framesPerBlock);
     float getValue(int position) {return values[position];}
     void setValue(int position, float value) {values[position] = value;}
+    void releaseResources();
     void resetValues() {std::fill(values.begin(), values.end(), 0.0f);}
     int size() {return static_cast<int>(values.size());}
 private:

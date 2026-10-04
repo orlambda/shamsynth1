@@ -19,6 +19,7 @@ class ModulationInput
 {
 public:
     void reserveBlockSpace(float framesPerBlock) {block->reserveSpace(framesPerBlock);}
+    void releaseResources() {block->releaseResources();}
     void resetBlockValues() {block->resetValues();}
     void applyModulation(std::shared_ptr<ModulationOutput> modulationSourceBlock, float scaling, int frames);
     float getValue(int position) {return block->getValue(position);}

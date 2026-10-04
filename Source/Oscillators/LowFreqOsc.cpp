@@ -69,6 +69,11 @@ void LowFreqOsc::reserveSpace(int framesPerBlock)
     output->reserveBlockSpace(framesPerBlock);
 }
 
+void LowFreqOsc::releaseResources()
+{
+    output->releaseResources();
+}
+
 void LowFreqOsc::setSampleRate(float sr)
 {
     sampleRate = sr;

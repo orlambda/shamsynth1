@@ -128,8 +128,12 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedM
 
 void Shamsynth1AudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
+    for (auto voice : voices)
+    {
+        voice->releaseResources();
+    }
+    lfo1.releaseResources();
+    lfo2.releaseResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations

@@ -20,3 +20,9 @@ void ModulationSignalBlock::reserveSpace(float framesPerBlock)
     values.resize(framesPerBlock);
     values.shrink_to_fit();
 }
+
+void ModulationSignalBlock::releaseResources()
+{
+    values.clear();
+    values.shrink_to_fit();
+}

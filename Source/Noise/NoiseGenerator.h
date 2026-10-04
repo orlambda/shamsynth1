@@ -28,6 +28,7 @@ public:
     void processBlock(juce::AudioBuffer<float>& buffer, int totalNumOutputChannels, int frames);
     void clearModulationSignalBlocks();
     void reserveSpace(int framesPerBlock);
+    void releaseResources();
     void updateLevel(float p_level);
     float sampleRate = 0.0;
     std::shared_ptr<ModulatableFloat> level = std::make_shared<ModulatableFloat>(noiseLevelValues, RangeLimits::lowerBound, modulateLevel);

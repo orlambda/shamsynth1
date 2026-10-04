@@ -19,6 +19,11 @@ void ModulatableFloat::reserveSpace(int framesPerBlock)
     input->reserveBlockSpace(framesPerBlock);
 }
 
+void ModulatableFloat::releaseResources()
+{
+    input->releaseResources();
+}
+
 void ModulatableFloat::setValue(float p_value)
 {
     unmodulatedValue = p_value;
