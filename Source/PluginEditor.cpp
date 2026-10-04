@@ -13,7 +13,6 @@
 #include "Parameters.h"
 
 using namespace ParameterInfo;
-
 //==============================================================================
 Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioProcessor& p)
     : AudioProcessorEditor(&p),audioProcessor (p), valueTreeState(p.parameters), keyboardComponent(audioProcessor.keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard)
@@ -21,9 +20,6 @@ Shamsynth1AudioProcessorEditor::Shamsynth1AudioProcessorEditor(Shamsynth1AudioPr
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize(windowWidth, windowHeight);
-    
-    // For grabbing keyboard focus
-    startTimer(400);
     
     // TODO: refactor as this will get huge with more sliders
         // Not all labels use the full name of the parameters - create a class/namespace that lists label names and can get get names from Parameters.h when needed
@@ -346,13 +342,6 @@ void Shamsynth1AudioProcessorEditor::resized()
     lfo1ToOsc1LevelScalingLabel.setBounds(740, 400, 200, 50);
     int keyboardHeight = 75;
     keyboardComponent.setBounds(0, windowHeight - keyboardHeight, windowWidth, keyboardHeight);
-}
-
-// TODO: Do I want this to happen? Is this only for standalone build or would I want this in a DAW?
-void Shamsynth1AudioProcessorEditor::timerCallback()
-{
-    keyboardComponent.grabKeyboardFocus();
-    stopTimer();
 }
 
 // TODO:

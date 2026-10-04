@@ -16,8 +16,7 @@
 //==============================================================================
 /**
 */
-class Shamsynth1AudioProcessorEditor :  public juce::AudioProcessorEditor,
-                                        private juce::Timer
+class Shamsynth1AudioProcessorEditor :  public juce::AudioProcessorEditor
 {
 public:
     typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
@@ -119,8 +118,6 @@ private:
     
     // MIDI
     juce::MidiKeyboardComponent keyboardComponent;
-    
-    void timerCallback() override;
     
     // TODO:
 //    void setToDefault(StandardSlider& slider);
