@@ -135,3 +135,10 @@ In file included from /Applications/Xcode.app/Contents/Developer/Platforms/MacOS
    46 | template <class _Tp, class... _Args, class = decltype(::new(std::declval<void*>()) _Tp(std::declval<_Args>()...))>
       |                                                                                    ~~~
    47 | _LIBCPP_HIDE_FROM_ABI _LIBCPP_CONSTEXPR_SINCE_CXX20 _Tp* __construct_at(_Tp* __location, _Args&&... __args) {
+
+
+## Parameter ID ordering
+I enabled JUCE_FORCE_USE_LEGACY_PARAM_IDS to order parameters by index in AU builds
+Upon commercial release, this shouldn't change or it messes up with automation etc.
+[source](https://forum.juce.com/t/audioparameter-versionhint-in-updated-product-does-this-work/53232/5)
+
