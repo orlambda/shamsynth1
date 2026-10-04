@@ -114,6 +114,7 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedM
     
     maxFramesPerSubblock = calculateMaxFramesPerSubblock(expectedMaxFramesPerBlock);
 
+    // TODO: rename or refactor this function. Voice's AudioBuffer is not a ModulationSignalBlock
     reserveSignalBlockSpace(maxFramesPerSubblock, totalNumChannels);
     updateSampleRate(sampleRate);
     

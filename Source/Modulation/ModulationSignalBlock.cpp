@@ -15,12 +15,8 @@
 
 #include <algorithm>
 
-// Erases data
 void ModulationSignalBlock::reserveSpace(float framesPerBlock)
 {
-    // TODO: check here when changing to process subblocks
-    if (framesPerBlock > values.size())
-    {
-        values = std::vector<float>(framesPerBlock);
-    }
+    values.resize(framesPerBlock);
+    values.shrink_to_fit();
 }

@@ -24,6 +24,7 @@ public:
     float getValue(int position) {return block->getValue(position);}
     void addValue(int index, float valueToAdd) {setValue(index, getValue(index) + valueToAdd);}
     int blockSize() {return block->size();}
+    // TODO: make private
     std::shared_ptr<ModulationSignalBlock> block = std::make_shared<ModulationSignalBlock>();
 private:
     void setValue(int position, float value) {block->setValue(position, value);}
