@@ -114,6 +114,10 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedM
     
     maxFramesPerSubblock = calculateMaxFramesPerSubblock(expectedMaxFramesPerBlock);
 
+    // TODO: decide on reasonable size, move to variable
+    // Keyboard component is never going to send more than e.g. every note off + some notes on in one block
+    keyboardComponentMidiBuffer.ensureSize(1024);
+    
     // TODO: rename or refactor this function. Voice's AudioBuffer is not a ModulationSignalBlock
     reserveSignalBlockSpace(maxFramesPerSubblock, totalNumChannels);
     updateSampleRate(sampleRate);
@@ -128,6 +132,8 @@ void Shamsynth1AudioProcessor::prepareToPlay (double sampleRate, int p_expectedM
 
 void Shamsynth1AudioProcessor::releaseResources()
 {
+    keyboardComponentMidiBuffer = {};
+    
     for (auto voice : voices)
     {
         voice->releaseResources();
@@ -184,25 +190,17 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     {
         buffer.clear(i, 0, totalFrames);
     }
-
-    // MIDI
-    // processAllMidi();?
     
     // TODO: I currently ignore sample position of midi messages
-    // Allocate space for midiBuffer in prepareToPlay()
-    // Should midi processing be incorporated into processSubblock()?
+    // Incorporate midi processing into processSubblock()
     
-    // Avoid changing midiMessages
-    juce::MidiBuffer midiBuffer = midiMessages;
-    // Add messages from plugin window keyboard component
     // TODO: process in subblocks
-    keyboardState.processNextMidiBuffer(midiBuffer, 0, totalFrames, true);
+    keyboardState.processNextMidiBuffer(keyboardComponentMidiBuffer, 0, totalFrames, true);
     // Trigger or silence voices
     // TODO: consider if silencing voices here affects modulation i/o
-    processMidiBuffer(midiBuffer);
+    processMidiBuffer(midiMessages);
+    processMidiBuffer(keyboardComponentMidiBuffer);
     
-    // TODO:
-    // Process all audio in subblocks
     // Index of first frame of the subblock
     int subblockIndex = 0;
     while (subblockIndex < totalFrames)

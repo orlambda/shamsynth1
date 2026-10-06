@@ -130,6 +130,7 @@ private:
     int maxFramesPerSubblock = 0;
     int expectedMaxFramesPerBlock = 0;
     
+    juce::MidiBuffer keyboardComponentMidiBuffer;
     std::vector<std::shared_ptr<Voice>> voices;
     const int numberOfVoices = 16;
     
