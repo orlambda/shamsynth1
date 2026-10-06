@@ -199,7 +199,7 @@ void Shamsynth1AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     keyboardState.processNextMidiBuffer(midiBuffer, 0, totalFrames, true);
     // Trigger or silence voices
     // TODO: consider if silencing voices here affects modulation i/o
-    processMidi(midiBuffer);
+    processMidiBuffer(midiBuffer);
     
     // TODO:
     // Process all audio in subblocks
@@ -259,21 +259,26 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 // Check for noteOn and noteOff messages
 // Currently only affects the first Voice, doesn't check that voices isn't empty, etc.
-void Shamsynth1AudioProcessor::processMidi(juce::MidiBuffer& midiBuffer)
+void Shamsynth1AudioProcessor::processMidiBuffer(juce::MidiBuffer& midiBuffer)
 {
     for (const auto metadata : midiBuffer)
     {
-        auto message = metadata.getMessage();
-        if (message.isNoteOn())
-        {
-            int midiNoteNumber = message.getNoteNumber();
-            triggerVoice(midiNoteNumber);
-        }
-        else if (message.isNoteOff())
-        {
-            int midiNoteNumber = message.getNoteNumber();
-            silenceVoice(midiNoteNumber);
-        }
+        processMidiMessageMetadata(metadata);
+    }
+}
+
+void Shamsynth1AudioProcessor::processMidiMessageMetadata(const juce::MidiMessageMetadata& metadata)
+{
+    auto message = metadata.getMessage();
+    if (message.isNoteOn())
+    {
+        int midiNoteNumber = message.getNoteNumber();
+        triggerVoice(midiNoteNumber);
+    }
+    else if (message.isNoteOff())
+    {
+        int midiNoteNumber = message.getNoteNumber();
+        silenceVoice(midiNoteNumber);
     }
 }
 

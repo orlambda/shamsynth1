@@ -140,7 +140,8 @@ private:
     void sendModulations(int frames);
     
     // Input
-    void processMidi(juce::MidiBuffer& midiBuffer);
+    void processMidiBuffer(juce::MidiBuffer& midiBuffer);
+    void processMidiMessageMetadata(const juce::MidiMessageMetadata& metadata);
     void triggerVoice(int p_midiNote);
     void silenceVoice(int p_midiNote);
     std::optional<int> voiceWithNoteDown(int p_midiNote);
